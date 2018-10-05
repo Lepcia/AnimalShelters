@@ -1,6 +1,12 @@
 package inzynierka.animalshelters.models;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Date;
+
+import inzynierka.animalshelters.helpers.DataHelper;
+import inzynierka.animalshelters.helpers.DateFormatHelper;
 
 public class UserModel {
     private int Id;
@@ -10,6 +16,21 @@ public class UserModel {
     private String Email;
     private String Avatar;
     private int[] FavoriteAnimals;
+
+    public UserModel(JSONObject object)
+    {
+        try {
+            this.Id = object.getInt("Id");
+            this.FirstName = object.getString("FirstName");
+            this.LastName = object.getString("LastName");
+            this.DateOfBirth = DateFormatHelper.dateFromString(object.getString("DateOfBirth"), DateFormatHelper.FORMAT_DATE);
+            this.Email = object.getString("Email");
+            this.Avatar = object.getString("Avatar");
+            this.FavoriteAnimals = DataHelper.JSONObjectToIntArray(object.getJSONArray("FavoriteAnimals"));
+        } catch (JSONException e){
+            e.printStackTrace();
+        }
+    }
 
     public UserModel(int Id, String FirstName, String LastName, Date DateOfBirth, String Email, String Avatar, int[] FavoriteAnimals)
     {

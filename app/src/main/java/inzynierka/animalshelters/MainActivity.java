@@ -1,13 +1,12 @@
 package inzynierka.animalshelters;
 
-import android.app.VoiceInteractor;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
+import inzynierka.animalshelters.activities.administration.UserListActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -16,5 +15,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Button usersBtn = (Button)findViewById(R.id.userBtn);
+        usersBtn.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View view){
+                Intent intent = new Intent(MainActivity.this, UserListActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }
