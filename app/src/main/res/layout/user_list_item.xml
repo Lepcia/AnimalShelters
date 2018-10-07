@@ -18,7 +18,7 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/user_name_textView"
+            android:id="@+id/user_name"
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:layout_weight="1"

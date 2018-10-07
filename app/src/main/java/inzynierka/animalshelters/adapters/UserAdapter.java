@@ -37,7 +37,7 @@ public class UserAdapter extends ArrayAdapter<UserModel> {
             convertView = inflater.inflate(R.layout.user_list_item, parent, false);
 
             viewHolder.id = (TextView)convertView.findViewById(R.id.user_id);
-            viewHolder.userName = (TextView) convertView.findViewById(R.id.user_name_textView);
+            viewHolder.userName = (TextView) convertView.findViewById(R.id.user_name);
             viewHolder.userEmail = (TextView) convertView.findViewById(R.id.user_email);
             viewHolder.avatar = (ImageView) convertView.findViewById(R.id.user_avatar);
 
@@ -46,7 +46,7 @@ public class UserAdapter extends ArrayAdapter<UserModel> {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        viewHolder.id.setText(userModel.getId());
+        viewHolder.id.setText(String.valueOf(userModel.getId()));
         viewHolder.userName.setText(String.format("%s %s",userModel.getLastName(), userModel.getFirstName()));
         viewHolder.userEmail.setText(userModel.getEmail());
         viewHolder.avatar.setImageBitmap(getImageBitmap(userModel.getAvatar()));

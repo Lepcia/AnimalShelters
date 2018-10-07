@@ -10,7 +10,7 @@ import java.util.Properties;
 import cz.msebera.android.httpclient.Header;
 
 public class UsersClient {
-    private static final String BASE_URL = "http://localhost:49267/";
+    private static final String BASE_URL = "http://192.168.1.14:49268/";
     private static AsyncHttpClient client = new AsyncHttpClient();
 
     public static void get(Context context, String url, Header[] headers, RequestParams params, AsyncHttpResponseHandler responseHandler)

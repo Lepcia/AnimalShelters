@@ -20,13 +20,13 @@ public class UserModel {
     public UserModel(JSONObject object)
     {
         try {
-            this.Id = object.getInt("Id");
-            this.FirstName = object.getString("FirstName");
-            this.LastName = object.getString("LastName");
-            this.DateOfBirth = DateFormatHelper.dateFromString(object.getString("DateOfBirth"), DateFormatHelper.FORMAT_DATE);
-            this.Email = object.getString("Email");
-            this.Avatar = object.getString("Avatar");
-            this.FavoriteAnimals = DataHelper.JSONObjectToIntArray(object.getJSONArray("FavoriteAnimals"));
+            this.Id = object.getInt("id");
+            this.FirstName = object.getString("firstName");
+            this.LastName = object.getString("lastName");
+            this.DateOfBirth = DateFormatHelper.dateFromString(object.getString("dateOfBirth"), DateFormatHelper.FORMAT_DATE);
+            this.Email = object.getString("email");
+            this.Avatar = object.getString("avatar");
+            this.FavoriteAnimals = DataHelper.JSONObjectToIntArray(object.getJSONArray("favoriteAnimals"));
         } catch (JSONException e){
             e.printStackTrace();
         }
