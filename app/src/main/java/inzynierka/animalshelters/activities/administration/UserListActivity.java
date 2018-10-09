@@ -11,7 +11,6 @@ import inzynierka.animalshelters.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +18,8 @@ import java.util.List;
 import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.message.BasicHeader;
 import inzynierka.animalshelters.adapters.UserAdapter;
-import inzynierka.animalshelters.clients.UsersClient;
+import inzynierka.animalshelters.rest.Api;
+import inzynierka.animalshelters.rest.Client;
 import inzynierka.animalshelters.models.UserModel;
 
 public class UserListActivity extends AppCompatActivity {
@@ -39,7 +39,7 @@ public class UserListActivity extends AppCompatActivity {
         List<Header> headers = new ArrayList<>();
         headers.add(new BasicHeader("Content-Type", "application/json"));
 
-        UsersClient.get(UserListActivity.this, "api/users", headers.toArray(new Header[headers.size()]),
+        Client.get(UserListActivity.this, Api.USERS_URL, headers.toArray(new Header[headers.size()]),
                 null, new JsonHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
