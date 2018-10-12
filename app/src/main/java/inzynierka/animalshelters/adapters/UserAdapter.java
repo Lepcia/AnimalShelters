@@ -46,10 +46,16 @@ public class UserAdapter extends ArrayAdapter<UserModel> {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
+        String avatar = userModel.getAvatar();
+
+        if(avatar.isEmpty() || avatar == null) {
+            viewHolder.avatar.setImageResource(R.drawable.ic_account_circle_black_48dp);
+        } else {
+            viewHolder.avatar.setImageBitmap(getImageBitmap(userModel.getAvatar()));
+        }
         viewHolder.id.setText(String.valueOf(userModel.getId()));
         viewHolder.userName.setText(String.format("%s %s",userModel.getLastName(), userModel.getFirstName()));
         viewHolder.userEmail.setText(userModel.getEmail());
-        viewHolder.avatar.setImageBitmap(getImageBitmap(userModel.getAvatar()));
 
         return convertView;
     }
