@@ -11,6 +11,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -48,7 +50,7 @@ public class UserAdapter extends ArrayAdapter<UserModel> {
 
         String avatar = userModel.getAvatar();
 
-        if(avatar.isEmpty() || avatar == null) {
+        if(avatar == null) {
             viewHolder.avatar.setImageResource(R.drawable.ic_account_circle_black_48dp);
         } else {
             viewHolder.avatar.setImageBitmap(getImageBitmap(userModel.getAvatar()));

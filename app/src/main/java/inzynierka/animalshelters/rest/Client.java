@@ -43,6 +43,6 @@ public class Client {
 
     private static String getAbsoluteUrl(String relativeUrl, int id)
     {
-        return Api.getBaseUrl() + relativeUrl + String.valueOf(id);
+        return Api.getBaseUrl() + relativeUrl + '/' +  String.valueOf(id);
     }
 }

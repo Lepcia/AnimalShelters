@@ -4,10 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ListView;
-
 import com.loopj.android.http.JsonHttpResponseHandler;
-
-import inzynierka.animalshelters.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -17,12 +14,14 @@ import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.message.BasicHeader;
+import inzynierka.animalshelters.R;
+import inzynierka.animalshelters.activities.basic.BasicActivity;
 import inzynierka.animalshelters.adapters.UserAdapter;
 import inzynierka.animalshelters.rest.Api;
 import inzynierka.animalshelters.rest.Client;
 import inzynierka.animalshelters.models.UserModel;
 
-public class UserListActivity extends AppCompatActivity {
+public class UserListActivity extends BasicActivity {
 
     private ListView userList;
 
@@ -30,6 +29,8 @@ public class UserListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_list);
+        onCreateDrawer();
+        onCreateDrawerMenu();
 
         getUsers();
     }

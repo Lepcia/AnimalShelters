@@ -7,13 +7,16 @@ import android.view.View;
 import android.widget.Button;
 
 import inzynierka.animalshelters.activities.administration.UserListActivity;
+import inzynierka.animalshelters.activities.basic.BasicActivity;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BasicActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        onCreateDrawer();
+        onCreateDrawerMenu();
 
         Button usersBtn = (Button)findViewById(R.id.userBtn);
         usersBtn.setOnClickListener(new View.OnClickListener(){

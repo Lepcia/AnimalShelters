@@ -1,5 +1,6 @@
 package inzynierka.animalshelters.helpers;
 
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -13,5 +14,16 @@ public class DataHelper {
         }
 
         return numbers;
+    }
+
+    public static String getOrEmpty(String value)
+    {
+        if(StringUtils.equals("null", value))
+        {
+            return "";
+        } else {
+            return value;
+        }
+
     }
 }
