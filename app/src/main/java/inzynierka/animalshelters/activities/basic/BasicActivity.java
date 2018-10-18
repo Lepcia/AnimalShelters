@@ -1,22 +1,17 @@
 package inzynierka.animalshelters.activities.basic;
 
-import android.content.Context;
-import android.content.Intent;
-import android.location.Location;
+import android.content.res.Resources;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ListView;
 import android.support.v7.widget.Toolbar;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -27,19 +22,14 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.message.BasicHeader;
-import inzynierka.animalshelters.MainActivity;
 import inzynierka.animalshelters.R;
-import inzynierka.animalshelters.activities.administration.UserListActivity;
-import inzynierka.animalshelters.adapters.UserAdapter;
+import inzynierka.animalshelters.helpers.Modules;
 import inzynierka.animalshelters.models.ModuleDetailsModel;
-import inzynierka.animalshelters.models.UserModel;
 import inzynierka.animalshelters.rest.Api;
 import inzynierka.animalshelters.rest.Client;
-import inzynierka.animalshelters.rest.Modules;
 
 public class BasicActivity extends AppCompatActivity {
 
@@ -60,7 +50,24 @@ public class BasicActivity extends AppCompatActivity {
                     @Override
                     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                         drawerLayout.closeDrawers();
-
+                        switch (menuItem.getItemId())
+                        {
+                            case Modules.ADMIN:
+                                openAdminModule();
+                                break;
+                            case Modules.ANIMAL_SHELTERS:
+                                openSheltersModule();
+                                break;
+                            case Modules.ANIMALS:
+                                openAnimalsModule();
+                                break;
+                            case Modules.FAV_ANIMALS:
+                                openFavAnimalsModule();
+                                break;
+                            case Modules.SEARCH:
+                                openSearchModule();
+                                break;
+                        }
                         return true;
                     }
                 });
@@ -128,7 +135,7 @@ public class BasicActivity extends AppCompatActivity {
                                 JSONObject jsonObject = response.getJSONObject(i);
                                 ModuleDetailsModel module = new ModuleDetailsModel(jsonObject);
 
-                                menu.add(0, module.getId(), module.getOrder(), module.getName()).setIcon(R.drawable.ic_build_black_18dp);
+                                menu.add(0, module.getId(), module.getOrder(), module.getName()).setIcon(getDrawable(module.getIcon()));
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -142,5 +149,31 @@ public class BasicActivity extends AppCompatActivity {
                 });
 
     }
+
+    private int getDrawable(String name)
+    {
+        Resources res = getResources();
+        int resId = res.getIdentifier(name, "drawable", getPackageName());
+        return resId;
+    }
+
+    public void openMainModule()
+    { }
+
+    public void openAdminModule()
+    { }
+
+    public void openFavAnimalsModule()
+    { }
+
+    public void openSearchModule()
+    { }
+
+    public void openAnimalsModule()
+    {}
+
+    public void openSheltersModule()
+    {}
+
 
 }

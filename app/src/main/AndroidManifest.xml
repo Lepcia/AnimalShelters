@@ -25,7 +25,15 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
-        <activity android:name=".activities.basic.BasicActivity"></activity>
+        <activity android:name=".activities.basic.BasicActivity" />
+        <activity android:name=".activities.favorites.FavoriteAnimalsActivity" />
+        <activity
+            android:name=".activities.search.SearchActivity"
+            android:label="@string/title_activity_search"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".activities.administration.AdminActivity" />
+        <activity android:name=".activities.animals.AnimalsActivity" />
+        <activity android:name=".activities.animalShelters.SheltersActivity"></activity>
     </application>
 
 </manifest>
