@@ -69,6 +69,5 @@ public class SearchAnimals extends Fragment {
                         Log.e("Error", res);
                     }
                 });
-
     }
 }

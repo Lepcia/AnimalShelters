@@ -1,5 +1,10 @@
 package inzynierka.animalshelters.models;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import inzynierka.animalshelters.helpers.DataHelper;
+
 public class AnimalShelterModel {
     private int Id;
     private String Name;
@@ -9,8 +14,32 @@ public class AnimalShelterModel {
     private String Number;
     private String FullAdres;
     private int[] Animals;
+    private String Phone;
+    private String Email;
+    private String Avatar;
 
-    public AnimalShelterModel(int Id, String Name, String PostalCode, String City, String Street, String Number, String FullAdres, int[] Animals)
+    public AnimalShelterModel(JSONObject object)
+    {
+        try {
+            this.Id = object.getInt("id");
+            this.Name = object.getString("name");
+            this.PostalCode = object.getString("postalCode");
+            this.City = object.getString("city");
+            this.Street = object.getString("street");
+            this.Number = object.getString("number");
+            this.FullAdres = object.getString("fullAdres");
+            this.Email = object.getString("email");
+            this.Phone = object.getString("phone");
+            this.Avatar = object.getString("avatar");
+            this.Animals = DataHelper.JSONObjectToIntArray(object.getJSONArray("animals"));
+        } catch (JSONException e){
+            e.printStackTrace();
+        }
+    }
+
+    public AnimalShelterModel(int Id, String Name, String PostalCode, String City, String Street,
+                              String Number, String FullAdres, int[] Animals, String Phone, String Email,
+                              String Avatar)
     {
         this.Id = Id;
         this.Name = Name;
@@ -20,6 +49,9 @@ public class AnimalShelterModel {
         this.Number = Number;
         this.FullAdres = FullAdres;
         this.Animals = Animals;
+        this.Email = Email;
+        this.Phone = Phone;
+        this.Avatar = Avatar;
     }
 
     public int getId()
@@ -96,5 +128,29 @@ public class AnimalShelterModel {
 
     public void setAnimals(int[] animals) {
         Animals = animals;
+    }
+
+    public String getPhone() {
+        return Phone;
+    }
+
+    public void setPhone(String phone) {
+        Phone = phone;
+    }
+
+    public String getAvatar() {
+        return Avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        Avatar = avatar;
+    }
+
+    public String getEmail() {
+        return Email;
+    }
+
+    public void setEmail(String email) {
+        Email = email;
     }
 }
