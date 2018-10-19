@@ -1,7 +1,13 @@
 package inzynierka.animalshelters.models;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Collection;
 import java.util.Date;
+
+import inzynierka.animalshelters.helpers.DataHelper;
+import inzynierka.animalshelters.helpers.DateFormatHelper;
 
 public class AnimalModel {
     private int Id;
@@ -15,6 +21,25 @@ public class AnimalModel {
     private String Size;
     private String Description;
     private int[] Photos;
+
+    public AnimalModel(JSONObject object)
+    {
+        try {
+            this.Id = object.getInt("id");
+            this.Name = object.getString("name");
+            this.Age = object.getInt("age");
+            this.AgeAccuracy = object.getString("ageAccuracy");
+            this.AgeString = object.getString("ageString");
+            this.Species = object.getString("species");
+            this.Breed = object.getString("breed");
+            this.Sex = object.getString("sex");
+            this.Size = object.getString("size");
+            this.Description = object.getString("description");
+            this.Photos = DataHelper.JSONObjectToIntArray(object.getJSONArray("photos"));
+        } catch (JSONException e){
+            e.printStackTrace();
+        }
+    }
 
     public AnimalModel(int Id, String Name, int Age, String AgeAccuracy, String AgeString, String Species, String Breed, String Sex, String Size, String Description, int[] Photos)
     {

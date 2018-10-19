@@ -1,7 +1,6 @@
 package inzynierka.animalshelters.activities.administration;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ListView;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -16,7 +15,7 @@ import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.message.BasicHeader;
 import inzynierka.animalshelters.R;
 import inzynierka.animalshelters.activities.basic.BasicActivity;
-import inzynierka.animalshelters.adapters.UserAdapter;
+import inzynierka.animalshelters.adapters.UserListItemAdapter;
 import inzynierka.animalshelters.rest.Api;
 import inzynierka.animalshelters.rest.Client;
 import inzynierka.animalshelters.models.UserModel;
@@ -45,17 +44,17 @@ public class UserListActivity extends BasicActivity {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                         ArrayList<UserModel> noteArray = new ArrayList<>();
-                        UserAdapter userAdapter = new UserAdapter(UserListActivity.this, noteArray);
+                        UserListItemAdapter userListItemAdapter = new UserListItemAdapter(UserListActivity.this, noteArray);
 
                         for (int i = 0; i < response.length(); i++) {
                             try {
-                                userAdapter.add(new UserModel(response.getJSONObject(i)));
+                                userListItemAdapter.add(new UserModel(response.getJSONObject(i)));
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
                         }
                         userList = (ListView) findViewById(R.id.list_users);
-                        userList.setAdapter(userAdapter);
+                        userList.setAdapter(userListItemAdapter);
                     }
 
                     @Override

@@ -18,11 +18,13 @@ import java.io.InputStream;
 import java.util.ArrayList;
 
 import inzynierka.animalshelters.R;
+import inzynierka.animalshelters.helpers.ImageHelper;
 import inzynierka.animalshelters.models.UserModel;
 
-public class UserAdapter extends ArrayAdapter<UserModel> {
+public class UserListItemAdapter extends ArrayAdapter<UserModel> {
 
-    public UserAdapter(Context context, ArrayList<UserModel> users)
+
+    public UserListItemAdapter(Context context, ArrayList<UserModel> users)
     {
         super(context, R.layout.user_list_item, users);
     }
@@ -53,21 +55,13 @@ public class UserAdapter extends ArrayAdapter<UserModel> {
         if(avatar == null) {
             viewHolder.avatar.setImageResource(R.drawable.ic_account_circle_black_48dp);
         } else {
-            viewHolder.avatar.setImageBitmap(getImageBitmap(userModel.getAvatar()));
+            viewHolder.avatar.setImageBitmap(ImageHelper.getImageBitmap(userModel.getAvatar()));
         }
         viewHolder.id.setText(String.valueOf(userModel.getId()));
         viewHolder.userName.setText(String.format("%s %s",userModel.getLastName(), userModel.getFirstName()));
         viewHolder.userEmail.setText(userModel.getEmail());
 
         return convertView;
-    }
-
-    private Bitmap getImageBitmap(String avatar)
-    {
-        byte[] decodeString = Base64.decode(avatar, Base64.NO_WRAP);
-        InputStream inputStream = new ByteArrayInputStream(decodeString);
-        Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-        return bitmap;
     }
 
     private static class ViewHolder
