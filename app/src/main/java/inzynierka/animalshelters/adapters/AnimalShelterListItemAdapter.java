@@ -39,7 +39,7 @@ public class AnimalShelterListItemAdapter extends ArrayAdapter<AnimalShelterMode
             viewHolder.shelterAdres = (TextView) convertView.findViewById(R.id.shelter_adres);
             viewHolder.shelterEmail = (TextView) convertView.findViewById(R.id.shelter_email);
             viewHolder.shelterPhone = (TextView) convertView.findViewById(R.id.shelter_phone);
-            viewHolder.shelterAvatar = (ImageView) convertView.findViewById(R.id.shelter_icon);
+            viewHolder.shelterAvatar = (ImageView) convertView.findViewById(R.id.shelter_avatar);
 
             convertView.setTag(viewHolder);
         } else {

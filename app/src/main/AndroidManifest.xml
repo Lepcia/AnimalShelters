@@ -26,14 +26,25 @@
             android:resource="@array/preloaded_fonts" />
 
         <activity android:name=".activities.basic.BasicActivity" />
-        <activity android:name=".activities.favorites.FavoriteAnimalsActivity" />
+        <activity
+            android:name=".activities.favorites.FavoriteAnimalsActivity"
+            android:label="@string/title_activity_fav_animals"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".activities.search.SearchActivity"
             android:label="@string/title_activity_search"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".activities.administration.AdminActivity" />
+        <activity
+            android:name=".activities.administration.AdminActivity"
+            android:label="@string/title_activity_admin"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".activities.animals.AnimalsActivity" />
-        <activity android:name=".activities.animalShelters.SheltersActivity"></activity>
+        <activity
+            android:name=".activities.animalShelters.SheltersActivity"
+            android:label="@string/title_activity_shelters"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".activities.administration.AdminEditUser" />
+        <activity android:name=".activities.administration.AdminEditShelter"></activity>
     </application>
 
 </manifest>

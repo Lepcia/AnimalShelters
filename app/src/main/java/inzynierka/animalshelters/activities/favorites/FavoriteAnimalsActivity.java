@@ -3,7 +3,19 @@ package inzynierka.animalshelters.activities.favorites;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.ListView;
 
+import com.loopj.android.http.JsonHttpResponseHandler;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import cz.msebera.android.httpclient.Header;
+import cz.msebera.android.httpclient.message.BasicHeader;
 import inzynierka.animalshelters.MainActivity;
 import inzynierka.animalshelters.R;
 import inzynierka.animalshelters.activities.administration.AdminActivity;
@@ -11,8 +23,14 @@ import inzynierka.animalshelters.activities.animalShelters.SheltersActivity;
 import inzynierka.animalshelters.activities.animals.AnimalsActivity;
 import inzynierka.animalshelters.activities.basic.BasicActivity;
 import inzynierka.animalshelters.activities.search.SearchActivity;
+import inzynierka.animalshelters.adapters.AnimalListItemAdapter;
+import inzynierka.animalshelters.models.AnimalModel;
+import inzynierka.animalshelters.rest.Api;
+import inzynierka.animalshelters.rest.Client;
 
 public class FavoriteAnimalsActivity extends BasicActivity {
+
+    private ListView favoriteAnimalView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,6 +38,39 @@ public class FavoriteAnimalsActivity extends BasicActivity {
         setContentView(R.layout.activity_favorite_animals);
         onCreateDrawer();
         onCreateDrawerMenu();
+
+        getFavoriteAnimals();
+    }
+
+    private void getFavoriteAnimals()
+    {
+        List<Header> headers = new ArrayList<>();
+        headers.add(new BasicHeader("Content-Type", "application/json"));
+
+        //TODO: zmienić id po zrobieniu autoryzacji
+        Client.getById(FavoriteAnimalsActivity.this, Api.FAVORITE_ANIMALS_URL, 1, headers.toArray(new Header[headers.size()]),
+                null, new JsonHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                        ArrayList<AnimalModel> animalsArray = new ArrayList<>();
+                        AnimalListItemAdapter animalListItemAdapter = new AnimalListItemAdapter(FavoriteAnimalsActivity.this, animalsArray);
+
+                        for (int i = 0; i < response.length(); i++) {
+                            try {
+                                animalListItemAdapter.add(new AnimalModel(response.getJSONObject(i)));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        favoriteAnimalView = (ListView) findViewById(R.id.favorite_animals_list);
+                        favoriteAnimalView.setAdapter(animalListItemAdapter);
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, String res, Throwable t) {
+                        Log.e("Error", res);
+                    }
+                });
     }
 
     @Override

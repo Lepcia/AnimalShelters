@@ -42,9 +42,9 @@ public class AnimalListItemAdapter extends ArrayAdapter<AnimalModel> {
 
             viewHolder.id = (TextView) convertView.findViewById(R.id.animal_id);
             viewHolder.animalName = (TextView) convertView.findViewById(R.id.animal_name);
-            viewHolder.animalBreed = (TextView) convertView.findViewById(R.id.breed_name);
+            viewHolder.animalBreed = (TextView) convertView.findViewById(R.id.animal_breed);
             viewHolder.animalAge = (TextView) convertView.findViewById(R.id.animal_age);
-            viewHolder.animalSpecies = (ImageView) convertView.findViewById(R.id.species_icon);
+            viewHolder.animalSpecies = (ImageView) convertView.findViewById(R.id.animal_species);
             viewHolder.favoriteAnimal = (ImageButton) convertView.findViewById(R.id.addToFavorite);
             viewHolder.animalPhoto = (ImageView) convertView.findViewById(R.id.animal_photo);
             viewHolder.animalSex = (ImageView) convertView.findViewById(R.id.animal_sex);

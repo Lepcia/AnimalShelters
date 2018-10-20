@@ -1,7 +1,11 @@
 <resources>
     <string name="app_name">Animal Shelters</string>
     <string name="settings">Settings</string>
-    <string name="title_activity_search">SearchActivity</string>
+    <string name="title_activity_search">Search</string>
+    <string name="title_activity_admin">Administration</string>
+    <string name="title_activity_fav_animals">Favorite Animals</string>
+    <string name="title_activity_animals">Animals</string>
+    <string name="title_activity_shelters">Animal Shelters</string>
     <string name="tab_text_1">Tab 1</string>
     <string name="tab_text_2">Tab 2</string>
     <string name="tab_text_3">Tab 3</string>
