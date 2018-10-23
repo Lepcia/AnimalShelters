@@ -48,7 +48,7 @@
 
     <TextView
         android:id="@+id/breed_label"
-        android:layout_width="40dp"
+        android:layout_width="42dp"
         android:layout_height="wrap_content"
         android:text="Breed:"
         android:theme="@style/Label"
@@ -67,7 +67,7 @@
 
     <TextView
         android:id="@+id/age_label"
-        android:layout_width="40dp"
+        android:layout_width="42dp"
         android:theme="@style/Label"
         app:layout_constraintStart_toEndOf="@id/animal_photo"
         app:layout_constraintTop_toBottomOf="@id/breed_label"
@@ -86,7 +86,7 @@
 
     <TextView
         android:id="@+id/sex_label"
-        android:layout_width="40dp"
+        android:layout_width="42dp"
         android:layout_height="wrap_content"
         android:text="Sex:"
         android:theme="@style/Label"
@@ -104,7 +104,7 @@
 
     <TextView
         android:id="@+id/size_label"
-        android:layout_width="40dp"
+        android:layout_width="42dp"
         android:layout_height="wrap_content"
         android:text="Size:"
         android:theme="@style/Label"
