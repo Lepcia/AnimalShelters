@@ -1,11 +1,13 @@
 package inzynierka.animalshelters.activities.search;
 
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -36,8 +38,28 @@ public class SearchShelters extends Fragment {
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_search_shelters, container, false);
         getShelters();
+        searchPanelInit();
 
         return rootView;
+    }
+
+    private void searchPanelInit()
+    {
+        ImageButton expandBtn = (ImageButton)rootView.findViewById(R.id.expandBtn);
+
+        expandBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ConstraintLayout searchPanel = (ConstraintLayout)rootView.findViewById(R.id.searchPanel);
+                if(searchPanel.getVisibility() == ConstraintLayout.VISIBLE)
+                {
+                    searchPanel.setVisibility(ConstraintLayout.GONE);
+                } else if(searchPanel.getVisibility() == ConstraintLayout.GONE)
+                {
+                    searchPanel.setVisibility(ConstraintLayout.VISIBLE);
+                }
+            }
+        });
     }
 
     private void getShelters()

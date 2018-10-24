@@ -43,19 +43,19 @@ public class SearchAnimals extends Fragment {
         Toolbar toolbar = (Toolbar)rootView.findViewById(R.id.searchToolbar);
         ((BasicActivity)getActivity()).setSupportActionBar(toolbar);
         getAnimals();
-        setSearchPanel();
+        searchPanelInit();
 
         return rootView;
     }
 
-    private void setSearchPanel()
+    private void searchPanelInit()
     {
         ImageButton expandBtn = (ImageButton)rootView.findViewById(R.id.expandBtn);
 
         expandBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ConstraintLayout searchPanel = (ConstraintLayout)rootView.findViewById(R.id.searchConteiner);
+                ConstraintLayout searchPanel = (ConstraintLayout)rootView.findViewById(R.id.searchPanel);
                 if(searchPanel.getVisibility() == ConstraintLayout.VISIBLE)
                 {
                     searchPanel.setVisibility(ConstraintLayout.GONE);
@@ -65,9 +65,6 @@ public class SearchAnimals extends Fragment {
                 }
             }
         });
-
-
-
     }
 
     private void getAnimals()

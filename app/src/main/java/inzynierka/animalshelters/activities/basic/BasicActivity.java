@@ -124,8 +124,7 @@ public class BasicActivity extends AppCompatActivity {
         menu.clear();
         List<Header> headers = new ArrayList<>();
         headers.add(new BasicHeader("Content-Type", "application/json"));
-        //TODO:
-        //po zrobieniu logowania zmienić na zalogowanego usera
+        //TODO: po zrobieniu logowania zmienić na zalogowanego usera
         Client.getById(BasicActivity.this, Api.ADMIN_USER_MODULE, 1, headers.toArray(new Header[headers.size()]),
                 null, new JsonHttpResponseHandler() {
                     @Override

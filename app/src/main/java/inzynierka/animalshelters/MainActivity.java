@@ -22,14 +22,6 @@ public class MainActivity extends BasicActivity {
         setContentView(R.layout.activity_main);
         onCreateDrawer();
         onCreateDrawerMenu();
-
-        Button usersBtn = (Button)findViewById(R.id.userBtn);
-        usersBtn.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View view){
-                Intent intent = new Intent(MainActivity.this, SearchActivity.class);
-                startActivity(intent);
-            }
-        });
     }
 
     @Override

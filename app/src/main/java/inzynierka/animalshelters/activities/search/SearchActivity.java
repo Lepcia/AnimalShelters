@@ -41,7 +41,6 @@ public class SearchActivity extends BasicActivity {
 
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
-
     }
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
