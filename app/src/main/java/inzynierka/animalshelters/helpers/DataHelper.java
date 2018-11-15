@@ -18,12 +18,6 @@ public class DataHelper {
 
     public static String getOrEmpty(String value)
     {
-        if(StringUtils.equals("null", value))
-        {
-            return "";
-        } else {
-            return value;
-        }
-
+        return value.equals("null") ? "" : value;
     }
 }
