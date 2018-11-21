@@ -25,5 +25,9 @@
         completions."
     </string>
     <string name="witaj_w_zwierzakowie">Witaj w Zwierzakowie !</string>
-    <string name="witaj_w_zwierzakowie">Witaj w Zwierzakowie !</string>
+    <string name="szukaj_zwierz_cia">Szukaj zwierzęcia</string>
+    <string name="ulubione">Ulubione</string>
+    <string name="moje_konto">Moje konto</string>
+    <string name="administracja">Administracja</string>
+    <string name="o_aplikacji">O aplikacji</string>
 </resources>
