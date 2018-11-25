@@ -22,6 +22,9 @@ public class AnimalModel {
     private String Description;
     private int[] Photos;
 
+    public AnimalModel()
+    {}
+
     public AnimalModel(JSONObject object)
     {
         try {

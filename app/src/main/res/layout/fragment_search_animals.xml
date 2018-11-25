@@ -84,7 +84,7 @@
             app:layout_constraintTop_toBottomOf="@id/search_breed_label" />
 
         <RadioGroup
-            android:id="@+id/search_sex"
+            android:id="@+id/sexRadioGroup"
             android:layout_width="wrap_content"
             android:layout_height="59dp"
             android:gravity="center"
@@ -136,12 +136,13 @@
             app:layout_constraintTop_toBottomOf="@id/search_sex_label" />
 
         <RadioGroup
+            android:id="@+id/speciesRadioGroup"
             android:layout_width="wrap_content"
             android:layout_height="39dp"
             android:gravity="center"
             android:orientation="horizontal"
             app:layout_constraintStart_toEndOf="@id/search_species_label"
-            app:layout_constraintTop_toBottomOf="@id/search_sex">
+            app:layout_constraintTop_toBottomOf="@id/sexRadioGroup">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -210,6 +211,7 @@
             app:layout_constraintTop_toBottomOf="@id/search_species_label"/>
 
         <Button
+            android:id="@+id/search_animals_btn"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:text="Search"

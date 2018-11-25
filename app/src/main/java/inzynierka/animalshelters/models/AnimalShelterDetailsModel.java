@@ -12,6 +12,9 @@ public class AnimalShelterDetailsModel {
     private String FullAdres;
     private Collection<AnimalModel> Animals;
 
+    public AnimalShelterDetailsModel()
+    {}
+
     public AnimalShelterDetailsModel(int Id, String Name, String PostalCode, String City, String Street, String Number, String FullAdres, Collection<AnimalModel> Animals)
     {
         this.Id = Id;

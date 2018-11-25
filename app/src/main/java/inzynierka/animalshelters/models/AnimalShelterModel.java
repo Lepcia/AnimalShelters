@@ -18,6 +18,9 @@ public class AnimalShelterModel {
     private String Email;
     private String Avatar;
 
+    public AnimalShelterModel()
+    {}
+
     public AnimalShelterModel(JSONObject object)
     {
         try {

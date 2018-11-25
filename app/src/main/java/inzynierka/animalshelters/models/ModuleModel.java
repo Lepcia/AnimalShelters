@@ -10,6 +10,9 @@ public class ModuleModel {
     public String Icon;
     public int Order;
 
+    public ModuleModel()
+    {}
+
     public ModuleModel(JSONObject object)
     {
         try {

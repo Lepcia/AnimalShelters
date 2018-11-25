@@ -2,7 +2,7 @@ package inzynierka.animalshelters.rest;
 
 public final class Api {
 
-    private static final String BASE_URL = "http://192.168.10.132:49268/api/";
+    private static final String BASE_URL = "http://192.168.1.14:49268/api/";
     public static final String ADMINISTRATION_URL = "administration";
     public static final String ADMIN_USER_MODULE = ADMINISTRATION_URL + "/userModules/{id}";
     public static final String ADMIN_RIGHTS_TO_MODULE = ADMINISTRATION_URL + "/rightsToModule";

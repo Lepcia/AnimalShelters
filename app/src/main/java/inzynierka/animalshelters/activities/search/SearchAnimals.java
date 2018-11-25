@@ -1,5 +1,6 @@
 package inzynierka.animalshelters.activities.search;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
@@ -7,9 +8,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.support.v7.widget.Toolbar;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -27,6 +32,7 @@ import inzynierka.animalshelters.activities.basic.BasicActivity;
 import inzynierka.animalshelters.adapters.AnimalListItemAdapter;
 import inzynierka.animalshelters.adapters.UserListItemAdapter;
 import inzynierka.animalshelters.models.AnimalModel;
+import inzynierka.animalshelters.models.AnimalSearchModel;
 import inzynierka.animalshelters.models.UserModel;
 import inzynierka.animalshelters.rest.Api;
 import inzynierka.animalshelters.rest.Client;
@@ -44,6 +50,7 @@ public class SearchAnimals extends Fragment {
         ((BasicActivity)getActivity()).setSupportActionBar(toolbar);
         getAnimals();
         searchPanelInit();
+        initButtons();
 
         return rootView;
     }
@@ -65,6 +72,60 @@ public class SearchAnimals extends Fragment {
                 }
             }
         });
+    }
+
+    private void initButtons()
+    {
+        Button searchBtn = (Button) rootView.findViewById(R.id.search_animals_btn);
+
+        searchBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SearchAnimals();
+            }
+        });
+    }
+
+    private void SearchAnimals()
+    {
+        AnimalSearchModel animal = new AnimalSearchModel();
+        EditText searchName = rootView.findViewById(R.id.search_name);
+        animal.setName(searchName.getText().toString());
+
+        EditText searchBreed = rootView.findViewById(R.id.search_breed);
+        animal.setBreed(searchBreed.getText().toString());
+
+        RadioGroup sexRadioGroup = rootView.findViewById(R.id.sexRadioGroup);
+        int selectedId = sexRadioGroup.getCheckedRadioButtonId();
+        switch (selectedId)
+        {
+            case R.id.radioSexMale:
+                animal.setSex("Male");
+                break;
+            case R.id.radioSexFemale:
+                animal.setSex("Female");
+                break;
+        };
+
+        RadioGroup speciesRadioGroup = rootView.findViewById(R.id.speciesRadioGroup);
+        selectedId = speciesRadioGroup.getCheckedRadioButtonId();
+        switch (selectedId){
+            case R.id.radioCat:
+                animal.setSpecies("Cat");
+                break;
+            case R.id.radioDog:
+                animal.setSpecies("Dog");
+                break;
+        }
+
+        EditText ageFrom = rootView.findViewById(R.id.search_age_from);
+        animal.setAgeFrom(Integer.parseInt(ageFrom.getText().toString()));
+
+        EditText ageTo = rootView.findViewById(R.id.search_age_to);
+        animal.setAgeTo(Integer.parseInt(ageTo.getText().toString()));
+
+
+
     }
 
     private void getAnimals()

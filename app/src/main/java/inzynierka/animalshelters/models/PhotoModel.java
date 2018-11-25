@@ -4,6 +4,9 @@ public class PhotoModel {
     private int Id;
     private String Content;
 
+    public PhotoModel()
+    {}
+
     public PhotoModel(int Id, String Content)
     {
         this.Id = Id;

@@ -14,6 +14,9 @@ public class ModuleDetailsModel {
     public String UserLastName;
     public String UserEmail;
 
+    public ModuleDetailsModel()
+    {}
+
     public ModuleDetailsModel(JSONObject object)
     {
         try {

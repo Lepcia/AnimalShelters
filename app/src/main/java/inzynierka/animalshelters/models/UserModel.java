@@ -17,6 +17,9 @@ public class UserModel {
     private String Avatar;
     private int[] FavoriteAnimals;
 
+    public UserModel()
+    {}
+
     public UserModel(JSONObject object)
     {
         try {

@@ -12,6 +12,9 @@ public class UserDetailsModel {
     private String Avatar;
     private Collection<AnimalModel> FavoriteAnimals;
 
+    public UserDetailsModel()
+    {}
+
     public UserDetailsModel(int Id, String FirstName, String LastName, Date DateOfBirth, String Email, String Avatar, Collection<AnimalModel> FavoriteAnimals)
     {
         this.Id = Id;

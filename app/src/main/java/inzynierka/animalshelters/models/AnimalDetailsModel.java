@@ -15,6 +15,9 @@ public class AnimalDetailsModel {
     private String Description;
     private Collection<PhotoModel> Photos;
 
+    public AnimalDetailsModel()
+    {}
+
     public AnimalDetailsModel(int Id, String Name, int Age, String AgeAccuracy, String AgeString, String Species, String Breed,
                               String Sex, String Size, String Description, Collection<PhotoModel> Photos)
     {

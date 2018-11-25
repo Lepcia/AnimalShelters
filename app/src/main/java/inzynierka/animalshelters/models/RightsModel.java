@@ -14,6 +14,9 @@ public class RightsModel {
     public String Name;
     public int IdModule;
 
+    public RightsModel()
+    {}
+
     public RightsModel(JSONObject object)
     {
         try {
