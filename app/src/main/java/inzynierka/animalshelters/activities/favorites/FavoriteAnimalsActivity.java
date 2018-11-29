@@ -1,7 +1,6 @@
 package inzynierka.animalshelters.activities.favorites;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ListView;
@@ -16,7 +15,7 @@ import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.message.BasicHeader;
-import inzynierka.animalshelters.MainActivity;
+import inzynierka.animalshelters.NewsBoardActivity;
 import inzynierka.animalshelters.R;
 import inzynierka.animalshelters.activities.administration.AdminActivity;
 import inzynierka.animalshelters.activities.animalShelters.SheltersActivity;
@@ -76,7 +75,7 @@ public class FavoriteAnimalsActivity extends BasicActivity {
     @Override
     public void openMainModule()
     {
-        Intent intent = new Intent(FavoriteAnimalsActivity.this, MainActivity.class);
+        Intent intent = new Intent(FavoriteAnimalsActivity.this, NewsBoardActivity.class);
         startActivity(intent);
     }
 

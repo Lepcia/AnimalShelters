@@ -9,7 +9,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 
-import inzynierka.animalshelters.MainActivity;
+import inzynierka.animalshelters.NewsBoardActivity;
 import inzynierka.animalshelters.R;
 import inzynierka.animalshelters.activities.administration.AdminActivity;
 import inzynierka.animalshelters.activities.animalShelters.SheltersActivity;
@@ -75,7 +75,7 @@ public class SearchActivity extends BasicActivity {
     @Override
     public void openMainModule()
     {
-        Intent intent = new Intent(SearchActivity.this, MainActivity.class);
+        Intent intent = new Intent(SearchActivity.this, NewsBoardActivity.class);
         startActivity(intent);
     }
 

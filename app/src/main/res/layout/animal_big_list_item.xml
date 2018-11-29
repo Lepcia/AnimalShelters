@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/lightGray">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="344dp"
+        android:layout_height="350dp"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="16dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="15dp"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="7dp"
+        app:cardElevation="10dp">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/animal_photo"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:src="@drawable/baseline_pets_black_48dp"/>
+
+            <ImageView
+                android:id="@+id/animal_species"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginLeft="5dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/animal_photo"
+                app:layout_constraintEnd_toStartOf="@id/animal_name"
+                android:src="@drawable/dog_brown_big"
+                android:background="@color/white"/>
+
+            <TextView
+                android:id="@+id/animal_name"
+                android:layout_width="0dp"
+                android:layout_height="32dp"
+                android:theme="@style/ItemHeader"
+                android:text="Animal Name"
+                app:layout_constraintTop_toBottomOf="@id/animal_photo"
+                app:layout_constraintStart_toEndOf="@id/animal_species"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <TextView
+                android:id="@+id/in_shelter_label"
+                android:layout_width="110dp"
+                android:layout_height="wrap_content"
+                android:text="In shelter from:"
+                android:theme="@style/Label"
+                app:layout_constraintTop_toBottomOf="@id/animal_name"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/in_shelter_from"/>
+
+            <TextView
+                android:id="@+id/in_shelter_from"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="2018-01-23"
+                android:theme="@style/ItemText"
+                app:layout_constraintTop_toBottomOf="@id/animal_name"
+                app:layout_constraintStart_toEndOf="@id/in_shelter_label"/>
+
+            <TextView
+                android:id="@+id/breed_label"
+                android:layout_width="42dp"
+                android:layout_height="wrap_content"
+                android:text="Breed:"
+                android:theme="@style/Label"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/in_shelter_label" />
+
+            <TextView
+                android:id="@+id/animal_breed"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:theme="@style/ItemText"
+                app:layout_constraintStart_toEndOf="@id/breed_label"
+                app:layout_constraintTop_toBottomOf="@id/in_shelter_from"
+                app:layout_constraintEnd_toStartOf="@id/age_label"/>
+
+            <TextView
+                android:id="@+id/age_label"
+                android:layout_width="42dp"
+                android:theme="@style/Label"
+                app:layout_constraintStart_toEndOf="@id/animal_breed"
+                app:layout_constraintTop_toBottomOf="@id/in_shelter_from"
+                app:layout_constraintEnd_toStartOf="@id/animal_age"
+                android:layout_height="wrap_content"
+                android:text="Age:" />
+
+            <TextView
+                android:id="@+id/animal_age"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:theme="@style/ItemText"
+                app:layout_constraintStart_toEndOf="@id/age_label"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/in_shelter_from"/>
+
+            <TextView
+                android:id="@+id/sex_label"
+                android:layout_width="42dp"
+                android:layout_height="wrap_content"
+                android:text="Sex:"
+                android:theme="@style/Label"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/age_label"/>
+
+            <ImageView
+                android:id="@+id/animal_sex"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:src="@drawable/male_brown"
+                app:layout_constraintStart_toEndOf="@id/sex_label"
+                app:layout_constraintTop_toBottomOf="@id/animal_age"
+                />
+
+            <TextView
+                android:id="@+id/size_label"
+                android:layout_width="42dp"
+                android:layout_height="wrap_content"
+                android:text="Size:"
+                android:theme="@style/Label"
+                app:layout_constraintStart_toStartOf="@id/age_label"
+                app:layout_constraintTop_toBottomOf="@id/age_label" />
+
+            <TextView
+                android:id="@+id/animal_size"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:theme="@style/ItemText"
+                app:layout_constraintStart_toStartOf="@id/animal_age"
+                app:layout_constraintTop_toBottomOf="@id/animal_age"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <TextView
+                android:id="@+id/description_label"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:theme="@style/Label"
+                android:text="Description:"
+                app:layout_constraintTop_toBottomOf="@id/size_label"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/animal_description"/>
+
+            <TextView
+                android:id="@+id/animal_description"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:theme="@style/ItemText"
+                android:text="ASd da d sd  d ad  sds d sa d ad  d ad d sd as d asd   f ref e g  rfew wef we fwe f wef ew fwe f w we f wef we fw e fw fw f wef r5g 4g gg 4 "
+                app:layout_constraintTop_toBottomOf="@id/animal_size"
+                app:layout_constraintStart_toEndOf="@id/description_label"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <TextView
+                android:id="@+id/animal_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"/>
+
+
+        </android.support.constraint.ConstraintLayout>
+    </android.support.v7.widget.CardView>
+</android.support.constraint.ConstraintLayout>

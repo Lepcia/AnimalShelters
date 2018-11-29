@@ -1,6 +1,7 @@
 package inzynierka.animalshelters.models;
 
 import java.util.Collection;
+import java.util.Date;
 
 public class AnimalDetailsModel {
     private int Id;
@@ -14,12 +15,13 @@ public class AnimalDetailsModel {
     private String Size;
     private String Description;
     private Collection<PhotoModel> Photos;
+    private Date InShelterFrom;
 
     public AnimalDetailsModel()
     {}
 
     public AnimalDetailsModel(int Id, String Name, int Age, String AgeAccuracy, String AgeString, String Species, String Breed,
-                              String Sex, String Size, String Description, Collection<PhotoModel> Photos)
+                              String Sex, String Size, String Description, Collection<PhotoModel> Photos, Date InShelterFrom)
     {
         this.Id = Id;
         this.Name = Name;
@@ -32,6 +34,7 @@ public class AnimalDetailsModel {
         this.Size = Size;
         this.Description = Description;
         this.Photos = Photos;
+        this.InShelterFrom = InShelterFrom;
     }
 
     public int getId()
@@ -143,4 +146,8 @@ public class AnimalDetailsModel {
     {
         this.Photos = Photos;
     }
+
+    public Date getInShelterFrom() {return InShelterFrom;}
+
+    public void setInShelterFrom(Date InShelterFrom) {this.InShelterFrom = InShelterFrom;}
 }

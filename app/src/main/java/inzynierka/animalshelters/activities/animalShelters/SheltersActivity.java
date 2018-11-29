@@ -1,10 +1,9 @@
 package inzynierka.animalshelters.activities.animalShelters;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import inzynierka.animalshelters.MainActivity;
+import inzynierka.animalshelters.NewsBoardActivity;
 import inzynierka.animalshelters.R;
 
 import inzynierka.animalshelters.activities.administration.AdminActivity;
@@ -26,7 +25,7 @@ public class SheltersActivity extends BasicActivity {
     @Override
     public void openMainModule()
     {
-        Intent intent = new Intent(SheltersActivity.this, MainActivity.class);
+        Intent intent = new Intent(SheltersActivity.this, NewsBoardActivity.class);
         startActivity(intent);
     }
 

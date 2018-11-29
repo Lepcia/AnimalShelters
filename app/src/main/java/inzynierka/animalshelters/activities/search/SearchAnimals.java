@@ -124,8 +124,6 @@ public class SearchAnimals extends Fragment {
         EditText ageTo = rootView.findViewById(R.id.search_age_to);
         animal.setAgeTo(Integer.parseInt(ageTo.getText().toString()));
 
-
-
     }
 
     private void getAnimals()

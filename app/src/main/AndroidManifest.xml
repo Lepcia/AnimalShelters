@@ -17,7 +17,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <!--<activity android:name=".MainActivity">-->
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,6 +30,7 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
+        <activity android:name=".NewsBoardActivity" />
         <activity android:name=".activities.basic.BasicActivity" />
         <activity
             android:name=".activities.favorites.FavoriteAnimalsActivity"
@@ -51,11 +51,7 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".activities.administration.AdminEditUser" />
         <activity android:name=".activities.administration.AdminEditShelter" />
-        <activity
-            android:name=".MainActivity"
-            android:label="@string/title_activity_login">
-
-        </activity>
+        <activity android:name=".activities.newsBoard.NewsBoardNew"></activity>
     </application>
 
 </manifest>

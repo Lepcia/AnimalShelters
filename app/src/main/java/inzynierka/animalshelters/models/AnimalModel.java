@@ -3,6 +3,8 @@ package inzynierka.animalshelters.models;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
 
@@ -21,6 +23,7 @@ public class AnimalModel {
     private String Size;
     private String Description;
     private int[] Photos;
+    private Date InShelterFrom;
 
     public AnimalModel()
     {}
@@ -39,12 +42,17 @@ public class AnimalModel {
             this.Size = object.getString("size");
             this.Description = object.getString("description");
             this.Photos = DataHelper.JSONObjectToIntArray(object.getJSONArray("photos"));
+            String dateS = object.getString("inShelterFrom");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            this.InShelterFrom = dateFormat.parse(dateS);
         } catch (JSONException e){
+            e.printStackTrace();
+        } catch (ParseException e) {
             e.printStackTrace();
         }
     }
 
-    public AnimalModel(int Id, String Name, int Age, String AgeAccuracy, String AgeString, String Species, String Breed, String Sex, String Size, String Description, int[] Photos)
+    public AnimalModel(int Id, String Name, int Age, String AgeAccuracy, String AgeString, String Species, String Breed, String Sex, String Size, String Description, int[] Photos, Date InShelterFrom)
     {
         this.Id = Id;
         this.Name = Name;
@@ -57,6 +65,7 @@ public class AnimalModel {
         this.Size = Size;
         this.Description = Description;
         this.Photos = Photos;
+        this.InShelterFrom = InShelterFrom;
     }
 
     public int getId()
@@ -168,4 +177,8 @@ public class AnimalModel {
     {
         this.Photos = Photos;
     }
+
+    public Date getInShelterFrom() {return InShelterFrom;}
+
+    public void setInShelterFrom(Date InShelterFrom) {this.InShelterFrom = InShelterFrom;}
 }

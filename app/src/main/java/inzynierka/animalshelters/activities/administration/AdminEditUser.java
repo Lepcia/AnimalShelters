@@ -1,10 +1,9 @@
 package inzynierka.animalshelters.activities.administration;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import inzynierka.animalshelters.MainActivity;
+import inzynierka.animalshelters.NewsBoardActivity;
 import inzynierka.animalshelters.R;
 import inzynierka.animalshelters.activities.animalShelters.SheltersActivity;
 import inzynierka.animalshelters.activities.animals.AnimalsActivity;
@@ -25,7 +24,7 @@ public class AdminEditUser extends BasicActivity {
     @Override
     public void openMainModule()
     {
-        Intent intent = new Intent(AdminEditUser.this, MainActivity.class);
+        Intent intent = new Intent(AdminEditUser.this, NewsBoardActivity.class);
         startActivity(intent);
     }
 

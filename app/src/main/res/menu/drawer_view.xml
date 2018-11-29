@@ -1,28 +1,3 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <item android:id="@+id/Search_Animals"
-        android:title="@string/szukaj_zwierz_cia">
-
-    </item>
-
-    <item android:id="@+id/Favourites"
-        android:title="@string/ulubione">
-
-    </item>
-
-    <item android:id="@+id/My_account"
-        android:title="@string/moje_konto">
-
-    </item>
-
-    <item android:id="@+id/Administration"
-        android:title="@string/administracja">
-
-    </item>
-
-    <item android:id="@+id/About"
-        android:title="@string/o_aplikacji">
-
-    </item>
 </menu>
