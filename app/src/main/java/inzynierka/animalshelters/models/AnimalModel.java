@@ -24,6 +24,7 @@ public class AnimalModel {
     private String Description;
     private int[] Photos;
     private Date InShelterFrom;
+    private int AnimalShelter;
 
     public AnimalModel()
     {}
@@ -45,6 +46,7 @@ public class AnimalModel {
             String dateS = object.getString("inShelterFrom");
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             this.InShelterFrom = dateFormat.parse(dateS);
+            this.AnimalShelter = object.getInt("animalsToAnimalShelter");
         } catch (JSONException e){
             e.printStackTrace();
         } catch (ParseException e) {
@@ -52,7 +54,9 @@ public class AnimalModel {
         }
     }
 
-    public AnimalModel(int Id, String Name, int Age, String AgeAccuracy, String AgeString, String Species, String Breed, String Sex, String Size, String Description, int[] Photos, Date InShelterFrom)
+    public AnimalModel(int Id, String Name, int Age, String AgeAccuracy, String AgeString, String Species,
+                       String Breed, String Sex, String Size, String Description, int[] Photos, Date InShelterFrom,
+                       int AnimalShelter)
     {
         this.Id = Id;
         this.Name = Name;
@@ -66,6 +70,7 @@ public class AnimalModel {
         this.Description = Description;
         this.Photos = Photos;
         this.InShelterFrom = InShelterFrom;
+        this.AnimalShelter = AnimalShelter;
     }
 
     public int getId()
@@ -181,4 +186,8 @@ public class AnimalModel {
     public Date getInShelterFrom() {return InShelterFrom;}
 
     public void setInShelterFrom(Date InShelterFrom) {this.InShelterFrom = InShelterFrom;}
+
+    public int getAnimalShelter() {return AnimalShelter;}
+
+    public void setAnimalShelter(int Animalshelter) {this.AnimalShelter = Animalshelter;}
 }

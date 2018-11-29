@@ -28,7 +28,7 @@
     <android.support.constraint.ConstraintLayout
         android:id="@+id/searchPanel"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="350dp"
         android:paddingTop="10dp"
         app:layout_constraintTop_toBottomOf="@id/searchToolbar"
         app:layout_constraintStart_toStartOf="parent"
@@ -55,6 +55,25 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:id="@+id/search_shelter_label"
+            android:layout_width="85dp"
+            android:layout_height="48dp"
+            android:gravity="center"
+            android:text="Shelter:"
+            android:theme="@style/LabelForm"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/search_name_label"/>
+
+        <EditText
+            android:id="@+id/search_shelter"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/search_shelter_label"
+            app:layout_constraintTop_toBottomOf="@id/search_name" />
+
+        <TextView
             android:id="@+id/search_breed_label"
             android:layout_width="85dp"
             android:layout_height="48dp"
@@ -62,7 +81,7 @@
             android:text="Breed:"
             android:theme="@style/LabelForm"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/search_name_label" />
+            app:layout_constraintTop_toBottomOf="@id/search_shelter_label" />
 
         <EditText
             android:id="@+id/search_breed"
@@ -71,7 +90,7 @@
             android:layout_marginRight="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/search_breed_label"
-            app:layout_constraintTop_toBottomOf="@id/search_name" />
+            app:layout_constraintTop_toBottomOf="@id/search_shelter" />
 
         <TextView
             android:id="@+id/search_sex_label"

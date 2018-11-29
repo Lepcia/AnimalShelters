@@ -23,6 +23,7 @@ import inzynierka.animalshelters.activities.animals.AnimalsActivity;
 import inzynierka.animalshelters.activities.basic.BasicActivity;
 import inzynierka.animalshelters.activities.search.SearchActivity;
 import inzynierka.animalshelters.adapters.AnimalListItemAdapter;
+import inzynierka.animalshelters.models.AnimalDetailsModel;
 import inzynierka.animalshelters.models.AnimalModel;
 import inzynierka.animalshelters.rest.Api;
 import inzynierka.animalshelters.rest.Client;
@@ -51,12 +52,12 @@ public class FavoriteAnimalsActivity extends BasicActivity {
                 null, new JsonHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                        ArrayList<AnimalModel> animalsArray = new ArrayList<>();
+                        ArrayList<AnimalDetailsModel> animalsArray = new ArrayList<>();
                         AnimalListItemAdapter animalListItemAdapter = new AnimalListItemAdapter(FavoriteAnimalsActivity.this, animalsArray);
 
                         for (int i = 0; i < response.length(); i++) {
                             try {
-                                animalListItemAdapter.add(new AnimalModel(response.getJSONObject(i)));
+                                animalListItemAdapter.add(new AnimalDetailsModel(response.getJSONObject(i)));
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }

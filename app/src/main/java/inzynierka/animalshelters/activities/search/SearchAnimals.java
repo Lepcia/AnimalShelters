@@ -31,6 +31,7 @@ import inzynierka.animalshelters.activities.administration.UserListActivity;
 import inzynierka.animalshelters.activities.basic.BasicActivity;
 import inzynierka.animalshelters.adapters.AnimalListItemAdapter;
 import inzynierka.animalshelters.adapters.UserListItemAdapter;
+import inzynierka.animalshelters.models.AnimalDetailsModel;
 import inzynierka.animalshelters.models.AnimalModel;
 import inzynierka.animalshelters.models.AnimalSearchModel;
 import inzynierka.animalshelters.models.UserModel;
@@ -135,15 +136,15 @@ public class SearchAnimals extends Fragment {
                 null, new JsonHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                        ArrayList<AnimalModel> animalsArray = new ArrayList<>();
+                        ArrayList<AnimalDetailsModel> animalsArray = new ArrayList<>();
                         AnimalListItemAdapter animalListItemAdapter = new AnimalListItemAdapter(getContext(), animalsArray);
 
                         for (int i = 0; i < response.length(); i++) {
                             try {
-                                animalListItemAdapter.add(new AnimalModel(response.getJSONObject(i)));
-                                animalListItemAdapter.add(new AnimalModel(response.getJSONObject(i)));
-                                animalListItemAdapter.add(new AnimalModel(response.getJSONObject(i)));
-                                animalListItemAdapter.add(new AnimalModel(response.getJSONObject(i)));
+                                animalListItemAdapter.add(new AnimalDetailsModel(response.getJSONObject(i)));
+                                animalListItemAdapter.add(new AnimalDetailsModel(response.getJSONObject(i)));
+                                animalListItemAdapter.add(new AnimalDetailsModel(response.getJSONObject(i)));
+                                animalListItemAdapter.add(new AnimalDetailsModel(response.getJSONObject(i)));
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }

@@ -1,11 +1,27 @@
 package inzynierka.animalshelters.models;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.ParseException;
+
 public class PhotoModel {
     private int Id;
     private String Content;
 
     public PhotoModel()
     {}
+
+    public PhotoModel(JSONObject object)
+    {
+        try {
+            this.Id = object.getInt("id");
+            this.Content = object.getString("content");
+        } catch (JSONException e){
+            e.printStackTrace();
+        }
+
+    }
 
     public PhotoModel(int Id, String Content)
     {

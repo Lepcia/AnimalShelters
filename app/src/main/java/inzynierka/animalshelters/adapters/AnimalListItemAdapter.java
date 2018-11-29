@@ -13,16 +13,17 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import inzynierka.animalshelters.R;
+import inzynierka.animalshelters.models.AnimalDetailsModel;
 import inzynierka.animalshelters.models.AnimalModel;
 
-public class AnimalListItemAdapter extends ArrayAdapter<AnimalModel> {
+public class AnimalListItemAdapter extends ArrayAdapter<AnimalDetailsModel> {
 
     private static String MALE = "Male";
     private static String FEMALE = "Female";
     private static String DOG = "Dog";
     private static String CAT = "Cat";
 
-    public AnimalListItemAdapter(Context context, ArrayList<AnimalModel> animals)
+    public AnimalListItemAdapter(Context context, ArrayList<AnimalDetailsModel> animals)
     {
         super(context, R.layout.animal_list_item, animals);
     }
@@ -30,7 +31,7 @@ public class AnimalListItemAdapter extends ArrayAdapter<AnimalModel> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent)
     {
-        AnimalModel animalModel = getItem(position);
+        AnimalDetailsModel animalModel = getItem(position);
         ViewHolder viewHolder;
 
         if(convertView == null)
@@ -49,6 +50,7 @@ public class AnimalListItemAdapter extends ArrayAdapter<AnimalModel> {
             viewHolder.animalPhoto = (ImageView) convertView.findViewById(R.id.animal_photo);
             viewHolder.animalSex = (ImageView) convertView.findViewById(R.id.animal_sex);
             viewHolder.animalSize = (TextView) convertView.findViewById(R.id.animal_size);
+            viewHolder.animalShelter = (TextView) convertView.findViewById(R.id.animal_shelter_name);
 
             convertView.setTag(viewHolder);
         } else {
@@ -60,6 +62,7 @@ public class AnimalListItemAdapter extends ArrayAdapter<AnimalModel> {
         viewHolder.animalBreed.setText(animalModel.getBreed());
         viewHolder.animalAge.setText(animalModel.getAgeString());
         viewHolder.animalSize.setText(animalModel.getSize());
+        viewHolder.animalShelter.setText(animalModel.getAnimalShelter().getName());
 
         if(animalModel.getSex().equals(MALE)) {
             viewHolder.animalSex.setImageResource(R.drawable.male_brown);
@@ -87,5 +90,6 @@ public class AnimalListItemAdapter extends ArrayAdapter<AnimalModel> {
         ImageView animalPhoto;
         ImageView animalSex;
         TextView animalSize;
+        TextView animalShelter;
     }
 }

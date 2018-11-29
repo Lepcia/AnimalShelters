@@ -1,7 +1,17 @@
 package inzynierka.animalshelters.models;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
+
+import inzynierka.animalshelters.helpers.DataHelper;
 
 public class AnimalDetailsModel {
     private int Id;
@@ -14,14 +24,61 @@ public class AnimalDetailsModel {
     private String Sex;
     private String Size;
     private String Description;
-    private Collection<PhotoModel> Photos;
+    private List<PhotoModel> Photos;
     private Date InShelterFrom;
+    private AnimalShelterModel AnimalShelter;
 
     public AnimalDetailsModel()
     {}
 
+    public AnimalDetailsModel(JSONObject object)
+    {
+        try {
+            this.Id = object.getInt("id");
+            this.Name = object.getString("name");
+            this.Age = object.getInt("age");
+            this.AgeAccuracy = object.getString("ageAccuracy");
+            this.AgeString = object.getString("ageString");
+            this.Species = object.getString("species");
+            this.Breed = object.getString("breed");
+            this.Sex = object.getString("sex");
+            this.Size = object.getString("size");
+            this.Description = object.getString("description");
+            JSONArray photosArray = object.getJSONArray("photos");
+            if(photosArray.length() > 0) {
+                ArrayList<PhotoModel> photos = new ArrayList<>(photosArray.length());
+                JSONObject photo = new JSONObject();
+                for(int i = 0; i<photosArray.length(); i++){
+                    try{
+                        photo = photosArray.getJSONObject(i);
+                    } catch (JSONException e){
+                        e.printStackTrace();
+                    }
+                    if(photo != null){
+                        PhotoModel photoModel = new PhotoModel(photo);
+                        photos.add(photoModel);
+                    }
+                }
+                this.Photos = photos;
+            }
+            String dateS = object.getString("inShelterFrom");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            this.InShelterFrom = dateFormat.parse(dateS);
+            JSONObject animalShelter = object.getJSONObject("animalShelter");
+            if(animalShelter != null)
+            {
+                AnimalShelterModel animalShelterModel = new AnimalShelterModel(animalShelter);
+                AnimalShelter = animalShelterModel;
+            }
+        } catch (JSONException e){
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
     public AnimalDetailsModel(int Id, String Name, int Age, String AgeAccuracy, String AgeString, String Species, String Breed,
-                              String Sex, String Size, String Description, Collection<PhotoModel> Photos, Date InShelterFrom)
+                              String Sex, String Size, String Description, List<PhotoModel> Photos, Date InShelterFrom, AnimalShelterModel AnimalShelter)
     {
         this.Id = Id;
         this.Name = Name;
@@ -35,6 +92,7 @@ public class AnimalDetailsModel {
         this.Description = Description;
         this.Photos = Photos;
         this.InShelterFrom = InShelterFrom;
+        this.AnimalShelter = AnimalShelter;
     }
 
     public int getId()
@@ -137,12 +195,12 @@ public class AnimalDetailsModel {
         this.Size = Size;
     }
 
-    public Collection<PhotoModel> getPhotos()
+    public List<PhotoModel> getPhotos()
     {
         return Photos;
     }
 
-    public void setPhotos(Collection<PhotoModel> Photos)
+    public void setPhotos(List<PhotoModel> Photos)
     {
         this.Photos = Photos;
     }
@@ -150,4 +208,8 @@ public class AnimalDetailsModel {
     public Date getInShelterFrom() {return InShelterFrom;}
 
     public void setInShelterFrom(Date InShelterFrom) {this.InShelterFrom = InShelterFrom;}
+
+    public AnimalShelterModel getAnimalShelter() {return AnimalShelter;}
+
+    public void setAnimalShelter(AnimalShelterModel animalShelter) {this.AnimalShelter = animalShelter;}
 }
