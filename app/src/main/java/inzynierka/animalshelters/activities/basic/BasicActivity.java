@@ -67,9 +67,9 @@ public class BasicActivity extends AppCompatActivity {
                             case Modules.SEARCH:
                                 openSearchModule();
                                 break;
-                                case Modules.NEWS:
-                                    openMainModule();
-                                    break;
+                            case Modules.NEWS:
+                                openMainModule();
+                                break;
                         }
                         return true;
                     }
