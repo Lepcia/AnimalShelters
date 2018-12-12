@@ -9,6 +9,7 @@ public final class Api {
     public static final String USERS_URL = "users";
     public static final String USER_ID_URL = "users/{id}";
     public static final String USERS_ALL_URT = "users/all";
+    public static final String ANIMALS_BY_USER = "animals/user/{id}";
     public static final String ANIMALS_URL = "animals";
     public static final String ANIMAL_ID_URL = "animals/{id}";
     public static final String ANIMALS_ALL_URL = "animals/all";
@@ -20,6 +21,7 @@ public final class Api {
     public static final String RIGHTS_TO_USER_URL = "rightToUser";
     public static final String MODULE_URL = "module";
     public static final String FAVORITE_ANIMALS_URL = USERS_URL + "/{id}" + "/favoriteAnimals";
+    public static final String FAVORITE_ANIMALS_IDS_URL = USERS_URL + "/{id}" + "/favoriteIds";
 
     public static String getBaseUrl()
     {

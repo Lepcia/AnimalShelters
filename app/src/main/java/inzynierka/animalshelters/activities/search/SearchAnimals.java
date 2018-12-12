@@ -1,6 +1,5 @@
 package inzynierka.animalshelters.activities.search;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
@@ -13,7 +12,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.support.v7.widget.Toolbar;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -22,19 +20,18 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.message.BasicHeader;
 import inzynierka.animalshelters.R;
-import inzynierka.animalshelters.activities.administration.UserListActivity;
 import inzynierka.animalshelters.activities.basic.BasicActivity;
 import inzynierka.animalshelters.adapters.AnimalListItemAdapter;
-import inzynierka.animalshelters.adapters.UserListItemAdapter;
+import inzynierka.animalshelters.helpers.AdministrationHelper;
 import inzynierka.animalshelters.models.AnimalDetailsModel;
-import inzynierka.animalshelters.models.AnimalModel;
 import inzynierka.animalshelters.models.AnimalSearchModel;
-import inzynierka.animalshelters.models.UserModel;
 import inzynierka.animalshelters.rest.Api;
 import inzynierka.animalshelters.rest.Client;
 
@@ -49,8 +46,8 @@ public class SearchAnimals extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_search_animals, container, false);
         Toolbar toolbar = (Toolbar)rootView.findViewById(R.id.searchToolbar);
         ((BasicActivity)getActivity()).setSupportActionBar(toolbar);
-        getAnimals();
         searchPanelInit();
+        getAnimals();
         initButtons();
 
         return rootView;
@@ -124,7 +121,6 @@ public class SearchAnimals extends Fragment {
 
         EditText ageTo = rootView.findViewById(R.id.search_age_to);
         animal.setAgeTo(Integer.parseInt(ageTo.getText().toString()));
-
     }
 
     private void getAnimals()
@@ -132,7 +128,7 @@ public class SearchAnimals extends Fragment {
         List<Header> headers = new ArrayList<>();
         headers.add(new BasicHeader("Content-Type", "application/json"));
 
-        Client.get(getContext(), Api.ANIMALS_ALL_URL, headers.toArray(new Header[headers.size()]),
+        Client.getById(getContext(), Api.ANIMALS_BY_USER, 1, headers.toArray(new Header[headers.size()]),
                 null, new JsonHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
@@ -141,10 +137,8 @@ public class SearchAnimals extends Fragment {
 
                         for (int i = 0; i < response.length(); i++) {
                             try {
-                                animalListItemAdapter.add(new AnimalDetailsModel(response.getJSONObject(i)));
-                                animalListItemAdapter.add(new AnimalDetailsModel(response.getJSONObject(i)));
-                                animalListItemAdapter.add(new AnimalDetailsModel(response.getJSONObject(i)));
-                                animalListItemAdapter.add(new AnimalDetailsModel(response.getJSONObject(i)));
+                                AnimalDetailsModel animal = new AnimalDetailsModel(response.getJSONObject(i));
+                                animalListItemAdapter.add(animal);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }

@@ -76,6 +76,10 @@ public class AnimalListItemAdapter extends ArrayAdapter<AnimalDetailsModel> {
             viewHolder.animalSpecies.setImageResource(R.drawable.cat_brown_big);
         }
 
+        if(animalModel.isFavorite()){
+            viewHolder.favoriteAnimal.setImageResource(R.drawable.heart_red);
+        }
+
         return convertView;
     }
 

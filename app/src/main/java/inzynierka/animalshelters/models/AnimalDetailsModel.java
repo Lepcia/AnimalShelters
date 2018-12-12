@@ -27,6 +27,7 @@ public class AnimalDetailsModel {
     private List<PhotoModel> Photos;
     private Date InShelterFrom;
     private AnimalShelterModel AnimalShelter;
+    private boolean IsFavorite;
 
     public AnimalDetailsModel()
     {}
@@ -44,6 +45,7 @@ public class AnimalDetailsModel {
             this.Sex = object.getString("sex");
             this.Size = object.getString("size");
             this.Description = object.getString("description");
+            this.IsFavorite = object.getBoolean("isFavorite");
             JSONArray photosArray = object.getJSONArray("photos");
             if(photosArray.length() > 0) {
                 ArrayList<PhotoModel> photos = new ArrayList<>(photosArray.length());
@@ -78,7 +80,8 @@ public class AnimalDetailsModel {
     }
 
     public AnimalDetailsModel(int Id, String Name, int Age, String AgeAccuracy, String AgeString, String Species, String Breed,
-                              String Sex, String Size, String Description, List<PhotoModel> Photos, Date InShelterFrom, AnimalShelterModel AnimalShelter)
+                              String Sex, String Size, String Description, List<PhotoModel> Photos, Date InShelterFrom,
+                              AnimalShelterModel AnimalShelter, boolean IsFavorite)
     {
         this.Id = Id;
         this.Name = Name;
@@ -93,6 +96,7 @@ public class AnimalDetailsModel {
         this.Photos = Photos;
         this.InShelterFrom = InShelterFrom;
         this.AnimalShelter = AnimalShelter;
+        this.IsFavorite = IsFavorite;
     }
 
     public int getId()
@@ -203,6 +207,14 @@ public class AnimalDetailsModel {
     public void setPhotos(List<PhotoModel> Photos)
     {
         this.Photos = Photos;
+    }
+
+    public boolean isFavorite() {
+        return IsFavorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        IsFavorite = favorite;
     }
 
     public Date getInShelterFrom() {return InShelterFrom;}
