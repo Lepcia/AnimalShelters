@@ -1,8 +1,7 @@
 package inzynierka.animalshelters.activities.newsBoard;
 
-import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,7 +20,6 @@ import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.message.BasicHeader;
 import inzynierka.animalshelters.R;
 import inzynierka.animalshelters.adapters.AnimalBigListItemAdapter;
-import inzynierka.animalshelters.adapters.AnimalListItemAdapter;
 import inzynierka.animalshelters.models.AnimalModel;
 import inzynierka.animalshelters.rest.Api;
 import inzynierka.animalshelters.rest.Client;
@@ -41,7 +39,7 @@ public class NewsBoardNew extends Fragment {
         return rootView;
     }
 
-    private void getNewAnimals(){
+    private void getNewAnimals() {
         List<Header> headers = new ArrayList<>();
         headers.add(new BasicHeader("Content-Type", "application/json"));
 
