@@ -112,6 +112,7 @@ public class UserListItemAdapter extends ArrayAdapter<UserModel> implements Admi
                 .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        //TODO: usuwanie
                         dialogInterface.dismiss();
                     }
                 })

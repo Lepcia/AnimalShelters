@@ -2,6 +2,7 @@ package inzynierka.animalshelters.adapters;
 
 import android.content.Context;
 import android.media.Image;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,11 +11,22 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import cz.msebera.android.httpclient.Header;
+import cz.msebera.android.httpclient.message.BasicHeader;
 import inzynierka.animalshelters.R;
+import inzynierka.animalshelters.helpers.AdministrationHelper;
+import inzynierka.animalshelters.interfaces.AnimalListElementInterface;
 import inzynierka.animalshelters.models.AnimalDetailsModel;
-import inzynierka.animalshelters.models.AnimalModel;
+import inzynierka.animalshelters.rest.Client;
 
 public class AnimalListItemAdapter extends ArrayAdapter<AnimalDetailsModel> {
 
@@ -23,16 +35,23 @@ public class AnimalListItemAdapter extends ArrayAdapter<AnimalDetailsModel> {
     private static String DOG = "Dog";
     private static String CAT = "Cat";
 
+    private Context _context;
+    private String _activity;
+    private ArrayList<AnimalDetailsModel> _animalModel;
+
     public AnimalListItemAdapter(Context context, ArrayList<AnimalDetailsModel> animals)
     {
         super(context, R.layout.animal_list_item, animals);
+        this._context = context;
+        this._activity = context.getClass().getSimpleName();
+        this._animalModel = animals;
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent)
+    public View getView(final int position, View convertView, ViewGroup parent)
     {
-        AnimalDetailsModel animalModel = getItem(position);
-        ViewHolder viewHolder;
+        final AnimalDetailsModel animalModel = _animalModel.get(position);
+        final ViewHolder viewHolder;
 
         if(convertView == null)
         {
@@ -51,6 +70,7 @@ public class AnimalListItemAdapter extends ArrayAdapter<AnimalDetailsModel> {
             viewHolder.animalSex = (ImageView) convertView.findViewById(R.id.animal_sex);
             viewHolder.animalSize = (TextView) convertView.findViewById(R.id.animal_size);
             viewHolder.animalShelter = (TextView) convertView.findViewById(R.id.animal_shelter_name);
+            viewHolder.isFavorite = (TextView) convertView.findViewById(R.id.isFavorite);
 
             convertView.setTag(viewHolder);
         } else {
@@ -77,9 +97,66 @@ public class AnimalListItemAdapter extends ArrayAdapter<AnimalDetailsModel> {
         }
 
         if(animalModel.isFavorite()){
+            viewHolder.isFavorite.setText("true");
             viewHolder.favoriteAnimal.setImageResource(R.drawable.heart_red);
+        } else {
+            viewHolder.isFavorite.setText("false");
+            viewHolder.favoriteAnimal.setImageResource(R.drawable.heart_outline_brown);
         }
 
+        viewHolder.favoriteAnimal.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(final View view) {
+            int animalId = animalModel.getId();
+            final boolean isFavorite = animalModel.isFavorite();
+
+            List<Header> headers = new ArrayList<>();
+            headers.add(new BasicHeader("Content-Type", "application/json"));
+
+            RequestParams params = new RequestParams();
+            params.put("animalId", animalId);
+
+            AdministrationHelper administrationHelper = new AdministrationHelper();
+            int userId = administrationHelper.GetLogedUserId();
+
+            if(!isFavorite) {
+                Client.update(_context, "users/" + userId + "/addFavoriteAnimal",
+                        params, new JsonHttpResponseHandler(){
+                            @Override
+                            public void onSuccess(int statusCode, Header[] headers, JSONObject response){
+                                animalModel.setFavorite(true);
+                                viewHolder.isFavorite.setText("true");
+                                viewHolder.favoriteAnimal.setImageResource(R.drawable.heart_red);
+                            }
+
+                            @Override
+                            public void onFailure(int statusCode, Header[] headers, String res, Throwable t) {
+                                Log.e("Error", res);
+                            }
+                        });
+            } else if (isFavorite){
+                Client.delete(_context, "users/" + userId + "/" + animalId, headers.toArray(new Header[headers.size()]),
+                        new RequestParams(), new JsonHttpResponseHandler(){
+                            @Override
+                            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                                animalModel.setFavorite(false);
+                                viewHolder.favoriteAnimal.setImageResource(R.drawable.heart_outline_brown);
+                                viewHolder.isFavorite.setText("false");
+                                if(_activity.equals("FavoriteAnimalsActivity"))
+                                {
+                                    _animalModel.remove(position);
+                                    notifyDataSetChanged();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(int statusCode, Header[] headers, String res, Throwable t) {
+                                Log.e("Error", res);
+                            }
+                        });
+            }
+        }
+    });
         return convertView;
     }
 
@@ -95,5 +172,6 @@ public class AnimalListItemAdapter extends ArrayAdapter<AnimalDetailsModel> {
         ImageView animalSex;
         TextView animalSize;
         TextView animalShelter;
+        TextView isFavorite;
     }
 }

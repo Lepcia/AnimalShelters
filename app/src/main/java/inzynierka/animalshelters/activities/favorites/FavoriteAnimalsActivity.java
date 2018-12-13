@@ -31,6 +31,7 @@ import inzynierka.animalshelters.rest.Client;
 public class FavoriteAnimalsActivity extends BasicActivity {
 
     private ListView favoriteAnimalView;
+    private AnimalListItemAdapter animalListItemAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,8 +43,7 @@ public class FavoriteAnimalsActivity extends BasicActivity {
         getFavoriteAnimals();
     }
 
-    private void getFavoriteAnimals()
-    {
+    private void getFavoriteAnimals() {
         List<Header> headers = new ArrayList<>();
         headers.add(new BasicHeader("Content-Type", "application/json"));
 
@@ -53,7 +53,7 @@ public class FavoriteAnimalsActivity extends BasicActivity {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                         ArrayList<AnimalDetailsModel> animalsArray = new ArrayList<>();
-                        AnimalListItemAdapter animalListItemAdapter = new AnimalListItemAdapter(FavoriteAnimalsActivity.this, animalsArray);
+                        animalListItemAdapter = new AnimalListItemAdapter(FavoriteAnimalsActivity.this, animalsArray);
 
                         for (int i = 0; i < response.length(); i++) {
                             try {
