@@ -9,6 +9,7 @@ import com.loopj.android.http.RequestParams;
 import java.util.concurrent.Executors;
 
 import cz.msebera.android.httpclient.Header;
+import cz.msebera.android.httpclient.entity.StringEntity;
 
 public class Client {
     private static AsyncHttpClient client = new AsyncHttpClient();
@@ -26,9 +27,14 @@ public class Client {
         client.get(context, getAbsoluteUrl(url, idUser), headers, params, responseHandler);
     }
 
-    public static void add(Context context, String url, Header[] headers, RequestParams params, AsyncHttpResponseHandler responseHandler)
+    public static void add(Context context, String url, StringEntity entity, Header[] headers, AsyncHttpResponseHandler responseHandler)
     {
-        client.post(context, getAbsoluteUrl(url), headers, params, "application/json", responseHandler);
+        client.post(context, getAbsoluteUrl(url), headers, entity, "application/json", responseHandler);
+    }
+
+    public static void add(Context context, String url, StringEntity entity, int idUser, Header[] headers, AsyncHttpResponseHandler responseHandler)
+    {
+        client.post(context, getAbsoluteUrl(url, idUser), headers, entity, "application/json", responseHandler);
     }
 
     public static void update(Context context, String url, RequestParams params, AsyncHttpResponseHandler responseHandler)

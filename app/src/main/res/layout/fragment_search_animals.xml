@@ -64,14 +64,22 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/search_name_label"/>
 
-        <EditText
-            android:id="@+id/search_shelter"
+        <Spinner
+            android:id="@+id/search_shelters"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/spinner_background"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/search_shelter_label"
-            app:layout_constraintTop_toBottomOf="@id/search_name" />
+            app:layout_constraintTop_toBottomOf="@id/search_name"></Spinner>
+
+        <TextView
+            android:id="@+id/selected_shelter"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"/>
 
         <TextView
             android:id="@+id/search_breed_label"
@@ -90,7 +98,7 @@
             android:layout_marginRight="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/search_breed_label"
-            app:layout_constraintTop_toBottomOf="@id/search_shelter" />
+            app:layout_constraintTop_toBottomOf="@id/search_shelters" />
 
         <TextView
             android:id="@+id/search_sex_label"

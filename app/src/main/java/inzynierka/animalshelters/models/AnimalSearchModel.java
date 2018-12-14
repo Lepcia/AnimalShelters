@@ -2,6 +2,7 @@ package inzynierka.animalshelters.models;
 
 public class AnimalSearchModel {
     private String Name;
+    private String ShelterName;
     private int AgeFrom;
     private int AgeTo;
     private String AgeAccuracy;
@@ -21,6 +22,14 @@ public class AnimalSearchModel {
     public void setName(String Name)
     {
         this.Name = Name;
+    }
+
+    public String getShelterName() {
+        return ShelterName;
+    }
+
+    public void setShelterName(String shelterName) {
+        ShelterName = shelterName;
     }
 
     public int getAgeFrom()
