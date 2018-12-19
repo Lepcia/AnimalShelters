@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.support.v7.widget.Toolbar;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -157,8 +158,10 @@ public class SearchAnimals extends Fragment {
         animal.setBreed(searchBreed.getText().toString());
 
         RadioGroup sexRadioGroup = rootView.findViewById(R.id.sexRadioGroup);
-        int selectedId = sexRadioGroup.getCheckedRadioButtonId();
-        switch (selectedId)
+        int selectedSexId = sexRadioGroup.getCheckedRadioButtonId();
+        View sexRadioButton = sexRadioGroup.findViewById(selectedSexId);
+        RadioButton sexRadioBtn =(RadioButton) sexRadioGroup.getChildAt(sexRadioGroup.indexOfChild(sexRadioButton));
+        switch (sexRadioBtn.getId())
         {
             case R.id.radioSexMale:
                 animal.setSex("Male");
@@ -169,8 +172,10 @@ public class SearchAnimals extends Fragment {
         };
 
         RadioGroup speciesRadioGroup = rootView.findViewById(R.id.speciesRadioGroup);
-        selectedId = speciesRadioGroup.getCheckedRadioButtonId();
-        switch (selectedId){
+        int selectedSpeciesId = speciesRadioGroup.getCheckedRadioButtonId();
+        View speciesRadioButton = speciesRadioGroup.findViewById(selectedSpeciesId);
+        RadioButton speciesRadioBtn = (RadioButton) speciesRadioGroup.getChildAt(speciesRadioGroup.indexOfChild(speciesRadioButton));
+        switch (speciesRadioBtn.getId()){
             case R.id.radioCat:
                 animal.setSpecies("Cat");
                 break;
@@ -179,11 +184,29 @@ public class SearchAnimals extends Fragment {
                 break;
         }
 
+        RadioGroup accuracyRadioGroup = rootView.findViewById(R.id.accuracyRadioGroup);
+        int selectedAccuracyId = accuracyRadioGroup.getCheckedRadioButtonId();
+        View accuracyRadioButton = accuracyRadioGroup.findViewById(selectedAccuracyId);
+        RadioButton accuracyRadioBtn = (RadioButton) accuracyRadioGroup.getChildAt(accuracyRadioGroup.indexOfChild(accuracyRadioButton));
+        switch ((accuracyRadioBtn.getId())){
+            case R.id.radioWeeks:
+                animal.setAgeAccuracy("Weeks");
+                break;
+            case R.id.radioMonths:
+                animal.setAgeAccuracy("Months");
+                break;
+            case R.id.radioYears:
+                animal.setAgeAccuracy("Years");
+                break;
+        }
+
         EditText ageFrom = rootView.findViewById(R.id.search_age_from);
-        animal.setAgeFrom(Integer.parseInt(ageFrom.getText().toString()));
+        String ageFromS = ageFrom.getText().toString().isEmpty() ? "0" : ageFrom.getText().toString();
+        animal.setAgeFrom(Integer.parseInt(ageFromS));
 
         EditText ageTo = rootView.findViewById(R.id.search_age_to);
-        animal.setAgeTo(Integer.parseInt(ageTo.getText().toString()));
+        String ageToS = ageTo.getText().toString().isEmpty() ? "1000000" : ageTo.getText().toString();
+        animal.setAgeTo(Integer.parseInt(ageToS));
 
         Gson gson = new Gson();
         String jsonString = gson.toJson(animal);
