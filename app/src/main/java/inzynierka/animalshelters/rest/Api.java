@@ -17,8 +17,9 @@ public final class Api {
     public static final String ANIMALS_NEWEST_URL = "animals/newest";
     public static final String ANIMAL_SHELTERS_URL = "animalshelters";
     public static final String ANIMAL_SHELTERS_SIMPLE_URL = ANIMAL_SHELTERS_URL + "/simple";
-    public static final String ANIMAL_SHELTER_ID_URL = "animalsshelters/{id}";
-    public static final String ANIMAL_SHELTERS_ALL_URL = "animalShelters/all";
+    public static final String ANIMAL_SHELTER_ID_URL = ANIMAL_SHELTERS_URL + "/{id}";
+    public static final String ANIMAL_SHELTERS_ALL_URL = ANIMAL_SHELTERS_URL + "/all";
+    public static final String ANIMAL_SHELTERS_SEARCH_URL =ANIMAL_SHELTERS_URL + "/search";
     public static final String RIGHTS_URL = "rights";
     public static final String RIGHTS_TO_USER_URL = "rightToUser";
     public static final String MODULE_URL = "module";
