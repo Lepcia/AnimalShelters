@@ -1,5 +1,6 @@
 package inzynierka.animalshelters.helpers;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -22,8 +23,7 @@ public class DateFormatHelper {
     public static final int DAY = Calendar.DAY_OF_MONTH;
     public static final int MONTH = Calendar.MONTH;
 
-    public static Date dateFromString(String dateStr, String format)
-    {
+    public static Date dateFromString(String dateStr, String format) {
         Date date = new Date();
         try {
             SimpleDateFormat sdf = new SimpleDateFormat(format);
@@ -32,5 +32,19 @@ public class DateFormatHelper {
             e.printStackTrace();
         }
         return date;
+    }
+
+    public static String stringFromDate(Date date, String format)
+    {
+        String dateStr = "";
+        try {
+            DateFormat dateFormat = new SimpleDateFormat(format);
+            dateStr = dateFormat.format(date);
+
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        return dateStr;
     }
 }

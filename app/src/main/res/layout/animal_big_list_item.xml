@@ -51,7 +51,17 @@
                 android:text="Animal Name"
                 app:layout_constraintTop_toBottomOf="@id/animal_photo"
                 app:layout_constraintStart_toEndOf="@id/animal_species"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintEnd_toStartOf="@id/detailsBtn"/>
+
+            <ImageButton
+                android:id="@+id/detailsBtn"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_marginRight="15dp"
+                android:src="@drawable/info_small"
+                app:layout_constraintStart_toEndOf="@id/animal_name"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/animal_photo"/>
 
             <TextView
                 android:id="@+id/in_shelter_label"

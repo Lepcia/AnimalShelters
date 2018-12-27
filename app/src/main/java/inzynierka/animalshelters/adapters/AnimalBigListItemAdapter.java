@@ -1,6 +1,8 @@
 package inzynierka.animalshelters.adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,10 +16,12 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import inzynierka.animalshelters.R;
+import inzynierka.animalshelters.activities.animals.AnimalActivity;
 import inzynierka.animalshelters.models.AnimalModel;
 
 public class AnimalBigListItemAdapter extends ArrayAdapter<AnimalModel> {
 
+    Context _context;
     private static String MALE = "Male";
     private static String FEMALE = "Female";
     private static String DOG = "Dog";
@@ -26,12 +30,13 @@ public class AnimalBigListItemAdapter extends ArrayAdapter<AnimalModel> {
     public AnimalBigListItemAdapter(Context context, ArrayList<AnimalModel> newAnimals)
     {
         super(context, R.layout.animal_big_list_item, newAnimals);
+        this._context = context;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent)
     {
-        AnimalModel animalModel = getItem(position);
+        final AnimalModel animalModel = getItem(position);
         ViewHolder viewHolder;
 
         if(convertView == null)
@@ -51,6 +56,7 @@ public class AnimalBigListItemAdapter extends ArrayAdapter<AnimalModel> {
             viewHolder.animalSize = (TextView) convertView.findViewById(R.id.animal_size);
             viewHolder.inShelterFrom = (TextView) convertView.findViewById(R.id.in_shelter_from);
             viewHolder.description = (TextView) convertView.findViewById(R.id.animal_description);
+            viewHolder.details = (ImageButton) convertView.findViewById(R.id.detailsBtn);
 
             convertView.setTag(viewHolder);
         } else {
@@ -65,6 +71,16 @@ public class AnimalBigListItemAdapter extends ArrayAdapter<AnimalModel> {
         SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd");
         viewHolder.inShelterFrom.setText(formater.format(date));
         viewHolder.description.setText(animalModel.getDescription());
+
+        viewHolder.details.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int animalId = animalModel.getId();
+                Intent intent = new Intent(_context, AnimalActivity.class);
+                intent.putExtra("AnimalId", animalId);
+                _context.startActivity(intent);
+            }
+        });
 
         if(animalModel.getSex().equals(MALE)) {
             viewHolder.animalSex.setImageResource(R.drawable.male_brown);
@@ -94,5 +110,6 @@ public class AnimalBigListItemAdapter extends ArrayAdapter<AnimalModel> {
         TextView animalSize;
         TextView inShelterFrom;
         TextView description;
+        ImageButton details;
     }
 }
