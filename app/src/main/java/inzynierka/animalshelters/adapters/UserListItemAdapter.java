@@ -72,19 +72,20 @@ public class UserListItemAdapter extends ArrayAdapter<UserModel> implements Admi
         viewHolder.userName.setText(String.format("%s %s",userModel.getLastName(), userModel.getFirstName()));
         viewHolder.userEmail.setText(userModel.getEmail());
 
-        EditBtn_onClick(viewHolder.editBtn);
+        EditBtn_onClick(viewHolder.editBtn, userModel.getId());
         DeleteBtn_onClick(viewHolder.deleteBtn);
 
         return convertView;
     }
 
     @Override
-    public void EditBtn_onClick(ImageButton btn)
+    public void EditBtn_onClick(ImageButton btn, final int id)
     {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(_context, AdminEditUser.class);
+                intent.putExtra("UserId", id);
                 _context.startActivity(intent);
             }
         });

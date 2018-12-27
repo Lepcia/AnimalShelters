@@ -25,7 +25,7 @@
         android:text="Shelter name"
         app:layout_constraintStart_toEndOf="@id/shelter_avatar"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/goToMap"/>
+        app:layout_constraintEnd_toStartOf="@id/detailsBtn"/>
 
     <ImageButton
         android:id="@+id/editShelter"

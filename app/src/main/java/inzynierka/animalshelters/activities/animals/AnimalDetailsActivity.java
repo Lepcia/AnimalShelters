@@ -44,6 +44,7 @@ public class AnimalDetailsActivity extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
 
     public void getAnimal(int id) {

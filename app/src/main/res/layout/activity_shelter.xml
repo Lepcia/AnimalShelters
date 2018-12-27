@@ -1,0 +1,202 @@
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/drawer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <LinearLayout
+        android:id="@+id/content_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimary"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark" />
+
+        <FrameLayout
+            android:id="@+id/frame_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingTop="10dp"
+                app:layout_constraintTop_toBottomOf="@id/searchToolbar"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/photoSlider"
+                    android:layout_width="match_parent"
+                    android:layout_height="230dp"></android.support.v4.view.ViewPager>
+
+                <View
+                    android:id="@+id/divider"
+                    android:layout_width="fill_parent"
+                    android:layout_height="2dip"
+                    android:background="@color/cacao"
+                    app:layout_constraintTop_toBottomOf="@id/photoSlider"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+
+                <ImageView
+                    android:id="@+id/animal_shelter"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="15dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/divider"
+                    android:src="@drawable/pet_shelter_brown"
+                    android:background="@color/white"/>
+
+                <TextView
+                    android:id="@+id/shelter_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Animal Shelter"
+                    android:layout_marginTop="15dp"
+                    android:theme="@style/ItemHeaderBig"
+                    app:layout_constraintTop_toBottomOf="@id/divider"
+                    app:layout_constraintStart_toEndOf="@id/animal_shelter"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <TextView
+                    android:visibility="invisible"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/shelter_id"
+                    app:layout_constraintTop_toBottomOf="@id/shelter_name"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <TextView
+                    android:id="@+id/shelter_street_label"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:theme="@style/LabelBig"
+                    android:layout_marginTop="10dp"
+                    android:text="Street:"
+                    app:layout_constraintTop_toBottomOf="@id/shelter_name"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
+                <TextView
+                    android:id="@+id/shelter_street"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:theme="@style/ItemTextBig"
+                    android:layout_marginTop="10dp"
+                    app:layout_constraintTop_toBottomOf="@id/shelter_name"
+                    app:layout_constraintStart_toEndOf="@id/shelter_street_label"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <TextView
+                    android:id="@+id/shelter_city_label"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="City:"
+                    android:theme="@style/LabelBig"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/shelter_street_label" />
+
+                <TextView
+                    android:id="@+id/shelter_city"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:theme="@style/ItemTextBig"
+                    app:layout_constraintStart_toEndOf="@id/shelter_city_label"
+                    app:layout_constraintTop_toBottomOf="@id/shelter_street"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <TextView
+                    android:id="@+id/shelter_postal_label"
+                    android:layout_width="120dp"
+                    android:theme="@style/LabelMedium"
+                    android:layout_marginTop="10dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/shelter_city_label"
+                    android:layout_height="wrap_content"
+                    android:text="Postal code:" />
+
+                <TextView
+                    android:id="@+id/shelter_postal"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:theme="@style/ItemTextBig"
+                    app:layout_constraintStart_toEndOf="@id/shelter_postal_label"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/shelter_city"/>
+
+                <TextView
+                    android:id="@+id/shelter_email_label"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:text="Email:"
+                    android:layout_marginTop="10dp"
+                    android:theme="@style/LabelBig"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/shelter_postal_label"/>
+
+                <TextView
+                    android:id="@+id/shelter_email"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:theme="@style/ItemTextBig"
+                    app:layout_constraintStart_toEndOf="@id/shelter_email_label"
+                    app:layout_constraintTop_toBottomOf="@id/shelter_postal"
+                    />
+
+                <TextView
+                    android:id="@+id/shelter_phone_label"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:text="Phone:"
+                    android:layout_marginTop="10dp"
+                    android:theme="@style/LabelBig"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/shelter_email_label"/>
+
+                <TextView
+                    android:id="@+id/shelter_phone"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:theme="@style/ItemTextBig"
+                    app:layout_constraintStart_toEndOf="@id/shelter_phone_label"
+                    app:layout_constraintTop_toBottomOf="@id/shelter_email"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/viewPager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+        </FrameLayout>
+    </LinearLayout>
+
+    <android.support.design.widget.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        android:layout_gravity="start"
+        app:menu="@menu/drawer_view"
+        app:headerLayout="@layout/drawer_header"/>
+
+</android.support.v4.widget.DrawerLayout>

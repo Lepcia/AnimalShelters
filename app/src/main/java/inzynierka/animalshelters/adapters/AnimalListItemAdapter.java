@@ -1,6 +1,7 @@
 package inzynierka.animalshelters.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.media.Image;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,6 +24,7 @@ import java.util.List;
 import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.message.BasicHeader;
 import inzynierka.animalshelters.R;
+import inzynierka.animalshelters.activities.animals.AnimalActivity;
 import inzynierka.animalshelters.helpers.AdministrationHelper;
 import inzynierka.animalshelters.interfaces.AnimalListElementInterface;
 import inzynierka.animalshelters.models.AnimalDetailsModel;
@@ -66,6 +68,7 @@ public class AnimalListItemAdapter extends ArrayAdapter<AnimalDetailsModel> {
             viewHolder.animalAge = (TextView) convertView.findViewById(R.id.animal_age);
             viewHolder.animalSpecies = (ImageView) convertView.findViewById(R.id.animal_species);
             viewHolder.favoriteAnimal = (ImageButton) convertView.findViewById(R.id.addToFavorite);
+            viewHolder.detailsAnimal = (ImageButton) convertView.findViewById(R.id.detailsBtn);
             viewHolder.animalPhoto = (ImageView) convertView.findViewById(R.id.animal_photo);
             viewHolder.animalSex = (ImageView) convertView.findViewById(R.id.animal_sex);
             viewHolder.animalSize = (TextView) convertView.findViewById(R.id.animal_size);
@@ -103,6 +106,16 @@ public class AnimalListItemAdapter extends ArrayAdapter<AnimalDetailsModel> {
             viewHolder.isFavorite.setText("false");
             viewHolder.favoriteAnimal.setImageResource(R.drawable.heart_outline_brown);
         }
+
+        viewHolder.detailsAnimal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View view) {
+                int animalId = animalModel.getId();
+                Intent intent = new Intent(_context, AnimalActivity.class);
+                intent.putExtra("AnimalId", animalId);
+                _context.startActivity(intent);
+            }
+        });
 
         viewHolder.favoriteAnimal.setOnClickListener(new View.OnClickListener() {
         @Override
@@ -168,6 +181,7 @@ public class AnimalListItemAdapter extends ArrayAdapter<AnimalDetailsModel> {
         TextView animalAge;
         ImageView animalSpecies;
         ImageButton favoriteAnimal;
+        ImageButton detailsAnimal;
         ImageView animalPhoto;
         ImageView animalSex;
         TextView animalSize;

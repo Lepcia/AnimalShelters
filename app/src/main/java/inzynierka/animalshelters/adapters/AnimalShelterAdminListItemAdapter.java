@@ -62,19 +62,20 @@ public class AnimalShelterAdminListItemAdapter extends ArrayAdapter<AnimalShelte
         viewHolder.shelterPhone.setText(shelterModel.getPhone());
         //viewHolder.shelterAvatar.setImageBitmap(ImageHelper.getImageBitmap(shelterModel.getAvatar()));
 
-        EditBtn_onClick(viewHolder.editShelter);
+        EditBtn_onClick(viewHolder.editShelter, shelterModel.getId());
         DeleteBtn_onClick(viewHolder.deleteShelter);
 
         return convertView;
     }
 
     @Override
-    public void EditBtn_onClick(ImageButton btn)
+    public void EditBtn_onClick(ImageButton btn, final int id)
     {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(_context, AdminEditShelter.class);
+                intent.putExtra("ShelterId", id);
                 _context.startActivity(intent);
             }
         });

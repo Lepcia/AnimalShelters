@@ -42,9 +42,20 @@
         android:layout_width="30dp"
         android:layout_height="120dp"
         android:background="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/detailsBtn"
+        app:layout_constraintStart_toEndOf="@id/animal_name"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/heart_outline_brown" />
+
+    <ImageButton
+        android:id="@+id/detailsBtn"
+        android:layout_width="30dp"
+        android:layout_height="120dp"
+        android:background="@color/white"
+        app:layout_constraintStart_toEndOf="@id/addToFavorite"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/info_small"/>
 
     <TextView
         android:id="@+id/animal_shelter_label"

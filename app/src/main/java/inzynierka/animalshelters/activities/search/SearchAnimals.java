@@ -1,5 +1,6 @@
 package inzynierka.animalshelters.activities.search;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
@@ -35,6 +36,7 @@ import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.entity.StringEntity;
 import cz.msebera.android.httpclient.message.BasicHeader;
 import inzynierka.animalshelters.R;
+import inzynierka.animalshelters.activities.animals.AnimalActivity;
 import inzynierka.animalshelters.activities.basic.BasicActivity;
 import inzynierka.animalshelters.adapters.AnimalListItemAdapter;
 import inzynierka.animalshelters.helpers.AdministrationHelper;

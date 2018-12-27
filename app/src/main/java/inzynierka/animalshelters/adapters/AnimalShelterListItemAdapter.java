@@ -1,30 +1,36 @@
 package inzynierka.animalshelters.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
 import inzynierka.animalshelters.R;
+import inzynierka.animalshelters.activities.animalShelters.ShelterActivity;
 import inzynierka.animalshelters.helpers.ImageHelper;
 import inzynierka.animalshelters.models.AnimalShelterModel;
 
 public class AnimalShelterListItemAdapter extends ArrayAdapter<AnimalShelterModel> {
 
+    Context _context;
+
     public AnimalShelterListItemAdapter(Context context, ArrayList<AnimalShelterModel> shelters)
     {
         super(context, R.layout.animal_shelter_list_item, shelters);
+        this._context = context;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent)
     {
-        AnimalShelterModel shelterModel = getItem(position);
+        final AnimalShelterModel shelterModel = getItem(position);
         ViewHolder viewHolder;
 
         if(convertView == null)
@@ -40,6 +46,7 @@ public class AnimalShelterListItemAdapter extends ArrayAdapter<AnimalShelterMode
             viewHolder.shelterEmail = (TextView) convertView.findViewById(R.id.shelter_email);
             viewHolder.shelterPhone = (TextView) convertView.findViewById(R.id.shelter_phone);
             viewHolder.shelterAvatar = (ImageView) convertView.findViewById(R.id.shelter_avatar);
+            viewHolder.details = (ImageButton) convertView.findViewById(R.id.detailsBtn);
 
             convertView.setTag(viewHolder);
         } else {
@@ -51,6 +58,15 @@ public class AnimalShelterListItemAdapter extends ArrayAdapter<AnimalShelterMode
         viewHolder.shelterAdres.setText(shelterModel.getFullAdres());
         viewHolder.shelterEmail.setText(shelterModel.getEmail());
         viewHolder.shelterPhone.setText(shelterModel.getPhone());
+        viewHolder.details.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int shelterId = shelterModel.getId();
+                Intent intent = new Intent(_context, ShelterActivity.class);
+                intent.putExtra("ShelterId", shelterId);
+                _context.startActivity(intent);
+            }
+        });
         //viewHolder.shelterAvatar.setImageBitmap(ImageHelper.getImageBitmap(shelterModel.getAvatar()));
 
         return convertView;
@@ -64,5 +80,6 @@ public class AnimalShelterListItemAdapter extends ArrayAdapter<AnimalShelterMode
         TextView shelterEmail;
         TextView shelterPhone;
         ImageView shelterAvatar;
+        ImageButton details;
     }
 }
