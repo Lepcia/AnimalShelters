@@ -11,11 +11,13 @@ public class UserDetailsModel {
     private String Email;
     private String Avatar;
     private Collection<AnimalModel> FavoriteAnimals;
+    private String Role;
 
     public UserDetailsModel()
     {}
 
-    public UserDetailsModel(int Id, String FirstName, String LastName, Date DateOfBirth, String Email, String Avatar, Collection<AnimalModel> FavoriteAnimals)
+    public UserDetailsModel(int Id, String FirstName, String LastName, Date DateOfBirth, String Email, String Avatar,
+                            Collection<AnimalModel> FavoriteAnimals, String Role)
     {
         this.Id = Id;
         this.FirstName = FirstName;
@@ -24,6 +26,7 @@ public class UserDetailsModel {
         this.Email = Email;
         this.Avatar = Avatar;
         this.FavoriteAnimals = FavoriteAnimals;
+        this.Role = Role;
     }
 
     public int getId()
@@ -94,5 +97,13 @@ public class UserDetailsModel {
     public void setFavoriteAnimals(Collection<AnimalModel> FavoriveAnimals)
     {
         this.FavoriteAnimals = FavoriveAnimals;
+    }
+
+    public String getRole() {
+        return Role;
+    }
+
+    public void setRole(String role) {
+        Role = role;
     }
 }

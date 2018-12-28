@@ -16,6 +16,7 @@ public class UserModel {
     private String Email;
     private String Avatar;
     private int[] FavoriteAnimals;
+    private String Role;
 
     public UserModel()
     {}
@@ -29,13 +30,15 @@ public class UserModel {
             this.DateOfBirth = DateFormatHelper.dateFromString(object.getString("dateOfBirth"), DateFormatHelper.FORMAT_DATE);
             this.Email = object.getString("email");
             this.Avatar = object.getString("avatar");
+            this.Role = object.getString("role");
             this.FavoriteAnimals = DataHelper.JSONObjectToIntArray(object.getJSONArray("favoriteAnimals"));
         } catch (JSONException e){
             e.printStackTrace();
         }
     }
 
-    public UserModel(int Id, String FirstName, String LastName, Date DateOfBirth, String Email, String Avatar, int[] FavoriteAnimals)
+    public UserModel(int Id, String FirstName, String LastName, Date DateOfBirth, String Email,
+                     String Avatar, int[] FavoriteAnimals, String Role)
     {
         this.Id = Id;
         this.FirstName = FirstName;
@@ -44,6 +47,7 @@ public class UserModel {
         this.Email = Email;
         this.Avatar = Avatar;
         this.FavoriteAnimals = FavoriteAnimals;
+        this.Role = Role;
     }
 
     public int getId()
@@ -114,5 +118,13 @@ public class UserModel {
     public void setFavoriteAnimals(int[] FavoriveAnimals)
     {
         this.FavoriteAnimals = FavoriveAnimals;
+    }
+
+    public String getRole() {
+        return Role;
+    }
+
+    public void setRole(String role) {
+        Role = role;
     }
 }

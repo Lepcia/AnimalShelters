@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,6 +42,9 @@ import inzynierka.animalshelters.rest.Client;
 public class AdminEditUser extends BasicActivity {
 
     private static Context _context;
+    private static final String ADMIN = "Admin";
+    private static final String SHELTER_USER = "Shelter user";
+    private static final String COMMON_USER = "Common user";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,6 +119,24 @@ public class AdminEditUser extends BasicActivity {
                 String shelterName = animalShelter.getString("name");
                 Spinner spinner = findViewById(R.id.edit_user_shelter);
                 spinner.setSelection(((ArrayAdapter)spinner.getAdapter()).getPosition(shelterName));
+            }
+
+            if(data.has("role")) {
+                switch (data.getString("role"))
+                {
+                    case ADMIN:
+                        RadioButton radioAdmin = findViewById(R.id.radioAdmin);
+                        radioAdmin.setChecked(true);
+                        break;
+                    case SHELTER_USER:
+                        RadioButton radioShelterUser = findViewById(R.id.radioShelterUser);
+                        radioShelterUser.setChecked(true);
+                        break;
+                    case COMMON_USER:
+                        RadioButton radioCommonUser = findViewById(R.id.radioUser);
+                        radioCommonUser.setChecked(true);
+                        break;
+                }
             }
 
         }
