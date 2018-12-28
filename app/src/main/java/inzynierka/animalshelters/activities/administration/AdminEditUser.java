@@ -7,13 +7,15 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.loopj.android.http.AsyncHttpClient;
+import com.google.gson.Gson;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import cz.msebera.android.httpclient.Header;
 
@@ -21,11 +23,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import cz.msebera.android.httpclient.entity.StringEntity;
 import cz.msebera.android.httpclient.message.BasicHeader;
 import inzynierka.animalshelters.NewsBoardActivity;
 import inzynierka.animalshelters.R;
@@ -34,8 +36,10 @@ import inzynierka.animalshelters.activities.animals.AnimalsActivity;
 import inzynierka.animalshelters.activities.basic.BasicActivity;
 import inzynierka.animalshelters.activities.favorites.FavoriteAnimalsActivity;
 import inzynierka.animalshelters.activities.search.SearchActivity;
+import inzynierka.animalshelters.helpers.DataHelper;
 import inzynierka.animalshelters.helpers.DateFormatHelper;
 import inzynierka.animalshelters.models.AnimalShelterSimpleModel;
+import inzynierka.animalshelters.models.UserModel;
 import inzynierka.animalshelters.rest.Api;
 import inzynierka.animalshelters.rest.Client;
 
@@ -43,8 +47,8 @@ public class AdminEditUser extends BasicActivity {
 
     private static Context _context;
     private static final String ADMIN = "Admin";
-    private static final String SHELTER_USER = "Shelter user";
-    private static final String COMMON_USER = "Common user";
+    private static final String SHELTER_USER = "ShelterUser";
+    private static final String COMMON_USER = "CommonUser";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +58,8 @@ public class AdminEditUser extends BasicActivity {
         onCreateDrawer();
         onCreateDrawerMenu();
         getSimpleShelters();
+        addListnerOnRadioGroup();
+        addListenerOnSave();
 
         Bundle bundle = getIntent().getExtras();
         if(bundle.getInt("UserId") > 0)
@@ -115,7 +121,7 @@ public class AdminEditUser extends BasicActivity {
             }
 
             JSONObject animalShelter = data.getJSONObject("userToAnimalShelter");
-            if(animalShelter != null) {
+            if(animalShelter.getInt("id") > 0) {
                 String shelterName = animalShelter.getString("name");
                 Spinner spinner = findViewById(R.id.edit_user_shelter);
                 spinner.setSelection(((ArrayAdapter)spinner.getAdapter()).getPosition(shelterName));
@@ -133,7 +139,7 @@ public class AdminEditUser extends BasicActivity {
                         radioShelterUser.setChecked(true);
                         break;
                     case COMMON_USER:
-                        RadioButton radioCommonUser = findViewById(R.id.radioUser);
+                        RadioButton radioCommonUser = findViewById(R.id.radioCommonUser);
                         radioCommonUser.setChecked(true);
                         break;
                 }
@@ -183,7 +189,95 @@ public class AdminEditUser extends BasicActivity {
     //TODO: save/update user
     private void onSaveBtnClick()
     {
+        UserModel user = new UserModel();
+        EditText userName = findViewById(R.id.edit_name);
+        user.setFirstName(userName.getText().toString());
 
+        EditText userSurname = findViewById(R.id.edit_surname);
+        user.setLastName(userSurname.getText().toString());
+
+        EditText userBirthday = findViewById(R.id.edit_birthday);
+        user.setDateOfBirth(DateFormatHelper.dateFromString(userBirthday.getText().toString(), DateFormatHelper.FORMAT_POSTGRES_DATE));
+
+        EditText userEmail = findViewById(R.id.edit_email);
+        user.setEmail(userEmail.getText().toString());
+
+        //EditText userPassword = findViewById(R.id.edit_password);
+        //user.setPassword(userPassword.getText().toString());
+
+        TextView selectedShelter = findViewById(R.id.selected_shelter);
+        user.setShelterName(selectedShelter.getText().toString());
+
+        TextView idUser = findViewById(R.id.user_id);
+        user.setId(Integer.parseInt(idUser.getText().toString()));
+
+        RadioGroup userTypRadioGroup = findViewById(R.id.user_type_radio_group);
+        int selectedTypeId = userTypRadioGroup.getCheckedRadioButtonId();
+        RadioButton userTypeRadioBtn = findViewById(selectedTypeId);
+
+        switch (userTypeRadioBtn.getText().toString())
+        {
+            case "Admin":
+                user.setRole(ADMIN);
+                break;
+            case "Shelter user":
+                user.setRole(SHELTER_USER);
+                break;
+            case "Common user":
+                user.setRole(COMMON_USER);
+                break;
+        }
+
+        if(user.getId() > 0)
+            updateUser(user);
+        else
+            addUser(user);
+    }
+
+    private void addUser(UserModel user)
+    {
+        List<Header> headers = new ArrayList<>();
+        headers.add(new BasicHeader("Content-Type", "application/json"));
+
+        Gson gson = new Gson();
+        String jsonString = gson.toJson(user);
+        StringEntity stringEntity = new StringEntity(jsonString, "UTF-8");
+
+        Client.add(_context, Api.USERS_URL, stringEntity, headers.toArray(new Header[headers.size()]), new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                Intent intent = new Intent(_context, AdminActivity.class);
+                _context.startActivity(intent);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String res, Throwable t) {
+                Log.e("Error", res);
+            }
+        });
+    }
+
+    private void updateUser(UserModel user)
+    {
+        List<Header> headers = new ArrayList<>();
+        headers.add(new BasicHeader("Content-Type", "application/json"));
+
+        Gson gson = new Gson();
+        String jsonString = gson.toJson(user);
+        StringEntity stringEntity = new StringEntity(jsonString, "UTF-8");
+
+        Client.add(_context, Api.USER_ID_URL, stringEntity, user.getId(), headers.toArray(new Header[headers.size()]), new JsonHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                        Intent intent = new Intent(_context, AdminActivity.class);
+                        _context.startActivity(intent);
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, String res, Throwable t) {
+                        Log.e("Error", res);
+                    }
+                });
     }
 
     public void addListenerOnSpinnerItemSelection(){
@@ -199,6 +293,39 @@ public class AdminEditUser extends BasicActivity {
             public void onNothingSelected(AdapterView<?> parent) {
                 TextView selected = findViewById(R.id.selected_shelter);
                 selected.setText("");
+            }
+        });
+    }
+
+    public void addListnerOnRadioGroup(){
+        RadioGroup radioGroup = findViewById(R.id.user_type_radio_group);
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                RadioButton rb = findViewById(checkedId);
+                ImageView shelterIcon = findViewById(R.id.animalShelterIcon);
+                Spinner spinner = findViewById(R.id.edit_user_shelter);
+                if(rb.getText().equals("Shelter user"))
+                {
+                    shelterIcon.setVisibility(View.VISIBLE);
+                    spinner.setVisibility(View.VISIBLE);
+                }
+                else {
+                    shelterIcon.setVisibility(View.INVISIBLE);
+                    spinner.setVisibility(View.INVISIBLE);
+                    spinner.setSelection(0);
+                }
+            }
+        });
+    }
+
+    public void addListenerOnSave()
+    {
+        Button saveBtn = findViewById(R.id.saveBtn);
+        saveBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onSaveBtnClick();
             }
         });
     }

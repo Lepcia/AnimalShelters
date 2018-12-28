@@ -17,6 +17,7 @@ public class UserModel {
     private String Avatar;
     private int[] FavoriteAnimals;
     private String Role;
+    private String ShelterName;
 
     public UserModel()
     {}
@@ -126,5 +127,13 @@ public class UserModel {
 
     public void setRole(String role) {
         Role = role;
+    }
+
+    public String getShelterName() {
+        return ShelterName;
+    }
+
+    public void setShelterName(String shelterName) {
+        ShelterName = shelterName;
     }
 }

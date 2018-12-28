@@ -207,7 +207,7 @@
                             android:text="Shelter user"/>
 
                         <RadioButton
-                            android:id="@+id/radioUser"
+                            android:id="@+id/radioCommonUser"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Common user"/>
@@ -220,7 +220,8 @@
                         android:layout_marginLeft="10dp"
                         app:layout_constraintTop_toBottomOf="@id/user_type_radio_group"
                         app:layout_constraintStart_toStartOf="parent"
-                        android:src="@drawable/baseline_home_black_18dp"/>
+                        android:src="@drawable/baseline_home_black_18dp"
+                        android:visibility="invisible"/>
 
                     <Spinner
                         android:id="@+id/edit_user_shelter"
@@ -231,7 +232,8 @@
                         android:background="@drawable/spinner_background"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/animalShelterIcon"
-                        app:layout_constraintTop_toBottomOf="@id/user_type_radio_group"></Spinner>
+                        app:layout_constraintTop_toBottomOf="@id/user_type_radio_group"
+                        android:visibility="invisible"></Spinner>
 
                     <TextView
                         android:id="@+id/selected_shelter"
