@@ -11,6 +11,7 @@ import inzynierka.animalshelters.activities.animals.AnimalsActivity;
 import inzynierka.animalshelters.activities.basic.BasicActivity;
 import inzynierka.animalshelters.activities.favorites.FavoriteAnimalsActivity;
 import inzynierka.animalshelters.activities.search.SearchActivity;
+import inzynierka.animalshelters.activities.settings.SettingsActivity;
 
 public class SheltersActivity extends BasicActivity {
 
@@ -54,6 +55,16 @@ public class SheltersActivity extends BasicActivity {
     public void openAnimalsModule()
     {
         Intent intent = new Intent(SheltersActivity.this, AnimalsActivity.class);
+        startActivity(intent);
+    }
+
+    //TODO: po logowaniu pobierać id usera i schroniska
+    @Override
+    public void openSettingsModule()
+    {
+        Intent intent = new Intent(SheltersActivity.this, SettingsActivity.class);
+        intent.putExtra("ShelterId", 1);
+        intent.putExtra("UserId", 1);
         startActivity(intent);
     }
 

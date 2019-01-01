@@ -3,11 +3,11 @@ package inzynierka.animalshelters.activities.administration;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
@@ -36,7 +36,6 @@ import inzynierka.animalshelters.activities.animals.AnimalsActivity;
 import inzynierka.animalshelters.activities.basic.BasicActivity;
 import inzynierka.animalshelters.activities.favorites.FavoriteAnimalsActivity;
 import inzynierka.animalshelters.activities.search.SearchActivity;
-import inzynierka.animalshelters.helpers.DataHelper;
 import inzynierka.animalshelters.helpers.DateFormatHelper;
 import inzynierka.animalshelters.models.AnimalShelterSimpleModel;
 import inzynierka.animalshelters.models.UserModel;
@@ -58,7 +57,7 @@ public class AdminEditUser extends BasicActivity {
         onCreateDrawer();
         onCreateDrawerMenu();
         getSimpleShelters();
-        addListnerOnRadioGroup();
+        addListenerOnRadioGroup();
         addListenerOnSave();
 
         Bundle bundle = getIntent().getExtras();
@@ -185,8 +184,7 @@ public class AdminEditUser extends BasicActivity {
                     }
                 });
     }
-
-    //TODO: save/update user
+    //TODO:  save password
     private void onSaveBtnClick()
     {
         UserModel user = new UserModel();
@@ -196,7 +194,7 @@ public class AdminEditUser extends BasicActivity {
         EditText userSurname = findViewById(R.id.edit_surname);
         user.setLastName(userSurname.getText().toString());
 
-        EditText userBirthday = findViewById(R.id.edit_birthday);
+        EditText userBirthday = findViewById(R.id.edit_phone);
         user.setDateOfBirth(DateFormatHelper.dateFromString(userBirthday.getText().toString(), DateFormatHelper.FORMAT_POSTGRES_DATE));
 
         EditText userEmail = findViewById(R.id.edit_email);
@@ -209,8 +207,10 @@ public class AdminEditUser extends BasicActivity {
         user.setShelterName(selectedShelter.getText().toString());
 
         TextView idUser = findViewById(R.id.user_id);
-        user.setId(Integer.parseInt(idUser.getText().toString()));
-
+        String id = idUser.getText().toString();
+        if(id != "" && id != null ) {
+            user.setId(Integer.parseInt(id));
+        }
         RadioGroup userTypRadioGroup = findViewById(R.id.user_type_radio_group);
         int selectedTypeId = userTypRadioGroup.getCheckedRadioButtonId();
         RadioButton userTypeRadioBtn = findViewById(selectedTypeId);
@@ -228,7 +228,7 @@ public class AdminEditUser extends BasicActivity {
                 break;
         }
 
-        if(user.getId() > 0)
+        if(id != "" && id != null)
             updateUser(user);
         else
             addUser(user);
@@ -245,7 +245,7 @@ public class AdminEditUser extends BasicActivity {
 
         Client.add(_context, Api.USERS_URL, stringEntity, headers.toArray(new Header[headers.size()]), new JsonHttpResponseHandler() {
             @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 Intent intent = new Intent(_context, AdminActivity.class);
                 _context.startActivity(intent);
             }
@@ -266,9 +266,9 @@ public class AdminEditUser extends BasicActivity {
         String jsonString = gson.toJson(user);
         StringEntity stringEntity = new StringEntity(jsonString, "UTF-8");
 
-        Client.add(_context, Api.USER_ID_URL, stringEntity, user.getId(), headers.toArray(new Header[headers.size()]), new JsonHttpResponseHandler() {
+        Client.update(_context, Api.USER_ID_URL, stringEntity, user.getId(), headers.toArray(new Header[headers.size()]), new JsonHttpResponseHandler() {
                     @Override
-                    public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                    public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                         Intent intent = new Intent(_context, AdminActivity.class);
                         _context.startActivity(intent);
                     }
@@ -297,7 +297,7 @@ public class AdminEditUser extends BasicActivity {
         });
     }
 
-    public void addListnerOnRadioGroup(){
+    public void addListenerOnRadioGroup(){
         RadioGroup radioGroup = findViewById(R.id.user_type_radio_group);
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -321,7 +321,7 @@ public class AdminEditUser extends BasicActivity {
 
     public void addListenerOnSave()
     {
-        Button saveBtn = findViewById(R.id.saveBtn);
+        FloatingActionButton saveBtn = findViewById(R.id.saveBtn);
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -7,4 +7,5 @@ public final class Modules {
     public static final int ANIMALS = 4;
     public static final int SEARCH = 5;
     public static final int NEWS = 6;
+    public static final int SETTINGS = 7;
 }

@@ -1,4 +1,4 @@
-package inzynierka.animalshelters.activities.administration;
+package inzynierka.animalshelters.activities.settings;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,25 +21,30 @@ import java.util.List;
 import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.message.BasicHeader;
 import inzynierka.animalshelters.R;
+import inzynierka.animalshelters.activities.administration.AdminEditUser;
 import inzynierka.animalshelters.adapters.UserListItemAdapter;
 import inzynierka.animalshelters.models.UserModel;
 import inzynierka.animalshelters.rest.Api;
 import inzynierka.animalshelters.rest.Client;
 
-public class AdminUsers extends Fragment {
-
+public class SettingsUsers extends Fragment {
     private ListView usersList;
     private View rootView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.fragment_admin_users, container, false);
-        getUsers();
+        rootView = inflater.inflate(R.layout.fragment_settings_users, container, false);
+
+        SettingsActivity settingsActivity = (SettingsActivity)getActivity();
+        int shelterId = settingsActivity.GetShelterId();
+
+        getUsers(shelterId);
         addUserListenerOnClick();
         return rootView;
     }
 
+    //TODO: zmienic na activity bez mozliwosci zmiany schroniska i roli
     private void addUserListenerOnClick()
     {
         FloatingActionButton addBtn = rootView.findViewById(R.id.addUserBtn);
@@ -52,8 +57,8 @@ public class AdminUsers extends Fragment {
             }
         });
     }
-
-    private void getUsers()
+//TODO: get shelters users
+    private void getUsers(int shelterId)
     {
         List<Header> headers = new ArrayList<>();
         headers.add(new BasicHeader("Content-Type", "application/json"));

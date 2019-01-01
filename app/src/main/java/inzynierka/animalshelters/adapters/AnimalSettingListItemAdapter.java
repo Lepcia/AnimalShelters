@@ -1,6 +1,8 @@
 package inzynierka.animalshelters.adapters;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.Image;
 import android.util.Log;
@@ -16,22 +18,25 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.EventListener;
 import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.message.BasicHeader;
 import inzynierka.animalshelters.R;
-import inzynierka.animalshelters.activities.animals.AnimalActivity;
-import inzynierka.animalshelters.helpers.AdministrationHelper;
-import inzynierka.animalshelters.interfaces.AnimalListElementInterface;
+import inzynierka.animalshelters.activities.animals.EditAnimalActivity;
+import inzynierka.animalshelters.activities.settings.SettingsAnimals;
 import inzynierka.animalshelters.models.AnimalDetailsModel;
 import inzynierka.animalshelters.rest.Api;
 import inzynierka.animalshelters.rest.Client;
 
-public class AnimalListItemAdapter extends ArrayAdapter<AnimalDetailsModel> {
+public class AnimalSettingListItemAdapter extends ArrayAdapter<AnimalDetailsModel> {
+
+    EventListener eventListener;
 
     private static String MALE = "Male";
     private static String FEMALE = "Female";
@@ -42,12 +47,18 @@ public class AnimalListItemAdapter extends ArrayAdapter<AnimalDetailsModel> {
     private String _activity;
     private ArrayList<AnimalDetailsModel> _animalModel;
 
-    public AnimalListItemAdapter(Context context, ArrayList<AnimalDetailsModel> animals)
+    public interface EventListener {
+        void onDeleteAnimal(int idAnimal);
+    }
+
+    public AnimalSettingListItemAdapter(Context context, ArrayList<AnimalDetailsModel> animals,
+                                        EventListener listener)
     {
-        super(context, R.layout.animal_list_item, animals);
+        super(context, R.layout.animal_settings_list_item, animals);
         this._context = context;
         this._activity = context.getClass().getSimpleName();
         this._animalModel = animals;
+        this.eventListener = listener;
     }
 
     @Override
@@ -68,13 +79,12 @@ public class AnimalListItemAdapter extends ArrayAdapter<AnimalDetailsModel> {
             viewHolder.animalBreed = (TextView) convertView.findViewById(R.id.animal_breed);
             viewHolder.animalAge = (TextView) convertView.findViewById(R.id.animal_age);
             viewHolder.animalSpecies = (ImageView) convertView.findViewById(R.id.animal_species);
-            viewHolder.favoriteAnimal = (ImageButton) convertView.findViewById(R.id.addToFavorite);
-            viewHolder.detailsAnimal = (ImageButton) convertView.findViewById(R.id.detailsBtn);
+            viewHolder.editBtn = (ImageButton) convertView.findViewById(R.id.editBtn);
+            viewHolder.deleteBtn = (ImageButton) convertView.findViewById(R.id.deleteBtn);
             viewHolder.animalPhoto = (ImageView) convertView.findViewById(R.id.animal_photo);
             viewHolder.animalSex = (ImageView) convertView.findViewById(R.id.animal_sex);
             viewHolder.animalSize = (TextView) convertView.findViewById(R.id.animal_size);
             viewHolder.animalShelter = (TextView) convertView.findViewById(R.id.animal_shelter_name);
-            viewHolder.isFavorite = (TextView) convertView.findViewById(R.id.isFavorite);
 
             convertView.setTag(viewHolder);
         } else {
@@ -100,78 +110,74 @@ public class AnimalListItemAdapter extends ArrayAdapter<AnimalDetailsModel> {
             viewHolder.animalSpecies.setImageResource(R.drawable.cat_brown_big);
         }
 
-        if(animalModel.isFavorite()){
-            viewHolder.isFavorite.setText("true");
-            viewHolder.favoriteAnimal.setImageResource(R.drawable.heart_red);
-        } else {
-            viewHolder.isFavorite.setText("false");
-            viewHolder.favoriteAnimal.setImageResource(R.drawable.heart_outline_brown);
-        }
-
-        viewHolder.detailsAnimal.setOnClickListener(new View.OnClickListener() {
+        viewHolder.editBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
                 int animalId = animalModel.getId();
-                Intent intent = new Intent(_context, AnimalActivity.class);
+                Intent intent = new Intent(_context, EditAnimalActivity.class);
                 intent.putExtra("AnimalId", animalId);
                 _context.startActivity(intent);
             }
         });
 
-        viewHolder.favoriteAnimal.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(final View view) {
-            int animalId = animalModel.getId();
-            final boolean isFavorite = animalModel.isFavorite();
-
-            List<Header> headers = new ArrayList<>();
-            headers.add(new BasicHeader("Content-Type", "application/json"));
-
-            RequestParams params = new RequestParams();
-            params.put("animalId", animalId);
-
-            AdministrationHelper administrationHelper = new AdministrationHelper();
-            int userId = administrationHelper.GetLogedUserId();
-
-            if(!isFavorite) {
-                Client.update(_context, "users/" + userId + "/addFavoriteAnimal",
-                        params, new JsonHttpResponseHandler(){
-                            @Override
-                            public void onSuccess(int statusCode, Header[] headers, JSONObject response){
-                                animalModel.setFavorite(true);
-                                viewHolder.isFavorite.setText("true");
-                                viewHolder.favoriteAnimal.setImageResource(R.drawable.heart_red);
-                            }
-
-                            @Override
-                            public void onFailure(int statusCode, Header[] headers, String res, Throwable t) {
-                                Log.e("Error", res);
-                            }
-                        });
-            } else if (isFavorite){
-                Client.delete(_context, Api.USER_ID_ANIMAL, userId , animalId, headers.toArray(new Header[headers.size()]),
-                        new RequestParams(), new JsonHttpResponseHandler(){
-                            @Override
-                            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                                animalModel.setFavorite(false);
-                                viewHolder.favoriteAnimal.setImageResource(R.drawable.heart_outline_brown);
-                                viewHolder.isFavorite.setText("false");
-                                if(_activity.equals("FavoriteAnimalsActivity"))
-                                {
-                                    _animalModel.remove(position);
-                                    notifyDataSetChanged();
-                                }
-                            }
-
-                            @Override
-                            public void onFailure(int statusCode, Header[] headers, String res, Throwable t) {
-                                Log.e("Error", res);
-                            }
-                        });
+        viewHolder.deleteBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View view) {
+                AlertDialog alertDialog = ConfirmDelete(animalModel.getId());
+                alertDialog.show();
             }
-        }
-    });
+
+        });
         return convertView;
+    }
+
+    public AlertDialog ConfirmDelete(final int idAnimal)
+    {
+        AlertDialog confirmDeleteAlertDialog = new AlertDialog.Builder(_context)
+                .setTitle("Delete")
+                .setMessage("Are you sure you want to delete this user?")
+                .setIcon(R.drawable.ic_delete_black_18dp)
+                .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        DeleteAnimal(idAnimal);
+                        dialogInterface.dismiss();
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                })
+                .create();
+        return  confirmDeleteAlertDialog;
+    }
+
+    private void DeleteAnimal(int idAnimal)
+    {
+        List<Header> headers = new ArrayList<>();
+        headers.add(new BasicHeader("Content-Type", "application/json"));
+
+        Client.delete(getContext(), Api.ANIMAL_ID_URL, idAnimal, headers.toArray(new Header[headers.size()]),
+                null, new JsonHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                        try {
+                            int idAnimal = response.getInt("idAnimal");
+                            eventListener.onDeleteAnimal(idAnimal);
+                        }
+                        catch(JSONException e)
+                        {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, String res, Throwable t) {
+                        Log.e("Error", res);
+                    }
+                });
     }
 
     private static class ViewHolder
@@ -181,12 +187,11 @@ public class AnimalListItemAdapter extends ArrayAdapter<AnimalDetailsModel> {
         TextView animalBreed;
         TextView animalAge;
         ImageView animalSpecies;
-        ImageButton favoriteAnimal;
-        ImageButton detailsAnimal;
+        ImageButton editBtn;
+        ImageButton deleteBtn;
         ImageView animalPhoto;
         ImageView animalSex;
         TextView animalSize;
         TextView animalShelter;
-        TextView isFavorite;
     }
 }

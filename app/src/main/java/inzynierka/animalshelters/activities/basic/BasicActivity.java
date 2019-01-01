@@ -70,6 +70,9 @@ public class BasicActivity extends AppCompatActivity {
                             case Modules.NEWS:
                                 openMainModule();
                                 break;
+                            case Modules.SETTINGS:
+                                openSettingsModule();
+                                break;
                         }
                         return true;
                     }
@@ -177,5 +180,6 @@ public class BasicActivity extends AppCompatActivity {
     public void openSheltersModule()
     {}
 
-
+    public void openSettingsModule()
+    {}
 }

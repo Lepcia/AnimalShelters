@@ -16,6 +16,7 @@ import inzynierka.animalshelters.activities.favorites.FavoriteAnimalsActivity;
 import inzynierka.animalshelters.activities.basic.BasicActivity;
 import inzynierka.animalshelters.activities.newsBoard.NewsBoardNew;
 import inzynierka.animalshelters.activities.search.SearchActivity;
+import inzynierka.animalshelters.activities.settings.SettingsActivity;
 
 public class NewsBoardActivity extends BasicActivity {
 
@@ -96,6 +97,15 @@ public class NewsBoardActivity extends BasicActivity {
     public void openSheltersModule()
     {
         Intent intent = new Intent(NewsBoardActivity.this, SheltersActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void openSettingsModule()
+    {
+        Intent intent = new Intent(NewsBoardActivity.this, SettingsActivity.class);
+        intent.putExtra("ShelterId", 1);
+        intent.putExtra("UserId", 1);
         startActivity(intent);
     }
 }

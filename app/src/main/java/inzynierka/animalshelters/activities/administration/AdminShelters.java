@@ -1,6 +1,8 @@
 package inzynierka.animalshelters.activities.administration;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -35,7 +37,22 @@ public class AdminShelters extends Fragment {
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_admin_shelters, container, false);
         getShelters();
+        addShelterOnClickListener();
+
         return rootView;
+    }
+
+    private void addShelterOnClickListener()
+    {
+        FloatingActionButton addBtn = rootView.findViewById(R.id.addShelterBtn);
+        addBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), AdminEditShelter.class);
+                intent.putExtra("ShelterId", -1);
+                getContext().startActivity(intent);
+            }
+        });
     }
 
     private void getShelters() {

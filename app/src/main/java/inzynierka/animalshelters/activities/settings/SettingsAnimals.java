@@ -1,4 +1,4 @@
-package inzynierka.animalshelters.activities.administration;
+package inzynierka.animalshelters.activities.settings;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,23 +21,35 @@ import java.util.List;
 import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.message.BasicHeader;
 import inzynierka.animalshelters.R;
-import inzynierka.animalshelters.adapters.UserListItemAdapter;
-import inzynierka.animalshelters.models.UserModel;
+import inzynierka.animalshelters.activities.animals.EditAnimalActivity;
+import inzynierka.animalshelters.adapters.AnimalListItemAdapter;
+import inzynierka.animalshelters.adapters.AnimalSettingListItemAdapter;
+import inzynierka.animalshelters.models.AnimalDetailsModel;
 import inzynierka.animalshelters.rest.Api;
 import inzynierka.animalshelters.rest.Client;
 
-public class AdminUsers extends Fragment {
+public class SettingsAnimals extends Fragment implements AnimalSettingListItemAdapter.EventListener {
 
-    private ListView usersList;
+    private ListView animalView;
     private View rootView;
+    private int idShelter = -1;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.fragment_admin_users, container, false);
-        getUsers();
-        addUserListenerOnClick();
+        rootView = inflater.inflate(R.layout.fragment_settings_animals, container, false);
+
+        SettingsActivity settingsActivity = (SettingsActivity) getActivity();
+        int shelterId = settingsActivity.GetShelterId();
+        idShelter = shelterId;
+        getAnimals(shelterId);
+
         return rootView;
+    }
+
+    @Override
+    public void onDeleteAnimal(int idAnimal) {
+        getAnimals(idShelter);
     }
 
     private void addUserListenerOnClick()
@@ -46,34 +58,36 @@ public class AdminUsers extends Fragment {
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getContext(), AdminEditUser.class);
-                intent.putExtra("UserId", -1);
+                Intent intent = new Intent(getContext(), EditAnimalActivity.class);
+                intent.putExtra("AnimalId", -1);
                 getContext().startActivity(intent);
             }
         });
     }
 
-    private void getUsers()
+    //TODO: get animals by shelter
+    private void getAnimals(int idShelter)
     {
         List<Header> headers = new ArrayList<>();
         headers.add(new BasicHeader("Content-Type", "application/json"));
 
-        Client.get(getContext(), Api.USERS_URL, headers.toArray(new Header[headers.size()]),
+        Client.getById(getContext(), Api.ANIMAL_SHELTER_ANIMALS, idShelter, headers.toArray(new Header[headers.size()]),
                 null, new JsonHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                        ArrayList<UserModel> noteArray = new ArrayList<>();
-                        UserListItemAdapter userListItemAdapter = new UserListItemAdapter(getContext(), noteArray);
+                        ArrayList<AnimalDetailsModel> animalsArray = new ArrayList<>();
+                        AnimalListItemAdapter animalListItemAdapter = new AnimalListItemAdapter(getContext(), animalsArray);
 
                         for (int i = 0; i < response.length(); i++) {
                             try {
-                                userListItemAdapter.add(new UserModel(response.getJSONObject(i)));
+                                AnimalDetailsModel animal = new AnimalDetailsModel(response.getJSONObject(i));
+                                animalListItemAdapter.add(animal);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
                         }
-                        usersList = (ListView) rootView.findViewById(R.id.users_list);
-                        usersList.setAdapter(userListItemAdapter);
+                        animalView = (ListView) rootView.findViewById(R.id.animals_list);
+                        animalView.setAdapter(animalListItemAdapter);
                     }
 
                     @Override

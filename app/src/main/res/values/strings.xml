@@ -15,6 +15,7 @@
     <string name="street">Street</string>
     <string name="city">City</string>
     <string name="postal">Postal code</string>
+    <string name="number">Number</string>
     <string name="phone">Phone</string>
     <string name="birthday">Birthday</string>
     <string name="email">Email</string>

@@ -53,7 +53,9 @@
         <activity android:name=".activities.administration.AdminEditShelter" />
         <activity android:name=".activities.newsBoard.NewsBoardNew" />
         <activity android:name=".activities.animals.AnimalActivity" />
-        <activity android:name=".activities.animalShelters.ShelterActivity"></activity>
+        <activity android:name=".activities.animalShelters.ShelterActivity" />
+        <activity android:name=".activities.settings.SettingsActivity" />
+        <activity android:name=".activities.animals.EditAnimalActivity"></activity>
     </application>
 
 </manifest>
