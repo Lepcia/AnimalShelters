@@ -27,9 +27,11 @@ import inzynierka.animalshelters.models.UserModel;
 import inzynierka.animalshelters.rest.Api;
 import inzynierka.animalshelters.rest.Client;
 
-public class SettingsUsers extends Fragment {
+public class SettingsUsers extends Fragment implements UserListItemAdapter.EventListener {
+
     private ListView usersList;
     private View rootView;
+    private int shelterId = -1;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -37,7 +39,7 @@ public class SettingsUsers extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_settings_users, container, false);
 
         SettingsActivity settingsActivity = (SettingsActivity)getActivity();
-        int shelterId = settingsActivity.GetShelterId();
+        shelterId = settingsActivity.GetShelterId();
 
         getUsers(shelterId);
         addUserListenerOnClick();
@@ -57,18 +59,25 @@ public class SettingsUsers extends Fragment {
             }
         });
     }
+
+    @Override
+    public void onDeleteUser()
+    {
+        getUsers(shelterId);
+    }
+
 //TODO: get shelters users
     private void getUsers(int shelterId)
     {
         List<Header> headers = new ArrayList<>();
         headers.add(new BasicHeader("Content-Type", "application/json"));
 
-        Client.get(getContext(), Api.USERS_URL, headers.toArray(new Header[headers.size()]),
+        Client.getById(getContext(), Api.ANIMAL_SHELTER_USERS, shelterId, headers.toArray(new Header[headers.size()]),
                 null, new JsonHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                         ArrayList<UserModel> noteArray = new ArrayList<>();
-                        UserListItemAdapter userListItemAdapter = new UserListItemAdapter(getContext(), noteArray);
+                        UserListItemAdapter userListItemAdapter = new UserListItemAdapter(getContext(), noteArray, SettingsUsers.this);
 
                         for (int i = 0; i < response.length(); i++) {
                             try {

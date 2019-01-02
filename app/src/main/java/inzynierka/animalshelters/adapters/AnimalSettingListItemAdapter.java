@@ -36,7 +36,7 @@ import inzynierka.animalshelters.rest.Client;
 
 public class AnimalSettingListItemAdapter extends ArrayAdapter<AnimalDetailsModel> {
 
-    EventListener eventListener;
+    SettingsAnimals fragment;
 
     private static String MALE = "Male";
     private static String FEMALE = "Female";
@@ -47,18 +47,13 @@ public class AnimalSettingListItemAdapter extends ArrayAdapter<AnimalDetailsMode
     private String _activity;
     private ArrayList<AnimalDetailsModel> _animalModel;
 
-    public interface EventListener {
-        void onDeleteAnimal(int idAnimal);
-    }
-
-    public AnimalSettingListItemAdapter(Context context, ArrayList<AnimalDetailsModel> animals,
-                                        EventListener listener)
+    public AnimalSettingListItemAdapter(Context context, ArrayList<AnimalDetailsModel> animals, SettingsAnimals fragment)
     {
         super(context, R.layout.animal_settings_list_item, animals);
         this._context = context;
         this._activity = context.getClass().getSimpleName();
         this._animalModel = animals;
-        this.eventListener = listener;
+        this.fragment = fragment;
     }
 
     @Override
@@ -72,7 +67,7 @@ public class AnimalSettingListItemAdapter extends ArrayAdapter<AnimalDetailsMode
             viewHolder = new ViewHolder();
 
             LayoutInflater inflater = LayoutInflater.from(getContext());
-            convertView = inflater.inflate(R.layout.animal_list_item, parent, false);
+            convertView = inflater.inflate(R.layout.animal_settings_list_item, parent, false);
 
             viewHolder.id = (TextView) convertView.findViewById(R.id.animal_id);
             viewHolder.animalName = (TextView) convertView.findViewById(R.id.animal_name);
@@ -163,14 +158,7 @@ public class AnimalSettingListItemAdapter extends ArrayAdapter<AnimalDetailsMode
                 null, new JsonHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                        try {
-                            int idAnimal = response.getInt("idAnimal");
-                            eventListener.onDeleteAnimal(idAnimal);
-                        }
-                        catch(JSONException e)
-                        {
-                            e.printStackTrace();
-                        }
+                        fragment.onDeleteAnimal();
                     }
 
                     @Override

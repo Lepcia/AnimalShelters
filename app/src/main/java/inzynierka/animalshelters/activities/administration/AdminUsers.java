@@ -26,7 +26,7 @@ import inzynierka.animalshelters.models.UserModel;
 import inzynierka.animalshelters.rest.Api;
 import inzynierka.animalshelters.rest.Client;
 
-public class AdminUsers extends Fragment {
+public class AdminUsers extends Fragment implements UserListItemAdapter.EventListener {
 
     private ListView usersList;
     private View rootView;
@@ -53,6 +53,11 @@ public class AdminUsers extends Fragment {
         });
     }
 
+    public void onDeleteUser()
+    {
+        this.getUsers();
+    }
+
     private void getUsers()
     {
         List<Header> headers = new ArrayList<>();
@@ -63,7 +68,7 @@ public class AdminUsers extends Fragment {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                         ArrayList<UserModel> noteArray = new ArrayList<>();
-                        UserListItemAdapter userListItemAdapter = new UserListItemAdapter(getContext(), noteArray);
+                        UserListItemAdapter userListItemAdapter = new UserListItemAdapter(getContext(), noteArray, AdminUsers.this);
 
                         for (int i = 0; i < response.length(); i++) {
                             try {

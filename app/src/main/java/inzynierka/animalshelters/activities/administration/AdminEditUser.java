@@ -194,8 +194,10 @@ public class AdminEditUser extends BasicActivity {
         EditText userSurname = findViewById(R.id.edit_surname);
         user.setLastName(userSurname.getText().toString());
 
-        EditText userBirthday = findViewById(R.id.edit_phone);
-        user.setDateOfBirth(DateFormatHelper.dateFromString(userBirthday.getText().toString(), DateFormatHelper.FORMAT_POSTGRES_DATE));
+        EditText userBirthday = findViewById(R.id.edit_birthday);
+        if(userBirthday.getText().toString() != "") {
+            user.setDateOfBirth(DateFormatHelper.dateFromString(userBirthday.getText().toString(), DateFormatHelper.FORMAT_POSTGRES_DATE));
+        }
 
         EditText userEmail = findViewById(R.id.edit_email);
         user.setEmail(userEmail.getText().toString());

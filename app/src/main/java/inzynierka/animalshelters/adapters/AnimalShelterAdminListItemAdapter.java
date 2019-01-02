@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,20 +13,33 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import com.loopj.android.http.JsonHttpResponseHandler;
 
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import cz.msebera.android.httpclient.Header;
+import cz.msebera.android.httpclient.message.BasicHeader;
 import inzynierka.animalshelters.R;
 import inzynierka.animalshelters.activities.administration.AdminEditShelter;
+import inzynierka.animalshelters.activities.administration.AdminShelters;
 import inzynierka.animalshelters.interfaces.AdminListElementInterface;
 import inzynierka.animalshelters.models.AnimalShelterModel;
+import inzynierka.animalshelters.rest.Api;
+import inzynierka.animalshelters.rest.Client;
 
 public class AnimalShelterAdminListItemAdapter extends ArrayAdapter<AnimalShelterModel> implements AdminListElementInterface {
 
+    AdminShelters fragment;
     private Context _context;
-    public AnimalShelterAdminListItemAdapter(Context context, ArrayList<AnimalShelterModel> shelters)
+    public AnimalShelterAdminListItemAdapter(Context context, ArrayList<AnimalShelterModel> shelters,
+                                             AdminShelters fragment)
     {
         super(context, R.layout.animal_shelter_admin_list_item, shelters);
         this._context = context;
+        this.fragment = fragment;
     }
 
     @Override
@@ -63,7 +77,7 @@ public class AnimalShelterAdminListItemAdapter extends ArrayAdapter<AnimalShelte
         //viewHolder.shelterAvatar.setImageBitmap(ImageHelper.getImageBitmap(shelterModel.getAvatar()));
 
         EditBtn_onClick(viewHolder.editShelter, shelterModel.getId());
-        DeleteBtn_onClick(viewHolder.deleteShelter);
+        DeleteBtn_onClick(viewHolder.deleteShelter, shelterModel.getId());
 
         return convertView;
     }
@@ -82,19 +96,19 @@ public class AnimalShelterAdminListItemAdapter extends ArrayAdapter<AnimalShelte
     }
 
     @Override
-    public void DeleteBtn_onClick(ImageButton btn)
+    public void DeleteBtn_onClick(ImageButton btn, final int id)
     {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertDialog alertDialog = ConfirmDelete();
+                AlertDialog alertDialog = ConfirmDelete(id);
                 alertDialog.show();
             }
         });
     }
 
     @Override
-    public AlertDialog ConfirmDelete()
+    public AlertDialog ConfirmDelete(final int idShelter)
     {
         AlertDialog confirmDeleteAlertDialog = new AlertDialog.Builder(_context)
                 .setTitle("Delete")
@@ -103,6 +117,7 @@ public class AnimalShelterAdminListItemAdapter extends ArrayAdapter<AnimalShelte
                 .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        DeleteShelter(idShelter);
                         dialogInterface.dismiss();
                     }
                 })
@@ -116,7 +131,24 @@ public class AnimalShelterAdminListItemAdapter extends ArrayAdapter<AnimalShelte
         return  confirmDeleteAlertDialog;
     }
 
+    private void DeleteShelter(int idShelter)
+    {
+        List<Header> headers = new ArrayList<>();
+        headers.add(new BasicHeader("Content-Type", "application/json"));
 
+        Client.delete(getContext(), Api.ANIMAL_SHELTER_ID_URL, idShelter, headers.toArray(new Header[headers.size()]),
+                null, new JsonHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                        fragment.onDeleteShelter();
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, String res, Throwable t) {
+                        Log.e("Error", res);
+                    }
+                });
+    }
 
     private static class ViewHolder
     {

@@ -4,10 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.support.constraint.ConstraintLayout;
-import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,26 +13,38 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.apache.commons.lang3.StringUtils;
+import com.loopj.android.http.JsonHttpResponseHandler;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.EventListener;
+import java.util.List;
 
+import cz.msebera.android.httpclient.Header;
+import cz.msebera.android.httpclient.message.BasicHeader;
 import inzynierka.animalshelters.R;
 import inzynierka.animalshelters.activities.administration.AdminEditUser;
-import inzynierka.animalshelters.activities.administration.UserListActivity;
+import inzynierka.animalshelters.activities.administration.AdminUsers;
 import inzynierka.animalshelters.helpers.ImageHelper;
 import inzynierka.animalshelters.interfaces.AdminListElementInterface;
 import inzynierka.animalshelters.models.UserModel;
+import inzynierka.animalshelters.rest.Api;
+import inzynierka.animalshelters.rest.Client;
 
 public class UserListItemAdapter extends ArrayAdapter<UserModel> implements AdminListElementInterface {
 
+    EventListener eventListener;
     private Context _context;
-    public UserListItemAdapter(Context context, ArrayList<UserModel> users)
+    public UserListItemAdapter(Context context, ArrayList<UserModel> users, EventListener eventListener)
     {
         super(context, R.layout.user_list_item, users);
         this._context = context;
+        this.eventListener = eventListener;
+    }
+
+    public interface EventListener{
+        void onDeleteUser();
     }
 
     @Override
@@ -73,7 +82,7 @@ public class UserListItemAdapter extends ArrayAdapter<UserModel> implements Admi
         viewHolder.userEmail.setText(userModel.getEmail());
 
         EditBtn_onClick(viewHolder.editBtn, userModel.getId());
-        DeleteBtn_onClick(viewHolder.deleteBtn);
+        DeleteBtn_onClick(viewHolder.deleteBtn, userModel.getId());
 
         return convertView;
     }
@@ -92,19 +101,19 @@ public class UserListItemAdapter extends ArrayAdapter<UserModel> implements Admi
     }
 
     @Override
-    public void DeleteBtn_onClick(ImageButton btn)
+    public void DeleteBtn_onClick(ImageButton btn, final int id)
     {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertDialog alertDialog = ConfirmDelete();
+                AlertDialog alertDialog = ConfirmDelete(id);
                 alertDialog.show();
             }
         });
     }
 
     @Override
-    public AlertDialog ConfirmDelete()
+    public AlertDialog ConfirmDelete(final int idUser)
     {
         AlertDialog confirmDeleteAlertDialog = new AlertDialog.Builder(_context)
                 .setTitle("Delete")
@@ -113,7 +122,7 @@ public class UserListItemAdapter extends ArrayAdapter<UserModel> implements Admi
                 .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        //TODO: usuwanie
+                        DeleteUser(idUser);
                         dialogInterface.dismiss();
                     }
                 })
@@ -125,6 +134,25 @@ public class UserListItemAdapter extends ArrayAdapter<UserModel> implements Admi
                 })
                 .create();
         return  confirmDeleteAlertDialog;
+    }
+
+    private void DeleteUser(int idUser)
+    {
+        List<Header> headers = new ArrayList<>();
+        headers.add(new BasicHeader("Content-Type", "application/json"));
+
+        Client.delete(getContext(), Api.USER_ID_URL, idUser, headers.toArray(new Header[headers.size()]),
+                null, new JsonHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                        eventListener.onDeleteUser();
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, String res, Throwable t) {
+                        Log.e("Error", res);
+                    }
+                });
     }
 
     private static class ViewHolder

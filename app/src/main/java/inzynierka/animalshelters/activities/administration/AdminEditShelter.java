@@ -44,7 +44,7 @@ public class AdminEditShelter extends BasicActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this._context = _context;
+        this._context = this;
         setContentView(R.layout.activity_admin_edit_shelter);
         onCreateDrawer();
         onCreateDrawerMenu();
@@ -66,7 +66,6 @@ public class AdminEditShelter extends BasicActivity {
                 null, new JsonHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                        super.onSuccess(statusCode, headers, response);
                         setFormData(response);
                     }
 

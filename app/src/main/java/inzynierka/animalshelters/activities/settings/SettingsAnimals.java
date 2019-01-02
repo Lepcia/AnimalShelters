@@ -28,7 +28,7 @@ import inzynierka.animalshelters.models.AnimalDetailsModel;
 import inzynierka.animalshelters.rest.Api;
 import inzynierka.animalshelters.rest.Client;
 
-public class SettingsAnimals extends Fragment implements AnimalSettingListItemAdapter.EventListener {
+public class SettingsAnimals extends Fragment {
 
     private ListView animalView;
     private View rootView;
@@ -43,18 +43,18 @@ public class SettingsAnimals extends Fragment implements AnimalSettingListItemAd
         int shelterId = settingsActivity.GetShelterId();
         idShelter = shelterId;
         getAnimals(shelterId);
+        addAnimalListenerOnClick();
 
         return rootView;
     }
 
-    @Override
-    public void onDeleteAnimal(int idAnimal) {
+    public void onDeleteAnimal() {
         getAnimals(idShelter);
     }
 
-    private void addUserListenerOnClick()
+    private void addAnimalListenerOnClick()
     {
-        FloatingActionButton addBtn = rootView.findViewById(R.id.addUserBtn);
+        FloatingActionButton addBtn = rootView.findViewById(R.id.addAnimalBtn);
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -76,7 +76,7 @@ public class SettingsAnimals extends Fragment implements AnimalSettingListItemAd
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                         ArrayList<AnimalDetailsModel> animalsArray = new ArrayList<>();
-                        AnimalListItemAdapter animalListItemAdapter = new AnimalListItemAdapter(getContext(), animalsArray);
+                        AnimalSettingListItemAdapter animalListItemAdapter = new AnimalSettingListItemAdapter(getContext(), animalsArray, SettingsAnimals.this);
 
                         for (int i = 0; i < response.length(); i++) {
                             try {

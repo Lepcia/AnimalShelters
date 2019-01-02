@@ -41,7 +41,7 @@ public class SettingsShelter extends Fragment {
         SettingsActivity settingsActivity = (SettingsActivity) getActivity();
         int shelterId = settingsActivity.GetShelterId();
         getShelter(shelterId);
-        //addListenerOnSave();
+        addListenerOnSave();
 
         return rootView;
     }
@@ -119,13 +119,13 @@ public class SettingsShelter extends Fragment {
 
     private void addListenerOnSave()
     {
-        //FloatingActionButton saveBtn = rootView.findViewById(R.id.saveBtn);
-        //saveBtn.setOnClickListener(new View.OnClickListener() {
-            //@Override
-         //  // public void onClick(View v) {
-            //    onSaveBtnClick();
-            //}
-        //});
+        FloatingActionButton saveBtn = rootView.findViewById(R.id.saveBtn);
+        saveBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onSaveBtnClick();
+            }
+        });
     }
 
     private void onSaveBtnClick()

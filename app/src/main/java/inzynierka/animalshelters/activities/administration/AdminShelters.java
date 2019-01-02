@@ -55,6 +55,11 @@ public class AdminShelters extends Fragment {
         });
     }
 
+    public void onDeleteShelter()
+    {
+        getShelters();
+    }
+
     private void getShelters() {
         List<Header> headers = new ArrayList<>();
         headers.add(new BasicHeader("Content-Type", "application/json"));
@@ -65,7 +70,7 @@ public class AdminShelters extends Fragment {
                     public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                         ArrayList<AnimalShelterModel> sheltersArray = new ArrayList<>();
                         AnimalShelterAdminListItemAdapter shelterListItemAdapter =
-                                new AnimalShelterAdminListItemAdapter(getContext(), sheltersArray);
+                                new AnimalShelterAdminListItemAdapter(getContext(), sheltersArray, AdminShelters.this);
 
                         for (int i = 0; i < response.length(); i++) {
                             try {
