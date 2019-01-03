@@ -91,8 +91,9 @@ public class AnimalSettingListItemAdapter extends ArrayAdapter<AnimalDetailsMode
         viewHolder.animalBreed.setText(animalModel.getBreed());
         viewHolder.animalAge.setText(animalModel.getAgeString());
         viewHolder.animalSize.setText(animalModel.getSize());
-        viewHolder.animalShelter.setText(animalModel.getAnimalShelter().getName());
-
+        if(animalModel.getAnimalShelter() != null) {
+            viewHolder.animalShelter.setText(animalModel.getAnimalShelter().getName());
+        }
         if(animalModel.getSex().equals(MALE)) {
             viewHolder.animalSex.setImageResource(R.drawable.male_brown);
         } else if (animalModel.getSex().equals(FEMALE)){

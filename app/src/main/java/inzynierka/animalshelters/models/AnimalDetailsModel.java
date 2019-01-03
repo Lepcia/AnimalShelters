@@ -28,6 +28,8 @@ public class AnimalDetailsModel {
     private Date InShelterFrom;
     private AnimalShelterModel AnimalShelter;
     private boolean IsFavorite;
+    private Date DateOfBirth;
+    private String ShelterName;
 
     public AnimalDetailsModel()
     {}
@@ -46,6 +48,8 @@ public class AnimalDetailsModel {
             this.Size = object.getString("size");
             this.Description = object.getString("description");
             this.IsFavorite = object.getBoolean("isFavorite");
+            this.ShelterName = object.getString("shelterName");
+
             JSONArray photosArray = object.getJSONArray("photos");
             if(photosArray.length() > 0) {
                 ArrayList<PhotoModel> photos = new ArrayList<>(photosArray.length());
@@ -66,6 +70,10 @@ public class AnimalDetailsModel {
             String dateS = object.getString("inShelterFrom");
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             this.InShelterFrom = dateFormat.parse(dateS);
+
+            String dateOfBirth = object.getString("dateOfBirth");
+            this.DateOfBirth = dateFormat.parse(dateOfBirth);
+
             JSONObject animalShelter = object.getJSONObject("animalShelter");
             if(animalShelter != null)
             {
@@ -81,7 +89,7 @@ public class AnimalDetailsModel {
 
     public AnimalDetailsModel(int Id, String Name, int Age, String AgeAccuracy, String AgeString, String Species, String Breed,
                               String Sex, String Size, String Description, List<PhotoModel> Photos, Date InShelterFrom,
-                              AnimalShelterModel AnimalShelter, boolean IsFavorite)
+                              AnimalShelterModel AnimalShelter, boolean IsFavorite, Date DateOfBirth)
     {
         this.Id = Id;
         this.Name = Name;
@@ -97,6 +105,7 @@ public class AnimalDetailsModel {
         this.InShelterFrom = InShelterFrom;
         this.AnimalShelter = AnimalShelter;
         this.IsFavorite = IsFavorite;
+        this.DateOfBirth = DateOfBirth;
     }
 
     public int getId()
@@ -224,4 +233,20 @@ public class AnimalDetailsModel {
     public AnimalShelterModel getAnimalShelter() {return AnimalShelter;}
 
     public void setAnimalShelter(AnimalShelterModel animalShelter) {this.AnimalShelter = animalShelter;}
+
+    public Date getDateOfBirth() {
+        return DateOfBirth;
+    }
+
+    public void setDateOfBirth(Date dateOfBirth) {
+        DateOfBirth = dateOfBirth;
+    }
+
+    public String getShelterName() {
+        return ShelterName;
+    }
+
+    public void setShelterName(String shelterName) {
+        ShelterName = shelterName;
+    }
 }
