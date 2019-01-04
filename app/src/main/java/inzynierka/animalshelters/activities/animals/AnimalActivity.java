@@ -29,6 +29,7 @@ import inzynierka.animalshelters.activities.administration.AdminEditUser;
 import inzynierka.animalshelters.activities.animalShelters.SheltersActivity;
 import inzynierka.animalshelters.activities.basic.BasicActivity;
 import inzynierka.animalshelters.activities.favorites.FavoriteAnimalsActivity;
+import inzynierka.animalshelters.activities.photos.PhotosActivity;
 import inzynierka.animalshelters.activities.search.SearchActivity;
 import inzynierka.animalshelters.activities.settings.SettingsActivity;
 import inzynierka.animalshelters.adapters.PhotoSliderAdapter;
@@ -174,6 +175,14 @@ public class AnimalActivity extends BasicActivity {
         Intent intent = new Intent(AnimalActivity.this, SettingsActivity.class);
         intent.putExtra("ShelterId", 1);
         intent.putExtra("UserId", 1);
+        startActivity(intent);
+    }
+
+    @Override
+    public void openPhotosModule()
+    {
+        Intent intent = new Intent(AnimalActivity.this, PhotosActivity.class);
+        intent.putExtra("ShelterId", 1);
         startActivity(intent);
     }
 }

@@ -8,4 +8,5 @@ public final class Modules {
     public static final int SEARCH = 5;
     public static final int NEWS = 6;
     public static final int SETTINGS = 7;
+    public static final int PHOTOS = 8;
 }

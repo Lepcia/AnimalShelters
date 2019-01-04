@@ -25,6 +25,7 @@ public final class Api {
     public static final String ANIMAL_SHELTERS_ALL_URL = ANIMAL_SHELTERS_URL + "/all";
     public static final String ANIMAL_SHELTERS_SEARCH_URL =ANIMAL_SHELTERS_URL + "/search";
     public static final String ANIMAL_SHELTER_ANIMALS = ANIMAL_SHELTERS_URL + "/{id}/animals";
+    public static final String ANIMAL_SHELTER_ANIMALS_SIMPLE_URL = ANIMAL_SHELTERS_URL + "/{id}/animals/simple";
     public static final String ANIMAL_SHELTER_USERS = ANIMAL_SHELTERS_URL + "/{id}/users";
     public static final String RIGHTS_URL = "rights";
     public static final String RIGHTS_TO_USER_URL = "rightToUser";

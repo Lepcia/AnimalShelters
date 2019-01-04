@@ -55,7 +55,8 @@
         <activity android:name=".activities.animals.AnimalActivity" />
         <activity android:name=".activities.animalShelters.ShelterActivity" />
         <activity android:name=".activities.settings.SettingsActivity" />
-        <activity android:name=".activities.animals.EditAnimalActivity"></activity>
+        <activity android:name=".activities.animals.EditAnimalActivity" />
+        <activity android:name=".activities.photos.PhotosActivity"></activity>
     </application>
 
 </manifest>
