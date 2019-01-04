@@ -2,6 +2,7 @@ package inzynierka.animalshelters.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.media.Image;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,6 +27,7 @@ import cz.msebera.android.httpclient.message.BasicHeader;
 import inzynierka.animalshelters.R;
 import inzynierka.animalshelters.activities.animals.AnimalActivity;
 import inzynierka.animalshelters.helpers.AdministrationHelper;
+import inzynierka.animalshelters.helpers.ImageHelper;
 import inzynierka.animalshelters.interfaces.AnimalListElementInterface;
 import inzynierka.animalshelters.models.AnimalDetailsModel;
 import inzynierka.animalshelters.rest.Api;
@@ -86,7 +88,16 @@ public class AnimalListItemAdapter extends ArrayAdapter<AnimalDetailsModel> {
         viewHolder.animalBreed.setText(animalModel.getBreed());
         viewHolder.animalAge.setText(animalModel.getAgeString());
         viewHolder.animalSize.setText(animalModel.getSize());
-        viewHolder.animalShelter.setText(animalModel.getAnimalShelter().getName());
+        if(animalModel.getAnimalShelter() != null) {
+            viewHolder.animalShelter.setText(animalModel.getAnimalShelter().getName());
+        }
+
+        if(animalModel.getAvatar() != null && animalModel.getAvatar() != "")
+        {
+            String encodedPhoto = animalModel.getAvatar();
+            Bitmap bitmap = ImageHelper.getImageBitmap(encodedPhoto);
+            viewHolder.animalPhoto.setImageBitmap(bitmap);
+        }
 
         if(animalModel.getSex().equals(MALE)) {
             viewHolder.animalSex.setImageResource(R.drawable.male_brown);

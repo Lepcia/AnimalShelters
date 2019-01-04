@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +26,7 @@ import cz.msebera.android.httpclient.message.BasicHeader;
 import inzynierka.animalshelters.R;
 import inzynierka.animalshelters.activities.administration.AdminEditShelter;
 import inzynierka.animalshelters.activities.administration.AdminShelters;
+import inzynierka.animalshelters.helpers.ImageHelper;
 import inzynierka.animalshelters.interfaces.AdminListElementInterface;
 import inzynierka.animalshelters.models.AnimalShelterModel;
 import inzynierka.animalshelters.rest.Api;
@@ -74,8 +76,11 @@ public class AnimalShelterAdminListItemAdapter extends ArrayAdapter<AnimalShelte
         viewHolder.shelterAdres.setText(shelterModel.getFullAdres());
         viewHolder.shelterEmail.setText(shelterModel.getEmail());
         viewHolder.shelterPhone.setText(shelterModel.getPhone());
-        //viewHolder.shelterAvatar.setImageBitmap(ImageHelper.getImageBitmap(shelterModel.getAvatar()));
-
+        if(shelterModel.getAvatar() != null && shelterModel.getAvatar() != "") {
+            String encodedPhoto = shelterModel.getAvatar();
+            Bitmap bitmap = ImageHelper.getImageBitmap(encodedPhoto);
+            viewHolder.shelterAvatar.setImageBitmap(bitmap);
+        }
         EditBtn_onClick(viewHolder.editShelter, shelterModel.getId());
         DeleteBtn_onClick(viewHolder.deleteShelter, shelterModel.getId());
 

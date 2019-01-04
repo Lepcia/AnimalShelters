@@ -30,6 +30,7 @@ public class AnimalDetailsModel {
     private boolean IsFavorite;
     private Date DateOfBirth;
     private String ShelterName;
+    private String Avatar;
 
     public AnimalDetailsModel()
     {}
@@ -48,7 +49,9 @@ public class AnimalDetailsModel {
             this.Size = object.getString("size");
             this.Description = object.getString("description");
             this.IsFavorite = object.getBoolean("isFavorite");
-            this.ShelterName = object.getString("shelterName");
+            if(object.has("avatar")) {
+                this.Avatar = object.getString("avatar");
+            }
 
             JSONArray photosArray = object.getJSONArray("photos");
             if(photosArray.length() > 0) {
@@ -78,7 +81,8 @@ public class AnimalDetailsModel {
             if(animalShelter != null)
             {
                 AnimalShelterModel animalShelterModel = new AnimalShelterModel(animalShelter);
-                AnimalShelter = animalShelterModel;
+                this.AnimalShelter = animalShelterModel;
+                this.ShelterName = animalShelterModel.getName();
             }
         } catch (JSONException e){
             e.printStackTrace();
@@ -89,7 +93,7 @@ public class AnimalDetailsModel {
 
     public AnimalDetailsModel(int Id, String Name, int Age, String AgeAccuracy, String AgeString, String Species, String Breed,
                               String Sex, String Size, String Description, List<PhotoModel> Photos, Date InShelterFrom,
-                              AnimalShelterModel AnimalShelter, boolean IsFavorite, Date DateOfBirth)
+                              AnimalShelterModel AnimalShelter, boolean IsFavorite, Date DateOfBirth, String Avatar)
     {
         this.Id = Id;
         this.Name = Name;
@@ -106,6 +110,7 @@ public class AnimalDetailsModel {
         this.AnimalShelter = AnimalShelter;
         this.IsFavorite = IsFavorite;
         this.DateOfBirth = DateOfBirth;
+        this.Avatar = Avatar;
     }
 
     public int getId()
@@ -248,5 +253,13 @@ public class AnimalDetailsModel {
 
     public void setShelterName(String shelterName) {
         ShelterName = shelterName;
+    }
+
+    public String getAvatar() {
+        return Avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        Avatar = avatar;
     }
 }

@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.media.Image;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -30,6 +31,7 @@ import cz.msebera.android.httpclient.message.BasicHeader;
 import inzynierka.animalshelters.R;
 import inzynierka.animalshelters.activities.animals.EditAnimalActivity;
 import inzynierka.animalshelters.activities.settings.SettingsAnimals;
+import inzynierka.animalshelters.helpers.ImageHelper;
 import inzynierka.animalshelters.models.AnimalDetailsModel;
 import inzynierka.animalshelters.rest.Api;
 import inzynierka.animalshelters.rest.Client;
@@ -104,6 +106,13 @@ public class AnimalSettingListItemAdapter extends ArrayAdapter<AnimalDetailsMode
             viewHolder.animalSpecies.setImageResource(R.drawable.dog_brown_big);
         } else if (animalModel.getSpecies().equals(CAT)) {
             viewHolder.animalSpecies.setImageResource(R.drawable.cat_brown_big);
+        }
+
+        if(animalModel.getAvatar() != null && animalModel.getAvatar() != "")
+        {
+            String encodedPhoto = animalModel.getAvatar();
+            Bitmap bitmap = ImageHelper.getImageBitmap(encodedPhoto);
+            viewHolder.animalPhoto.setImageBitmap(bitmap);
         }
 
         viewHolder.editBtn.setOnClickListener(new View.OnClickListener() {

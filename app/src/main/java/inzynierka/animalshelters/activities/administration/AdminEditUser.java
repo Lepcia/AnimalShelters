@@ -248,8 +248,7 @@ public class AdminEditUser extends BasicActivity {
         Client.add(_context, Api.USERS_URL, stringEntity, headers.toArray(new Header[headers.size()]), new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                Intent intent = new Intent(_context, AdminActivity.class);
-                _context.startActivity(intent);
+                finish();
             }
 
             @Override
@@ -271,8 +270,7 @@ public class AdminEditUser extends BasicActivity {
         Client.update(_context, Api.USER_ID_URL, stringEntity, user.getId(), headers.toArray(new Header[headers.size()]), new JsonHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                        Intent intent = new Intent(_context, AdminActivity.class);
-                        _context.startActivity(intent);
+                        finish();
                     }
 
                     @Override

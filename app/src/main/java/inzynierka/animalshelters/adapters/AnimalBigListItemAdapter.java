@@ -2,6 +2,7 @@ package inzynierka.animalshelters.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,9 +18,11 @@ import java.util.Date;
 
 import inzynierka.animalshelters.R;
 import inzynierka.animalshelters.activities.animals.AnimalActivity;
+import inzynierka.animalshelters.helpers.ImageHelper;
+import inzynierka.animalshelters.models.AnimalDetailsModel;
 import inzynierka.animalshelters.models.AnimalModel;
 
-public class AnimalBigListItemAdapter extends ArrayAdapter<AnimalModel> {
+public class AnimalBigListItemAdapter extends ArrayAdapter<AnimalDetailsModel> {
 
     Context _context;
     private static String MALE = "Male";
@@ -27,7 +30,7 @@ public class AnimalBigListItemAdapter extends ArrayAdapter<AnimalModel> {
     private static String DOG = "Dog";
     private static String CAT = "Cat";
 
-    public AnimalBigListItemAdapter(Context context, ArrayList<AnimalModel> newAnimals)
+    public AnimalBigListItemAdapter(Context context, ArrayList<AnimalDetailsModel> newAnimals)
     {
         super(context, R.layout.animal_big_list_item, newAnimals);
         this._context = context;
@@ -36,7 +39,7 @@ public class AnimalBigListItemAdapter extends ArrayAdapter<AnimalModel> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent)
     {
-        final AnimalModel animalModel = getItem(position);
+        final AnimalDetailsModel animalModel = getItem(position);
         ViewHolder viewHolder;
 
         if(convertView == null)
@@ -71,7 +74,12 @@ public class AnimalBigListItemAdapter extends ArrayAdapter<AnimalModel> {
         SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd");
         viewHolder.inShelterFrom.setText(formater.format(date));
         viewHolder.description.setText(animalModel.getDescription());
-
+        if(animalModel.getAvatar() != null && animalModel.getAvatar() != "")
+        {
+            String encodedPhoto = animalModel.getAvatar();
+            Bitmap bitmap = ImageHelper.getImageBitmap(encodedPhoto);
+            viewHolder.animalPhoto.setImageBitmap(bitmap);
+        }
         viewHolder.details.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -72,11 +73,12 @@ public class UserListItemAdapter extends ArrayAdapter<UserModel> implements Admi
 
         String avatar = userModel.getAvatar();
 
-        if(avatar == null) {
-            viewHolder.avatar.setImageResource(R.drawable.ic_account_circle_black_48dp);
-        } else {
-            viewHolder.avatar.setImageBitmap(ImageHelper.getImageBitmap(userModel.getAvatar()));
+        if(avatar != null && avatar != "")
+        {
+            Bitmap bitmap = ImageHelper.getImageBitmap(avatar);
+            viewHolder.avatar.setImageBitmap(bitmap);
         }
+
         viewHolder.id.setText(String.valueOf(userModel.getId()));
         viewHolder.userName.setText(String.format("%s %s",userModel.getLastName(), userModel.getFirstName()));
         viewHolder.userEmail.setText(userModel.getEmail());

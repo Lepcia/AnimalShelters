@@ -1,18 +1,30 @@
 package inzynierka.animalshelters.activities.animals;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -20,6 +32,7 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -37,6 +50,7 @@ import inzynierka.animalshelters.activities.search.SearchActivity;
 import inzynierka.animalshelters.activities.settings.SettingsActivity;
 import inzynierka.animalshelters.activities.settings.SettingsAnimals;
 import inzynierka.animalshelters.helpers.DateFormatHelper;
+import inzynierka.animalshelters.helpers.ImageHelper;
 import inzynierka.animalshelters.models.AnimalDetailsModel;
 import inzynierka.animalshelters.rest.Api;
 import inzynierka.animalshelters.rest.Client;
@@ -51,6 +65,10 @@ public class EditAnimalActivity extends BasicActivity {
     private static final String SMALL = "Small";
     private static final String MEDIUM = "Medium";
     private static final String BIG = "Big";
+    private static final int STORAGE_PERMISSION_CODE = 2342;
+    private static final int PICK_IMAGE_REQUEST = 1;
+    private Uri filePath;
+    private Bitmap bitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,12 +78,15 @@ public class EditAnimalActivity extends BasicActivity {
         onCreateDrawerMenu();
         this._context = this;
         addListenerOnSave();
+        addListenerOnUploadPhoto();
 
         Bundle bundle = getIntent().getExtras();
         if(bundle.getInt("AnimalId") > 0)
         {
             getAnimalById(bundle.getInt("AnimalId"));
         }
+
+        requestStoragePermission();
     }
 
     private void getAnimalById(int id)
@@ -127,6 +148,14 @@ public class EditAnimalActivity extends BasicActivity {
 
                 EditText in_shelter_from = findViewById(R.id.edit_in_shelter_from);
                 in_shelter_from.setText(dateString);
+            }
+
+            if(data.has("avatar"))
+            {
+                String encodedPhoto = data.getString("avatar");
+                Bitmap bitmap = ImageHelper.getImageBitmap(encodedPhoto);
+                ImageView animal_avatar = findViewById(R.id.animal_avatar);
+                animal_avatar.setImageBitmap(bitmap);
             }
 
             JSONObject animalShelter = data.getJSONObject("animalShelter");
@@ -221,35 +250,31 @@ public class EditAnimalActivity extends BasicActivity {
         TextView shelter = findViewById(R.id.selected_shelter);
         animal.setShelterName(shelter.getText().toString());
 
-        RadioGroup speciesGroup = findViewById(R.id.speciesRadioGroup);
+        RadioGroup speciesGroup = findViewById(R.id.species_radio_group);
         int selectedSpeciesId = speciesGroup.getCheckedRadioButtonId();
         RadioButton speciesRadioBtn = findViewById(selectedSpeciesId);
 
             switch (speciesRadioBtn.getText().toString())
             {
                 case DOG:
-                    RadioButton radioDog = findViewById(R.id.radioDog);
-                    radioDog.setChecked(true);
+                    animal.setSpecies(DOG);
                     break;
                 case CAT:
-                    RadioButton radioCat = findViewById(R.id.radioCat);
-                    radioCat.setChecked(true);
+                    animal.setSpecies(DOG);
                     break;
             }
 
-            RadioGroup sexRadioGroup = findViewById(R.id.sexRadioGroup);
+            RadioGroup sexRadioGroup = findViewById(R.id.sex_radio_group);
             int selectedSexId = sexRadioGroup.getCheckedRadioButtonId();
             RadioButton sexRadioBtn = findViewById(selectedSexId);
 
             switch (sexRadioBtn.getText().toString())
             {
                 case FEMALE:
-                    RadioButton radioFemale = findViewById(R.id.radioFemale);
-                    radioFemale.setChecked(true);
+                    animal.setSex(FEMALE);
                     break;
                 case MALE:
-                    RadioButton radioMale = findViewById(R.id.radioMale);
-                    radioMale.setChecked(true);
+                    animal.setSex(MALE);
                     break;
             }
 
@@ -257,25 +282,85 @@ public class EditAnimalActivity extends BasicActivity {
             int selectedSizeId = sizeRadioGroup.getCheckedRadioButtonId();
             RadioButton sizeRadioBtn = findViewById(selectedSizeId);
 
-            switch (sizeRadioBtn.getText().toString())
-            {
+            switch (sizeRadioBtn.getText().toString()) {
                 case SMALL:
-                    RadioButton radioSmall = findViewById(R.id.radioSmall);
-                    radioSmall.setChecked(true);
+                    animal.setSize(SMALL);
                     break;
                 case MEDIUM:
-                    RadioButton radioMedium = findViewById(R.id.radioMedium);
-                    radioMedium.setChecked(true);
+                    animal.setSize(MEDIUM);
                     break;
                 case BIG:
-                    RadioButton radioBig = findViewById(R.id.radioBig);
-                    radioBig.setChecked(true);
+                    animal.setSize(BIG);
                     break;
-        }
+            }
+            if(bitmap != null)
+            {
+                String encodedPhoto = ImageHelper.encodeBitmap(bitmap);
+                animal.setAvatar(encodedPhoto);
+            }
         if(id != "" && id != null)
             updateAnimal(animal);
         else
             addAnimal(animal);
+    }
+
+    private void addListenerOnUploadPhoto()
+    {
+        Button uploadBtn = findViewById(R.id.addPhotoBtn);
+        uploadBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showFileChooser();
+            }
+        });
+    }
+
+    private void requestStoragePermission()
+    {
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
+        {
+            return;
+        }
+        ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if(requestCode == STORAGE_PERMISSION_CODE){
+            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+            {
+                Toast.makeText(this, "Permission granted", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(this, "Permission not granted", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    private void showFileChooser()
+    {
+        Intent intent =  new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null)
+        {
+            filePath = data.getData();
+            try{
+                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
+                if(bitmap != null) {
+                    ImageView avatar = (ImageView)findViewById(R.id.animal_avatar);
+                    avatar.setImageBitmap(bitmap);
+                }
+            } catch (IOException e)
+            {
+            }
+        }
     }
 
     private void updateAnimal(AnimalDetailsModel animal)
@@ -290,8 +375,11 @@ public class EditAnimalActivity extends BasicActivity {
         Client.update(_context, Api.ANIMAL_ID_URL, stringEntity, animal.getId(), headers.toArray(new Header[headers.size()]), new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                Intent intent = new Intent(_context, SettingsActivity.class);
-                _context.startActivity(intent);
+                //Intent intent = new Intent(_context, SettingsActivity.class);
+                //intent.putExtra("ShelterId", 1);
+                //intent.putExtra("UserId", 1);
+                //_context.startActivity(intent);
+                finish();
             }
 
             @Override
@@ -314,6 +402,8 @@ public class EditAnimalActivity extends BasicActivity {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 Intent intent = new Intent(_context, SettingsActivity.class);
+                intent.putExtra("ShelterId", 1);
+                intent.putExtra("UserId", 1);
                 _context.startActivity(intent);
             }
 

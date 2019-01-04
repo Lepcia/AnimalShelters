@@ -10,12 +10,8 @@
         android:id="@+id/animal_photo"
         android:layout_width="85dp"
         android:layout_height="120dp"
-        app:layout_constraintCircle="@android:drawable/sym_def_app_icon"
-        app:layout_constraintCircleAngle="@android:integer/config_mediumAnimTime"
-        app:layout_constraintCircleRadius="@dimen/activity_horizontal_margin"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/sym_def_app_icon" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/animal_species"

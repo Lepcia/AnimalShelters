@@ -1,14 +1,26 @@
 package inzynierka.animalshelters.activities.settings;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,6 +30,7 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,12 +39,17 @@ import cz.msebera.android.httpclient.entity.StringEntity;
 import cz.msebera.android.httpclient.message.BasicHeader;
 import inzynierka.animalshelters.R;
 import inzynierka.animalshelters.activities.administration.AdminActivity;
+import inzynierka.animalshelters.helpers.ImageHelper;
 import inzynierka.animalshelters.models.AnimalShelterModel;
 import inzynierka.animalshelters.rest.Api;
 import inzynierka.animalshelters.rest.Client;
 
 public class SettingsShelter extends Fragment {
     private View rootView;
+    private static final int STORAGE_PERMISSION_CODE = 2342;
+    private static final int PICK_IMAGE_REQUEST = 1;
+    private Uri filePath;
+    private Bitmap bitmap;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -42,6 +60,8 @@ public class SettingsShelter extends Fragment {
         int shelterId = settingsActivity.GetShelterId();
         getShelter(shelterId);
         addListenerOnSave();
+        addListenerOnUploadPhoto();
+        requestStoragePermission();
 
         return rootView;
     }
@@ -110,6 +130,13 @@ public class SettingsShelter extends Fragment {
                 user_email.setText(data.getString("postalCode"));
             }
 
+            if(data.has("avatar")) {
+                String encodedPhoto = data.getString("avatar");
+                Bitmap bitmap = ImageHelper.getImageBitmap(encodedPhoto);
+                ImageView animal_avatar = rootView.findViewById(R.id.animal_avatar);
+                animal_avatar.setImageBitmap(bitmap);
+            }
+
         }
         catch(JSONException e)
         {
@@ -159,10 +186,75 @@ public class SettingsShelter extends Fragment {
         EditText shelterPostal = rootView.findViewById(R.id.edit_postal);
         shelter.setPostalCode(shelterPostal.getText().toString());
 
+        if(bitmap != null)
+        {
+            String encodedPhoto = ImageHelper.encodeBitmap(bitmap);
+            shelter.setAvatar(encodedPhoto);
+        }
+
         if(id != "" && id != null) {
             updateShelter(shelter);
         }
 
+    }
+
+    private void addListenerOnUploadPhoto()
+    {
+        Button uploadBtn = rootView.findViewById(R.id.addPhotoBtn);
+        uploadBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showFileChooser();
+            }
+        });
+    }
+
+    private void requestStoragePermission()
+    {
+        if(ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
+        {
+            return;
+        }
+        ActivityCompat.requestPermissions(getActivity(), new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if(requestCode == STORAGE_PERMISSION_CODE){
+            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+            {
+                Toast.makeText(getContext(), "Permission granted", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(getContext(), "Permission not granted", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    private void showFileChooser()
+    {
+        Intent intent =  new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.getData() != null)
+        {
+            filePath = data.getData();
+            try{
+                bitmap = MediaStore.Images.Media.getBitmap(getActivity().getApplicationContext().getContentResolver(), filePath);
+                if(bitmap != null) {
+                    ImageView avatar = rootView.findViewById(R.id.animal_avatar);
+                    avatar.setImageBitmap(bitmap);
+                }
+            } catch (IOException e)
+            {
+            }
+        }
     }
 
     private  void updateShelter(AnimalShelterModel shelter)
