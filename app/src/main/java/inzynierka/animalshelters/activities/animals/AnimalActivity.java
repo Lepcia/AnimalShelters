@@ -1,5 +1,6 @@
 package inzynierka.animalshelters.activities.animals;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -39,11 +40,14 @@ import inzynierka.animalshelters.rest.Client;
 
 public class AnimalActivity extends BasicActivity {
 
+    Context _context;
     ViewPager viewPager;
     private static String MALE = "Male";
     private static String FEMALE = "Female";
     private static String DOG = "Dog";
     private static String CAT = "Cat";
+    private ArrayList<String> photos;
+    private PhotoSliderAdapter photoSliderAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,18 +55,21 @@ public class AnimalActivity extends BasicActivity {
         setContentView(R.layout.activity_animal);
         onCreateDrawer();
         onCreateDrawerMenu();
+        this._context = this;
 
         Bundle bundle = getIntent().getExtras();
         if(bundle.getInt("AnimalId") > 0) {
             TextView animalIdTextView = findViewById(R.id.animal_id);
             int animalId = bundle.getInt("AnimalId");
             animalIdTextView.setText(String.valueOf(animalId));
+            getAnimalById(animalId);
+
             viewPager = findViewById(R.id.photoSlider);
 
-            PhotoSliderAdapter photoSliderAdapter = new PhotoSliderAdapter(this);
+            photoSliderAdapter = new PhotoSliderAdapter(_context, photos);
             viewPager.setAdapter(photoSliderAdapter);
 
-            getAnimalById(animalId);
+            getAnimalPhotos(animalId);
         }
     }
 
@@ -83,6 +90,39 @@ public class AnimalActivity extends BasicActivity {
                         Log.e("Error", res);
                     }
                 });
+    }
+
+    private void getAnimalPhotos(int id)
+    {
+        List<Header> headers = new ArrayList<>();
+        headers.add(new BasicHeader("Content-Type", "application/json"));
+
+        Client.getById(this, Api.PHOTOS_BY_ID, id, headers.toArray(new Header[headers.size()]),
+                null, new JsonHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                        photos = new ArrayList<>();
+                        for(int i = 0; i < response.length(); i++)
+                        {
+                            try{
+                                JSONObject photo = response.getJSONObject(i);
+                                photos.add(photo.getString("content"));
+                            }
+                            catch(JSONException e)
+                            {
+                                e.printStackTrace();
+                            }
+                        }
+                        photoSliderAdapter = new PhotoSliderAdapter(_context, photos);
+                        viewPager.setAdapter(photoSliderAdapter);
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, String res, Throwable t) {
+                        Log.e("Error", res);
+                    }
+                });
+
     }
 
     private void setFormData(JSONObject data)

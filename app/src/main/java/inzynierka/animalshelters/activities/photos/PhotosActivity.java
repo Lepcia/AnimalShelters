@@ -2,12 +2,16 @@ package inzynierka.animalshelters.activities.photos;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -31,14 +35,21 @@ import inzynierka.animalshelters.activities.basic.BasicActivity;
 import inzynierka.animalshelters.activities.favorites.FavoriteAnimalsActivity;
 import inzynierka.animalshelters.activities.search.SearchActivity;
 import inzynierka.animalshelters.activities.settings.SettingsActivity;
+import inzynierka.animalshelters.adapters.PhotoGalleryAdapter;
+import inzynierka.animalshelters.adapters.PhotoListItemAdapter;
 import inzynierka.animalshelters.models.AnimalShelterSimpleModel;
 import inzynierka.animalshelters.models.AnimalSimpleModel;
+import inzynierka.animalshelters.models.PhotoModel;
 import inzynierka.animalshelters.rest.Api;
 import inzynierka.animalshelters.rest.Client;
 
 public class PhotosActivity extends BasicActivity {
 
     Context _context;
+    private ListView photoView;
+    private PhotoListItemAdapter photoListItemAdapter;
+    private int ShelterId = -1;
+    private ArrayList<PhotoModel> photosArray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,10 +58,12 @@ public class PhotosActivity extends BasicActivity {
         this._context = this;
         onCreateDrawer();
         onCreateDrawerMenu();
+        addListenerOnAddPhotoBtn();
 
         Bundle bundle = getIntent().getExtras();
         if(bundle.getInt("ShelterId") > 0) {
-            getSimpleAnimals(bundle.getInt("ShelterId"));
+            ShelterId = bundle.getInt("ShelterId");
+            getSimpleAnimals(ShelterId);
         }
     }
 
@@ -87,6 +100,19 @@ public class PhotosActivity extends BasicActivity {
                 });
     }
 
+    public void addListenerOnAddPhotoBtn()
+    {
+        FloatingActionButton addPhotoBtn = findViewById(R.id.addPhotoBtn);
+        addPhotoBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(_context, AddPhotosActivity.class);
+                intent.putExtra("ShelterId", ShelterId);
+                startActivity(intent);
+            }
+        });
+    }
+
     public void addListenerOnSpinnerItemSelection(){
         Spinner spinner = findViewById(R.id.search_animals);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -107,7 +133,35 @@ public class PhotosActivity extends BasicActivity {
 
     private void getAnimalPhotos(String animal)
     {
+        String animalName = animal.substring(0, animal.indexOf(" - "));
+        String animalId = animal.substring(animal.indexOf("-")+2);
+        int id_animal = Integer.parseInt(animalId);
 
+        List<Header> headers = new ArrayList<>();
+        headers.add(new BasicHeader("Content-Type", "application/json"));
+
+        Client.getById(_context, Api.PHOTOS_BY_ID, id_animal, headers.toArray(new Header[headers.size()]),
+                null, new JsonHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                        photosArray = new ArrayList<>();
+                        photoListItemAdapter = new PhotoListItemAdapter(_context, photosArray);
+
+                        for(int i = 0; i < response.length(); i++)
+                        {
+                            try{
+                                PhotoModel photo = new PhotoModel(response.getJSONObject(i));
+                                photosArray.add(photo);
+                            } catch (JSONException e)
+                            {
+                                e.printStackTrace();
+                            }
+                        }
+                        photoView = (ListView) findViewById(R.id.photos_list);
+                        photoView.setAdapter(photoListItemAdapter);
+
+                    }
+                });
     }
 
     @Override

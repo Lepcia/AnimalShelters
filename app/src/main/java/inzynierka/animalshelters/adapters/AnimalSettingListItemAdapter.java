@@ -140,7 +140,7 @@ public class AnimalSettingListItemAdapter extends ArrayAdapter<AnimalDetailsMode
     {
         AlertDialog confirmDeleteAlertDialog = new AlertDialog.Builder(_context)
                 .setTitle("Delete")
-                .setMessage("Are you sure you want to delete this user?")
+                .setMessage("Are you sure you want to delete this animal?")
                 .setIcon(R.drawable.ic_delete_black_18dp)
                 .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                     @Override

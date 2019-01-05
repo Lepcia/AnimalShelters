@@ -47,10 +47,6 @@ public class ShelterActivity extends BasicActivity {
             TextView animalIdTextView = findViewById(R.id.shelter_id);
             int shelterId = bundle.getInt("ShelterId");
             animalIdTextView.setText(String.valueOf(shelterId));
-            viewPager = findViewById(R.id.photoSlider);
-
-            PhotoSliderAdapter photoSliderAdapter = new PhotoSliderAdapter(this);
-            viewPager.setAdapter(photoSliderAdapter);
 
             getShelterById(shelterId);
         }

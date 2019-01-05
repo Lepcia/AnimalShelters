@@ -7,7 +7,9 @@ import java.text.ParseException;
 
 public class PhotoModel {
     private int Id;
+    private int AnimalId;
     private String Content;
+    private String Title;
 
     public PhotoModel()
     {}
@@ -17,16 +19,20 @@ public class PhotoModel {
         try {
             this.Id = object.getInt("id");
             this.Content = object.getString("content");
+            this.Title = object.getString("title");
+            this.AnimalId = object.getInt("animalId");
         } catch (JSONException e){
             e.printStackTrace();
         }
 
     }
 
-    public PhotoModel(int Id, String Content)
+    public PhotoModel(int Id, String Content, String Title, int AnimalId)
     {
         this.Id = Id;
         this.Content = Content;
+        this.Title = Title;
+        this.AnimalId = AnimalId;
     }
 
     public int getId()
@@ -47,5 +53,21 @@ public class PhotoModel {
     public void setContent(String Content)
     {
         this.Content = Content;
+    }
+
+    public String getTitle() {
+        return Title;
+    }
+
+    public void setTitle(String title) {
+        Title = title;
+    }
+
+    public int getAnimalId() {
+        return AnimalId;
+    }
+
+    public void setAnimalId(int animalId) {
+        AnimalId = animalId;
     }
 }
