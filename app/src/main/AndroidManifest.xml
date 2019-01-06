@@ -50,7 +50,7 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name=".activities.administration.AdminEditUser" />
         <activity android:name=".activities.administration.AdminEditShelter" />
-        <activity android:name=".activities.newsBoard.NewsBoardNew" />
+        <activity android:name=".RegisterActivity" />
         <activity android:name=".activities.animals.AnimalActivity" />
         <activity android:name=".activities.animalShelters.ShelterActivity" />
         <activity android:name=".activities.settings.SettingsActivity" />

@@ -15,7 +15,7 @@ public class Client {
     private static AsyncHttpClient client = new AsyncHttpClient();
     static {
         client.setThreadPool(Executors.newSingleThreadExecutor());
-        client.setConnectTimeout(1000);
+        client.setConnectTimeout(10000);
     }
 
     public static void get(Context context, String url, Header[] headers, RequestParams params, AsyncHttpResponseHandler responseHandler)

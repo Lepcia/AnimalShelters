@@ -1,72 +1,39 @@
 package inzynierka.animalshelters;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
-import android.app.LoaderManager.LoaderCallbacks;
-
-import android.content.CursorLoader;
-import android.content.Loader;
-import android.database.Cursor;
-import android.net.Uri;
-import android.os.AsyncTask;
-
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.ContactsContract;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
-import com.google.gson.FieldNamingPolicy;
-import com.google.gson.FieldNamingStrategy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.entity.StringEntity;
 import cz.msebera.android.httpclient.message.BasicHeader;
-import inzynierka.animalshelters.activities.administration.AdminActivity;
 import inzynierka.animalshelters.activities.basic.BasicActivity;
-import inzynierka.animalshelters.adapters.AnimalListItemAdapter;
-import inzynierka.animalshelters.models.AnimalDetailsModel;
-import inzynierka.animalshelters.models.ModuleDetailsModel;
 import inzynierka.animalshelters.models.UserModel;
 import inzynierka.animalshelters.rest.Api;
 import inzynierka.animalshelters.rest.Client;
 
-import static android.Manifest.permission.READ_CONTACTS;
+public class RegisterActivity extends BasicActivity {
 
-/**
- * A login screen that offers login via email/password.
- */
-public class LoginActivity extends BasicActivity{
-
-    protected static class MyCustomExclusionStrategy implements ExclusionStrategy {
+    private static class MyCustomExclusionStrategy implements ExclusionStrategy {
 
         public boolean shouldSkipClass(Class<?> arg0) {
             return false;
@@ -77,7 +44,9 @@ public class LoginActivity extends BasicActivity{
         }
 
     }
-    // UI references.
+
+    private EditText mNameView;
+    private EditText mLastNameView;
     private EditText mEmailView;
     private EditText mPasswordView;
     private View mLoginFormView;
@@ -85,40 +54,33 @@ public class LoginActivity extends BasicActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_register);
         // Set up the login form.
+        mNameView = findViewById(R.id.signup_input_name);
+        mLastNameView = findViewById(R.id.signup_input_lastname);
         mEmailView = findViewById(R.id.email);
         mPasswordView = findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
                 if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
-                    attemptLogin();
+                    registerUser();
                     return true;
                 }
                 return false;
             }
         });
 
-        Button mEmailSignInButton = findViewById(R.id.sign_in_button);
-        mEmailSignInButton.setOnClickListener(new OnClickListener() {
+        Button registration = findViewById(R.id.btn_submit_registation);
+        registration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                attemptLogin();
-            }
-        });
-
-        Button tempGoToMainBtn = findViewById(R.id.register_button);
-        tempGoToMainBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                 startActivity(intent);
             }
         });
 
-       mLoginFormView = findViewById(R.id.login_form);
-        View mProgressView = findViewById(R.id.login_progress);
+        mLoginFormView = findViewById(R.id.register_form);
     }
 
     /**
@@ -126,7 +88,7 @@ public class LoginActivity extends BasicActivity{
      * If there are form errors (invalid email, missing fields, etc.), the
      * errors are presented and no actual login attempt is made.
      */
-    private void attemptLogin() {
+    private void registerUser() {
 
         // Reset errors.
         mEmailView.setError(null);
@@ -168,14 +130,14 @@ public class LoginActivity extends BasicActivity{
             user.setEmail(email);
             user.setPassword(password);
 
-            Gson gson = new GsonBuilder().setPrettyPrinting().setExclusionStrategies(new MyCustomExclusionStrategy()).create();
+            Gson gson = new GsonBuilder().setPrettyPrinting().setExclusionStrategies(new RegisterActivity.MyCustomExclusionStrategy()).create();
             String jsonString = gson.toJson(user);
             StringEntity stringEntity = new StringEntity(jsonString, "UTF-8");
 
             List<Header> headers = new ArrayList<>();
             headers.add(new BasicHeader("Content-Type", "application/json"));
 
-            Client.add(LoginActivity.this, Api.USERS_AUTHENTICATE, stringEntity, 1, headers.toArray(new Header[headers.size()]), new JsonHttpResponseHandler() {
+            Client.add(RegisterActivity.this, Api.USERS_AUTHENTICATE, stringEntity, 1, headers.toArray(new Header[headers.size()]), new JsonHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     int userId;
@@ -185,11 +147,11 @@ public class LoginActivity extends BasicActivity{
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    Intent intent = new Intent(LoginActivity.this, NewsBoardActivity.class);
+                    Intent intent = new Intent(RegisterActivity.this, NewsBoardActivity.class);
                     startActivity(intent);
                 }
 
-             });
+            });
         }
     }
 
@@ -203,8 +165,4 @@ public class LoginActivity extends BasicActivity{
         //TODO: Replace this with your own logic
         return password.length() > 4;
     }
-
-
-
 }
-

@@ -26,6 +26,7 @@ import java.util.List;
 import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.message.BasicHeader;
 import inzynierka.animalshelters.R;
+import inzynierka.animalshelters.UserService;
 import inzynierka.animalshelters.helpers.Modules;
 import inzynierka.animalshelters.models.ModuleDetailsModel;
 import inzynierka.animalshelters.rest.Api;
@@ -130,8 +131,8 @@ public class BasicActivity extends AppCompatActivity {
         menu.clear();
         List<Header> headers = new ArrayList<>();
         headers.add(new BasicHeader("Content-Type", "application/json"));
-        //TODO: po zrobieniu logowania zmienić na zalogowanego usera
-        Client.getById(BasicActivity.this, Api.ADMIN_USER_MODULE, 1, headers.toArray(new Header[headers.size()]),
+        //TODO: po zrobieniu logowania zmienić na zalogowanego usera - done
+        Client.getById(BasicActivity.this, Api.ADMIN_USER_MODULE, UserService.getInstance().getmUserId(), headers.toArray(new Header[headers.size()]),
                 null, new JsonHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
