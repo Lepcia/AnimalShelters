@@ -17,6 +17,7 @@ public class UserModel {
     private String Avatar;
     private int[] FavoriteAnimals;
     private String Role;
+    private String Password;
     private String ShelterName;
 
     public UserModel()
@@ -33,6 +34,7 @@ public class UserModel {
             this.Avatar = object.getString("avatar");
             this.Role = object.getString("role");
             this.FavoriteAnimals = DataHelper.JSONObjectToIntArray(object.getJSONArray("favoriteAnimals"));
+            this.Password = object.getString("password");
         } catch (JSONException e){
             e.printStackTrace();
         }
@@ -136,4 +138,5 @@ public class UserModel {
     public void setShelterName(String shelterName) {
         ShelterName = shelterName;
     }
+    public void setPassword(String password){this.Password = password;}
 }

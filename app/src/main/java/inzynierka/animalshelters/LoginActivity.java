@@ -19,6 +19,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -26,12 +27,36 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.gson.ExclusionStrategy;
+import com.google.gson.FieldAttributes;
+import com.google.gson.FieldNamingPolicy;
+import com.google.gson.FieldNamingStrategy;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+import com.loopj.android.http.JsonHttpResponseHandler;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import cz.msebera.android.httpclient.Header;
+import cz.msebera.android.httpclient.entity.StringEntity;
+import cz.msebera.android.httpclient.message.BasicHeader;
 import inzynierka.animalshelters.activities.basic.BasicActivity;
+import inzynierka.animalshelters.adapters.AnimalListItemAdapter;
+import inzynierka.animalshelters.models.AnimalDetailsModel;
+import inzynierka.animalshelters.models.ModuleDetailsModel;
+import inzynierka.animalshelters.models.UserModel;
+import inzynierka.animalshelters.rest.Api;
+import inzynierka.animalshelters.rest.Client;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -57,6 +82,17 @@ public class LoginActivity extends BasicActivity implements LoaderCallbacks<Curs
      */
     private UserLoginTask mAuthTask = null;
 
+    private static class MyCustomExclusionStrategy implements ExclusionStrategy {
+
+        public boolean shouldSkipClass(Class<?> arg0) {
+            return false;
+        }
+
+        public boolean shouldSkipField(FieldAttributes f) {
+            return (f.getDeclaringClass() == UserModel.class && f.getName().equals("Id"));
+        }
+
+    }
     // UI references.
     private EditText mEmailView;
     private EditText mPasswordView;
@@ -195,11 +231,27 @@ public class LoginActivity extends BasicActivity implements LoaderCallbacks<Curs
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
-            showProgress(true);
-            mAuthTask = new UserLoginTask(email, password);
-            mAuthTask.execute((Void) null);
+            UserModel user = new UserModel();
+            user.setEmail(email);
+            user.setPassword(password);
+
+            Gson gson = new GsonBuilder().setPrettyPrinting().setExclusionStrategies(new MyCustomExclusionStrategy()).create();
+            String jsonString = gson.toJson(user);
+            StringEntity stringEntity = new StringEntity(jsonString, "UTF-8");
+
+            List<Header> headers = new ArrayList<>();
+            headers.add(new BasicHeader("Content-Type", "application/json"));
+
+            Client.add(LoginActivity.this, Api.USERS_AUTHENTICATE, stringEntity, 1, headers.toArray(new Header[headers.size()]), new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                    int status = statusCode;
+
+                }
+             });
         }
     }
+
 
     private boolean isEmailValid(String email) {
         //TODO: Replace this with your own logic
