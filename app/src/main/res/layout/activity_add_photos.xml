@@ -1,0 +1,164 @@
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/drawer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <LinearLayout
+        android:id="@+id/content_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimary"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark" />
+
+        <FrameLayout
+            android:id="@+id/frame_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <ScrollView
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingTop="10dp"
+                    app:layout_constraintTop_toBottomOf="@id/searchToolbar"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent">
+
+                    <ImageView
+                        android:id="@+id/animalIcon"
+                        android:layout_width="18dp"
+                        android:layout_height="75dp"
+                        android:src="@drawable/baseline_pets_black_48dp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginLeft="10dp" />
+
+                    <Spinner
+                        android:id="@+id/search_animals"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="30dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/spinner_background"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/animalIcon"
+                        app:layout_constraintTop_toTopOf="parent"></Spinner>
+
+                    <TextView
+                        android:id="@+id/selected_animal"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:visibility="invisible"/>
+
+                    <ImageView
+                        android:id="@+id/titleIcon"
+                        android:layout_width="18dp"
+                        android:layout_height="75dp"
+                        android:layout_marginTop="10dp"
+                        android:src="@drawable/ic_assignment_black_18dp"
+                        app:layout_constraintTop_toBottomOf="@+id/search_animals"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginLeft="10dp" />
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/edit_title_layout"
+                        android:layout_width="0dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="30dp"
+                        app:layout_constraintTop_toBottomOf="@id/search_animals"
+                        app:layout_constraintStart_toEndOf="@id/titleIcon"
+                        app:layout_constraintEnd_toEndOf="parent">
+
+                        <EditText
+                            android:id="@+id/edit_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:singleLine="true"
+                            android:hint="Title"/>
+                    </android.support.design.widget.TextInputLayout>
+
+                    <ImageView
+                        android:id="@+id/photoIcon"
+                        android:layout_width="18dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/baseline_local_see_black_18dp"
+                        app:layout_constraintTop_toBottomOf="@+id/edit_title_layout"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginLeft="10dp" />
+
+                    <ImageView
+                        android:id="@+id/animal_photo"
+                        android:layout_width="200dp"
+                        android:layout_height="200dp"
+                        android:layout_marginLeft="20dp"
+                        app:layout_constraintTop_toBottomOf="@id/edit_title_layout"
+                        app:layout_constraintStart_toEndOf="@id/photoIcon"/>
+
+
+                    <Button
+                        android:id="@+id/addPhotoBtn"
+                        android:layout_width="35dp"
+                        android:layout_height="40dp"
+                        android:text="Add photo"
+                        android:background="@color/white"
+                        app:layout_constraintTop_toBottomOf="@id/edit_title_layout"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:paddingRight="10dp"
+                        android:layout_marginRight="30dp"
+                        android:layout_marginTop="30dp"
+                        android:drawableLeft="@drawable/baseline_add_photo_alternate_black_18dp"/>
+
+                </android.support.constraint.ConstraintLayout>
+
+            </ScrollView>
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/saveBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="bottom|right"
+                android:layout_marginBottom="16dp"
+                android:layout_marginEnd="10dp"
+                app:layout_anchor="@id/frame_container"
+                app:layout_anchorGravity="bottom|right|end"
+                android:src="@drawable/baseline_save_black_18dp" />
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/viewPager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+        </FrameLayout>
+    </LinearLayout>
+
+    <android.support.design.widget.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        android:layout_gravity="start"
+        app:menu="@menu/drawer_view"
+        app:headerLayout="@layout/drawer_header"/>
+
+</android.support.v4.widget.DrawerLayout>

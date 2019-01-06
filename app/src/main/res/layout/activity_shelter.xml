@@ -39,20 +39,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent">
 
-                <android.support.v4.view.ViewPager
-                    android:id="@+id/photoSlider"
-                    android:layout_width="match_parent"
-                    android:layout_height="230dp"></android.support.v4.view.ViewPager>
-
-                <View
-                    android:id="@+id/divider"
-                    android:layout_width="fill_parent"
-                    android:layout_height="2dip"
-                    android:background="@color/cacao"
-                    app:layout_constraintTop_toBottomOf="@id/photoSlider"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"/>
-
 
                 <ImageView
                     android:id="@+id/animal_shelter"
@@ -61,7 +47,7 @@
                     android:layout_marginLeft="5dp"
                     android:layout_marginTop="15dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/divider"
+                    app:layout_constraintTop_toTopOf="parent"
                     android:src="@drawable/pet_shelter_brown"
                     android:background="@color/white"/>
 
@@ -72,7 +58,7 @@
                     android:text="Animal Shelter"
                     android:layout_marginTop="15dp"
                     android:theme="@style/ItemHeaderBig"
-                    app:layout_constraintTop_toBottomOf="@id/divider"
+                    app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toEndOf="@id/animal_shelter"
                     app:layout_constraintEnd_toEndOf="parent"/>
 

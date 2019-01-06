@@ -24,6 +24,7 @@ import inzynierka.animalshelters.activities.animals.AnimalActivity;
 import inzynierka.animalshelters.activities.animals.AnimalsActivity;
 import inzynierka.animalshelters.activities.basic.BasicActivity;
 import inzynierka.animalshelters.activities.favorites.FavoriteAnimalsActivity;
+import inzynierka.animalshelters.activities.photos.PhotosActivity;
 import inzynierka.animalshelters.activities.search.SearchActivity;
 import inzynierka.animalshelters.activities.settings.SettingsActivity;
 import inzynierka.animalshelters.adapters.PhotoSliderAdapter;
@@ -46,10 +47,6 @@ public class ShelterActivity extends BasicActivity {
             TextView animalIdTextView = findViewById(R.id.shelter_id);
             int shelterId = bundle.getInt("ShelterId");
             animalIdTextView.setText(String.valueOf(shelterId));
-            viewPager = findViewById(R.id.photoSlider);
-
-            PhotoSliderAdapter photoSliderAdapter = new PhotoSliderAdapter(this);
-            viewPager.setAdapter(photoSliderAdapter);
 
             getShelterById(shelterId);
         }
@@ -150,6 +147,14 @@ public class ShelterActivity extends BasicActivity {
         Intent intent = new Intent(ShelterActivity.this, SettingsActivity.class);
         intent.putExtra("ShelterId", 1);
         intent.putExtra("UserId", 1);
+        startActivity(intent);
+    }
+
+    @Override
+    public void openPhotosModule()
+    {
+        Intent intent = new Intent(ShelterActivity.this, PhotosActivity.class);
+        intent.putExtra("ShelterId", 1);
         startActivity(intent);
     }
 }

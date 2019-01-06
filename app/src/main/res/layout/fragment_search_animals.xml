@@ -180,6 +180,7 @@
         <EditText
             android:id="@+id/search_age_from"
             android:layout_width="70dp"
+            android:inputType="number"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@id/age_from_label"
             app:layout_constraintTop_toBottomOf="@id/search_species_label"/>
@@ -197,6 +198,7 @@
         <EditText
             android:id="@+id/search_age_to"
             android:layout_width="70dp"
+            android:inputType="number"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toEndOf="@id/age_to_label"
             app:layout_constraintTop_toBottomOf="@id/search_species_label"/>

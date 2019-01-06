@@ -20,6 +20,7 @@ import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.message.BasicHeader;
 import inzynierka.animalshelters.R;
 import inzynierka.animalshelters.adapters.AnimalBigListItemAdapter;
+import inzynierka.animalshelters.models.AnimalDetailsModel;
 import inzynierka.animalshelters.models.AnimalModel;
 import inzynierka.animalshelters.rest.Api;
 import inzynierka.animalshelters.rest.Client;
@@ -47,12 +48,12 @@ public class NewsBoardNew extends Fragment {
                 null, new JsonHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                        ArrayList<AnimalModel> newAnimalsArray = new ArrayList<>();
+                        ArrayList<AnimalDetailsModel> newAnimalsArray = new ArrayList<>();
                         AnimalBigListItemAdapter animalListItemAdapter = new AnimalBigListItemAdapter(getContext(), newAnimalsArray);
 
                         for (int i = 0; i < response.length(); i++) {
                             try {
-                                animalListItemAdapter.add(new AnimalModel(response.getJSONObject(i)));
+                                animalListItemAdapter.add(new AnimalDetailsModel(response.getJSONObject(i)));
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }

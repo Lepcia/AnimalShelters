@@ -25,6 +25,7 @@ public class AnimalModel {
     private int[] Photos;
     private Date InShelterFrom;
     private int AnimalShelter;
+    private String Avatar;
 
     public AnimalModel()
     {}
@@ -47,6 +48,7 @@ public class AnimalModel {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             this.InShelterFrom = dateFormat.parse(dateS);
             this.AnimalShelter = object.getInt("animalsToAnimalShelter");
+            this.Avatar = object.getString("avatar");
         } catch (JSONException e){
             e.printStackTrace();
         } catch (ParseException e) {
@@ -56,7 +58,7 @@ public class AnimalModel {
 
     public AnimalModel(int Id, String Name, int Age, String AgeAccuracy, String AgeString, String Species,
                        String Breed, String Sex, String Size, String Description, int[] Photos, Date InShelterFrom,
-                       int AnimalShelter)
+                       int AnimalShelter, String Avatar)
     {
         this.Id = Id;
         this.Name = Name;
@@ -71,6 +73,7 @@ public class AnimalModel {
         this.Photos = Photos;
         this.InShelterFrom = InShelterFrom;
         this.AnimalShelter = AnimalShelter;
+        this.Avatar = Avatar;
     }
 
     public int getId()
@@ -190,4 +193,12 @@ public class AnimalModel {
     public int getAnimalShelter() {return AnimalShelter;}
 
     public void setAnimalShelter(int Animalshelter) {this.AnimalShelter = Animalshelter;}
+
+    public String getAvatar() {
+        return Avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        Avatar = avatar;
+    }
 }

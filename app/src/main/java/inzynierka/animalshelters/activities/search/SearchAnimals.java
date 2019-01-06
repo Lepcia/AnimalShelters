@@ -203,11 +203,11 @@ public class SearchAnimals extends Fragment {
         }
 
         EditText ageFrom = rootView.findViewById(R.id.search_age_from);
-        String ageFromS = ageFrom.getText().toString().isEmpty() ? "0" : ageFrom.getText().toString();
+        String ageFromS = ageFrom.getText().toString().isEmpty() ? "-1" : ageFrom.getText().toString();
         animal.setAgeFrom(Integer.parseInt(ageFromS));
 
         EditText ageTo = rootView.findViewById(R.id.search_age_to);
-        String ageToS = ageTo.getText().toString().isEmpty() ? "1000000" : ageTo.getText().toString();
+        String ageToS = ageTo.getText().toString().isEmpty() ? "-1" : ageTo.getText().toString();
         animal.setAgeTo(Integer.parseInt(ageToS));
 
         Gson gson = new Gson();

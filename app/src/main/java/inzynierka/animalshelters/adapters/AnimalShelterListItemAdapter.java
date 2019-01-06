@@ -2,6 +2,7 @@ package inzynierka.animalshelters.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,6 +59,11 @@ public class AnimalShelterListItemAdapter extends ArrayAdapter<AnimalShelterMode
         viewHolder.shelterAdres.setText(shelterModel.getFullAdres());
         viewHolder.shelterEmail.setText(shelterModel.getEmail());
         viewHolder.shelterPhone.setText(shelterModel.getPhone());
+        if(shelterModel.getAvatar() != null && shelterModel.getAvatar() != "") {
+            String encodedPhoto = shelterModel.getAvatar();
+            Bitmap bitmap = ImageHelper.getImageBitmap(encodedPhoto);
+            viewHolder.shelterAvatar.setImageBitmap(bitmap);
+        }
         viewHolder.details.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

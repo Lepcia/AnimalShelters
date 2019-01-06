@@ -74,6 +74,9 @@ public class BasicActivity extends AppCompatActivity {
                             case Modules.SETTINGS:
                                 openSettingsModule();
                                 break;
+                                case Modules.PHOTOS:
+                                    openPhotosModule();
+                                    break;
                         }
                         return true;
                     }
@@ -182,5 +185,8 @@ public class BasicActivity extends AppCompatActivity {
     {}
 
     public void openSettingsModule()
+    {}
+
+    public void openPhotosModule()
     {}
 }
