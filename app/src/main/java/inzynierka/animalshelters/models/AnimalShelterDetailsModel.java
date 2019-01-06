@@ -12,12 +12,14 @@ public class AnimalShelterDetailsModel {
     private String FullAdres;
     private Collection<AnimalModel> Animals;
     private String Avatar;
+    private String BankAccountNumer;
 
     public AnimalShelterDetailsModel()
     {}
 
     public AnimalShelterDetailsModel(int Id, String Name, String PostalCode, String City, String Street, String Number,
-                                     String FullAdres, Collection<AnimalModel> Animals, String Avatar)
+                                     String FullAdres, Collection<AnimalModel> Animals, String Avatar,
+                                     String BankAccountNumber)
     {
         this.Id = Id;
         this.Name = Name;
@@ -28,6 +30,7 @@ public class AnimalShelterDetailsModel {
         this.FullAdres = FullAdres;
         this.Animals = Animals;
         this.Avatar = Avatar;
+        this.BankAccountNumer = BankAccountNumber;
     }
 
     public int getId()
@@ -112,5 +115,13 @@ public class AnimalShelterDetailsModel {
 
     public void setAvatar(String avatar) {
         Avatar = avatar;
+    }
+
+    public String getBankAccountNumer() {
+        return BankAccountNumer;
+    }
+
+    public void setBankAccountNumer(String bankAccountNumer) {
+        BankAccountNumer = bankAccountNumer;
     }
 }

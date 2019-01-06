@@ -1,13 +1,23 @@
 package inzynierka.animalshelters.activities.animalShelters;
 
+import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.loopj.android.http.JsonHttpResponseHandler;
+
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,6 +34,7 @@ import inzynierka.animalshelters.activities.animals.AnimalActivity;
 import inzynierka.animalshelters.activities.animals.AnimalsActivity;
 import inzynierka.animalshelters.activities.basic.BasicActivity;
 import inzynierka.animalshelters.activities.favorites.FavoriteAnimalsActivity;
+import inzynierka.animalshelters.activities.map.GeocodingLocation;
 import inzynierka.animalshelters.activities.photos.PhotosActivity;
 import inzynierka.animalshelters.activities.search.SearchActivity;
 import inzynierka.animalshelters.activities.settings.SettingsActivity;
@@ -31,9 +42,12 @@ import inzynierka.animalshelters.adapters.PhotoSliderAdapter;
 import inzynierka.animalshelters.rest.Api;
 import inzynierka.animalshelters.rest.Client;
 
-public class ShelterActivity extends BasicActivity {
+public class ShelterActivity extends BasicActivity  implements OnMapReadyCallback {
 
+    Context _context;
     ViewPager viewPager;
+    private String Address;
+    private String latLong;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +55,7 @@ public class ShelterActivity extends BasicActivity {
         setContentView(R.layout.activity_shelter);
         onCreateDrawer();
         onCreateDrawerMenu();
+        this._context = this;
 
         Bundle bundle = getIntent().getExtras();
         if(bundle.getInt("ShelterId") > 0) {
@@ -49,6 +64,13 @@ public class ShelterActivity extends BasicActivity {
             animalIdTextView.setText(String.valueOf(shelterId));
 
             getShelterById(shelterId);
+
+            if(bundle.getString("FullAdres") != null) {
+                this.Address = bundle.getString("FullAdres");
+                SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                        .findFragmentById(R.id.map);
+                mapFragment.getMapAsync(this);
+            }
         }
     }
 
@@ -75,23 +97,45 @@ public class ShelterActivity extends BasicActivity {
     private void setFormData(JSONObject data)
     {
         try{
-            TextView animalShelter = findViewById(R.id.shelter_name);
-            animalShelter.setText(data.getString("name"));
+            if(data.has("fullAdres"))
+            {
+                Address = data.getString("fullAdres");
+            }
+            if(data.has("name")) {
+                TextView animalShelter = findViewById(R.id.shelter_name);
+                animalShelter.setText(data.getString("name"));
+            }
 
-            TextView street = findViewById(R.id.shelter_street);
-            street.setText(data.getString("street"));
+            if(data.has("street")) {
+                TextView street = findViewById(R.id.shelter_street);
+                String streetS = data.getString("street");
+                if(data.has("number"))
+                {
+                    streetS = streetS + " " + data.getString("number");
+                }
+                street.setText(streetS);
+            }
 
-            TextView city = findViewById(R.id.shelter_city);
-            city.setText(data.getString("city"));
-
-            TextView postalCode = findViewById(R.id.shelter_postal);
-            postalCode.setText(data.getString("postalCode"));
-
-            TextView email = findViewById(R.id.shelter_email);
-            email.setText(data.getString("email"));
-
-            TextView phone = findViewById(R.id.shelter_phone);
-            phone.setText(data.getString("phone"));
+            if(data.has("city")) {
+                TextView city = findViewById(R.id.shelter_city);
+                city.setText(data.getString("city"));
+            }
+            if(data.has("postalCode")) {
+                TextView postalCode = findViewById(R.id.shelter_postal);
+                postalCode.setText(data.getString("postalCode"));
+            }
+            if(data.has("email")) {
+                TextView email = findViewById(R.id.shelter_email);
+                email.setText(data.getString("email"));
+            }
+            if(data.has("phone")) {
+                TextView phone = findViewById(R.id.shelter_phone);
+                phone.setText(data.getString("phone"));
+            }
+            if(data.has("bankAccountNumber")) {
+                TextView bank = findViewById(R.id.shelter_bank);
+                bank.setText(data.getString("bankAccountNumber"));
+            }
         }
         catch(JSONException e)
         {
@@ -157,4 +201,49 @@ public class ShelterActivity extends BasicActivity {
         intent.putExtra("ShelterId", 1);
         startActivity(intent);
     }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        GeocodingLocation locationAddress = new GeocodingLocation();
+        locationAddress.getAddressFromLocation(Address,
+                getApplicationContext(), new GeocoderHandler(googleMap));
+
+    }
+
+    private class GeocoderHandler extends Handler {
+        private GoogleMap _googleMap;
+
+        public GeocoderHandler(GoogleMap googleMap)
+        {
+            this._googleMap = googleMap;
+        }
+        @Override
+        public void handleMessage(Message message) {
+            String locationAddress;
+            Double lat = 0.0;
+            Double lon = 0.0;
+            switch (message.what) {
+                case 1:
+                    Bundle bundle = message.getData();
+                    locationAddress = bundle.getString("address");
+                    lat = bundle.getDouble("lat");
+                    lon = bundle.getDouble("lon");
+                    break;
+                default:
+                    locationAddress = null;
+            }
+            LatLng location;
+            if(lat != null  && lon != null){
+                location = new LatLng(lat, lon);
+                _googleMap.addMarker(new MarkerOptions().position(location)
+                        .title("Marker in Sydney"));
+                _googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 5));
+                _googleMap.animateCamera(CameraUpdateFactory.zoomIn());
+                _googleMap.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
+
+            }
+        }
+    }
 }
+
+

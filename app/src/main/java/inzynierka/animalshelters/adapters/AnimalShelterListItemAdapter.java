@@ -70,6 +70,7 @@ public class AnimalShelterListItemAdapter extends ArrayAdapter<AnimalShelterMode
                 int shelterId = shelterModel.getId();
                 Intent intent = new Intent(_context, ShelterActivity.class);
                 intent.putExtra("ShelterId", shelterId);
+                intent.putExtra("FullAdres", shelterModel.getFullAdres());
                 _context.startActivity(intent);
             }
         });

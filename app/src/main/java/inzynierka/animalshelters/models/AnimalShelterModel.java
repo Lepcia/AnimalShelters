@@ -17,6 +17,7 @@ public class AnimalShelterModel {
     private String Phone;
     private String Email;
     private String Avatar;
+    private String BankAccountNumber;
 
     public AnimalShelterModel()
     {}
@@ -35,6 +36,7 @@ public class AnimalShelterModel {
             this.Phone = object.getString("phone");
             this.Avatar = object.getString("avatar");
             this.Animals = DataHelper.JSONObjectToIntArray(object.getJSONArray("animals"));
+            this.BankAccountNumber = object.getString("bankAccountNumber");
         } catch (JSONException e){
             e.printStackTrace();
         }
@@ -42,7 +44,7 @@ public class AnimalShelterModel {
 
     public AnimalShelterModel(int Id, String Name, String PostalCode, String City, String Street,
                               String Number, String FullAdres, int[] Animals, String Phone, String Email,
-                              String Avatar)
+                              String Avatar, String BankAccountNumber)
     {
         this.Id = Id;
         this.Name = Name;
@@ -55,6 +57,7 @@ public class AnimalShelterModel {
         this.Email = Email;
         this.Phone = Phone;
         this.Avatar = Avatar;
+        this.BankAccountNumber = BankAccountNumber;
     }
 
     public int getId()
@@ -155,5 +158,13 @@ public class AnimalShelterModel {
 
     public void setEmail(String email) {
         Email = email;
+    }
+
+    public String getBankAccountNumber() {
+        return BankAccountNumber;
+    }
+
+    public void setBankAccountNumber(String bankAccountNumer) {
+        BankAccountNumber = bankAccountNumer;
     }
 }

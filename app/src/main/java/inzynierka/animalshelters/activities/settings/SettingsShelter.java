@@ -137,6 +137,12 @@ public class SettingsShelter extends Fragment {
                 animal_avatar.setImageBitmap(bitmap);
             }
 
+            if(data.has("bankAccountNumber"))
+            {
+                EditText shelter_bank = rootView.findViewById(R.id.edit_bank);
+                shelter_bank.setText(data.getString("bankAccountNumber"));
+            }
+
         }
         catch(JSONException e)
         {
@@ -185,6 +191,9 @@ public class SettingsShelter extends Fragment {
 
         EditText shelterPostal = rootView.findViewById(R.id.edit_postal);
         shelter.setPostalCode(shelterPostal.getText().toString());
+
+        EditText shelterBank = rootView.findViewById(R.id.edit_bank);
+        shelter.setBankAccountNumber(shelterBank.getText().toString());
 
         if(bitmap != null)
         {

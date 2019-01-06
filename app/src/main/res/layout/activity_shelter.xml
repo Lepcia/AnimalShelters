@@ -39,6 +39,13 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent">
 
+                <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:tools="http://schemas.android.com/tools"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:id="@+id/map"
+                    tools:context=".ShelterActivity"
+                    android:name="com.google.android.gms.maps.SupportMapFragment" />
 
                 <ImageView
                     android:id="@+id/animal_shelter"
@@ -47,7 +54,7 @@
                     android:layout_marginLeft="5dp"
                     android:layout_marginTop="15dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/map"
                     android:src="@drawable/pet_shelter_brown"
                     android:background="@color/white"/>
 
@@ -58,7 +65,7 @@
                     android:text="Animal Shelter"
                     android:layout_marginTop="15dp"
                     android:theme="@style/ItemHeaderBig"
-                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/map"
                     app:layout_constraintStart_toEndOf="@id/animal_shelter"
                     app:layout_constraintEnd_toEndOf="parent"/>
 
@@ -170,6 +177,27 @@
                     android:paddingBottom="20dp"
                     app:layout_constraintStart_toEndOf="@id/shelter_phone_label"
                     app:layout_constraintTop_toBottomOf="@id/shelter_email"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <TextView
+                    android:id="@+id/shelter_bank_label"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:text="Bank account:"
+                    android:layout_marginTop="10dp"
+                    android:theme="@style/LabelMedium"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/shelter_phone_label"/>
+
+                <TextView
+                    android:id="@+id/shelter_bank"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:theme="@style/ItemTextBig"
+                    android:paddingBottom="20dp"
+                    app:layout_constraintStart_toEndOf="@id/shelter_bank_label"
+                    app:layout_constraintTop_toBottomOf="@id/shelter_phone"
                     app:layout_constraintEnd_toEndOf="parent"/>
 
 
