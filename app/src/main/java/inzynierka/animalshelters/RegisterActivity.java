@@ -3,6 +3,7 @@ package inzynierka.animalshelters;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
@@ -31,9 +32,9 @@ import inzynierka.animalshelters.models.UserModel;
 import inzynierka.animalshelters.rest.Api;
 import inzynierka.animalshelters.rest.Client;
 
-public class RegisterActivity extends BasicActivity {
+public class RegisterActivity extends AppCompatActivity {
 
-    private static class MyCustomExclusionStrategy implements ExclusionStrategy {
+    private static class CustomExclusionStrategy implements ExclusionStrategy {
 
         public boolean shouldSkipClass(Class<?> arg0) {
             return false;
@@ -50,16 +51,15 @@ public class RegisterActivity extends BasicActivity {
     private EditText mEmailView;
     private EditText mPasswordView;
     private View mLoginFormView;
-
-    @Override
+@Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+       super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         // Set up the login form.
         mNameView = findViewById(R.id.signup_input_name);
         mLastNameView = findViewById(R.id.signup_input_lastname);
-        mEmailView = findViewById(R.id.email);
-        mPasswordView = findViewById(R.id.password);
+        mEmailView = findViewById(R.id.signup_input_email);
+        mPasswordView = findViewById(R.id.signup_input_password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -75,6 +75,7 @@ public class RegisterActivity extends BasicActivity {
         registration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                registerUser();
                 Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                 startActivity(intent);
             }
@@ -95,6 +96,8 @@ public class RegisterActivity extends BasicActivity {
         mPasswordView.setError(null);
 
         // Store values at the time of the login attempt.
+        String firstName = mNameView.getText().toString();
+        String lastName = mLastNameView.getText().toString();
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
 
@@ -129,32 +132,26 @@ public class RegisterActivity extends BasicActivity {
             UserModel user = new UserModel();
             user.setEmail(email);
             user.setPassword(password);
+            user.setFirstName(firstName);
+            user.setLastName(lastName);
+            user.setRole("CommonUser");
 
-            Gson gson = new GsonBuilder().setPrettyPrinting().setExclusionStrategies(new RegisterActivity.MyCustomExclusionStrategy()).create();
+            Gson gson = new GsonBuilder().setPrettyPrinting().setExclusionStrategies(new RegisterActivity.CustomExclusionStrategy()).create();
             String jsonString = gson.toJson(user);
             StringEntity stringEntity = new StringEntity(jsonString, "UTF-8");
 
             List<Header> headers = new ArrayList<>();
             headers.add(new BasicHeader("Content-Type", "application/json"));
 
-            Client.add(RegisterActivity.this, Api.USERS_AUTHENTICATE, stringEntity, 1, headers.toArray(new Header[headers.size()]), new JsonHttpResponseHandler() {
+            Client.add(RegisterActivity.this, Api.USERS_REGISTER, stringEntity, headers.toArray(new Header[headers.size()]), new JsonHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                    int userId;
-                    try {
-                        userId = response.getInt("id");
-                        UserService.setInstance(userId);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
                     Intent intent = new Intent(RegisterActivity.this, NewsBoardActivity.class);
                     startActivity(intent);
                 }
-
             });
         }
     }
-
 
     private boolean isEmailValid(String email) {
         //TODO: Replace this with your own logic

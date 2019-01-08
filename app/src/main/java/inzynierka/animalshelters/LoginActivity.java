@@ -18,6 +18,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -64,9 +65,9 @@ import static android.Manifest.permission.READ_CONTACTS;
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends BasicActivity{
+public class LoginActivity extends BasicActivity {
 
-    protected static class MyCustomExclusionStrategy implements ExclusionStrategy {
+    protected static class CustomExclusionStrategy implements ExclusionStrategy {
 
         public boolean shouldSkipClass(Class<?> arg0) {
             return false;
@@ -75,7 +76,6 @@ public class LoginActivity extends BasicActivity{
         public boolean shouldSkipField(FieldAttributes f) {
             return (f.getDeclaringClass() == UserModel.class && f.getName().equals("Id"));
         }
-
     }
     // UI references.
     private EditText mEmailView;
@@ -105,6 +105,8 @@ public class LoginActivity extends BasicActivity{
             @Override
             public void onClick(View view) {
                 attemptLogin();
+                Intent intent = new Intent(LoginActivity.this, NewsBoardActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -168,25 +170,30 @@ public class LoginActivity extends BasicActivity{
             user.setEmail(email);
             user.setPassword(password);
 
-            Gson gson = new GsonBuilder().setPrettyPrinting().setExclusionStrategies(new MyCustomExclusionStrategy()).create();
+            Gson gson = new GsonBuilder().setPrettyPrinting().setExclusionStrategies(new CustomExclusionStrategy()).create();
             String jsonString = gson.toJson(user);
             StringEntity stringEntity = new StringEntity(jsonString, "UTF-8");
 
             List<Header> headers = new ArrayList<>();
             headers.add(new BasicHeader("Content-Type", "application/json"));
 
-            Client.add(LoginActivity.this, Api.USERS_AUTHENTICATE, stringEntity, 1, headers.toArray(new Header[headers.size()]), new JsonHttpResponseHandler() {
+            Client.add(LoginActivity.this, Api.USERS_AUTHENTICATE, stringEntity, headers.toArray(new Header[headers.size()]), new JsonHttpResponseHandler() {
+
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                   // super.onSuccess(statusCode, headers, response);
                     int userId;
-                    try {
-                        userId = response.getInt("id");
-                        UserService.setInstance(userId);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                    if (statusCode != 200) {
+                        userId = 0;
+                    } else {
+                        try {
+                            userId = response.getInt("id");
+                            UserService.getInstance().setUserId(userId);
+
+                        } catch (JSONException ignore) {
+                            ignore.getMessage();
+                        }
                     }
-                    Intent intent = new Intent(LoginActivity.this, NewsBoardActivity.class);
-                    startActivity(intent);
                 }
 
              });

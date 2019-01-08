@@ -1,32 +1,35 @@
 package inzynierka.animalshelters;
 
 public class UserService {
-    private static UserService userServiceInstance;
-    private static int mUserId;
 
-    private UserService(int userId) {
+    private volatile static UserService instance;
+    private int mUserId;
+
+    private UserService() {
+    }
+
+    public static UserService getInstance() {
+        if (instance == null) {
+            synchronized (UserService.class) {
+                if (instance == null) {
+                    instance = new UserService();
+                    instance.mUserId = 0;
+                }
+            }
+        }
+
+        return instance;
+    }
+
+    public void setUserId(int userId) {
         mUserId = userId;
-    }
-
-    public static  UserService setInstance(int userId) {
-        if (userServiceInstance == null) {
-            userServiceInstance = new UserService(userId);
-        }
-        return userServiceInstance;
-    }
-
-    public static  UserService getInstance() {
-        if (userServiceInstance == null) {
-            throw new Error("User not specified");
-        }
-        return userServiceInstance;
     }
 
     public int getmUserId(){
         return mUserId;
     }
 
-    public static void resetUser(){
-        userServiceInstance = null;
+    public void resetUser(){
+        instance = null;
     }
 }

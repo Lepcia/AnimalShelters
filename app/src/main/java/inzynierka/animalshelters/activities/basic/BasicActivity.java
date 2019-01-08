@@ -36,6 +36,7 @@ public class BasicActivity extends AppCompatActivity {
 
     public DrawerLayout drawerLayout;
 
+
     protected void onCreateDrawer() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -134,8 +135,9 @@ public class BasicActivity extends AppCompatActivity {
         menu.clear();
         List<Header> headers = new ArrayList<>();
         headers.add(new BasicHeader("Content-Type", "application/json"));
+        int userId = UserService.getInstance().getmUserId();
         //TODO: po zrobieniu logowania zmienić na zalogowanego usera - done
-        Client.getById(BasicActivity.this, Api.ADMIN_USER_MODULE, UserService.getInstance().getmUserId(), headers.toArray(new Header[headers.size()]),
+        Client.getById(BasicActivity.this, Api.ADMIN_USER_MODULE, userId, headers.toArray(new Header[headers.size()]),
                 null, new JsonHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
