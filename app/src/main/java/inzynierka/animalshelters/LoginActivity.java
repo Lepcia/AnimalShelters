@@ -105,8 +105,6 @@ public class LoginActivity extends BasicActivity {
             @Override
             public void onClick(View view) {
                 attemptLogin();
-                Intent intent = new Intent(LoginActivity.this, NewsBoardActivity.class);
-                startActivity(intent);
             }
         });
 
@@ -189,6 +187,8 @@ public class LoginActivity extends BasicActivity {
                         try {
                             userId = response.getInt("id");
                             UserService.getInstance().setUserId(userId);
+                            Intent intent = new Intent(LoginActivity.this, NewsBoardActivity.class);
+                            startActivity(intent);
 
                         } catch (JSONException ignore) {
                             ignore.getMessage();
