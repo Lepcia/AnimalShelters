@@ -41,6 +41,7 @@ import cz.msebera.android.httpclient.entity.StringEntity;
 import cz.msebera.android.httpclient.message.BasicHeader;
 import inzynierka.animalshelters.NewsBoardActivity;
 import inzynierka.animalshelters.R;
+import inzynierka.animalshelters.UserService;
 import inzynierka.animalshelters.activities.administration.AdminActivity;
 import inzynierka.animalshelters.activities.animalShelters.SheltersActivity;
 import inzynierka.animalshelters.activities.animals.AnimalsActivity;
@@ -293,8 +294,10 @@ public class AddPhotosActivity extends BasicActivity {
     public void openSettingsModule()
     {
         Intent intent = new Intent(AddPhotosActivity.this, SettingsActivity.class);
-        intent.putExtra("ShelterId", 1);
-        intent.putExtra("UserId", 1);
+        int idUser = UserService.getInstance().getmUserId();
+        int idShelter = UserService.getInstance().getmShelterId();
+        intent.putExtra("ShelterId", idShelter);
+        intent.putExtra("UserId", idUser);
         startActivity(intent);
     }
 }

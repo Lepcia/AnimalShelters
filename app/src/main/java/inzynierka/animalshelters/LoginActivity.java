@@ -56,6 +56,7 @@ import inzynierka.animalshelters.activities.basic.BasicActivity;
 import inzynierka.animalshelters.adapters.AnimalListItemAdapter;
 import inzynierka.animalshelters.models.AnimalDetailsModel;
 import inzynierka.animalshelters.models.ModuleDetailsModel;
+import inzynierka.animalshelters.models.RoleModel;
 import inzynierka.animalshelters.models.UserModel;
 import inzynierka.animalshelters.rest.Api;
 import inzynierka.animalshelters.rest.Client;
@@ -181,12 +182,18 @@ public class LoginActivity extends BasicActivity {
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                    // super.onSuccess(statusCode, headers, response);
                     int userId;
+                    int shelterId;
+                    RoleModel role;
                     if (statusCode != 200) {
                         userId = 0;
                     } else {
                         try {
                             userId = response.getInt("id");
                             UserService.getInstance().setUserId(userId);
+                            shelterId = response.getInt("shelterId");
+                            UserService.getInstance().setmShelterId(shelterId);
+                            role = new RoleModel(response.getJSONObject("role"));
+                            UserService.getInstance().setmUserRole(role);
                             Intent intent = new Intent(LoginActivity.this, NewsBoardActivity.class);
                             startActivity(intent);
 

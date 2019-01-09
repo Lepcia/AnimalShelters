@@ -44,6 +44,7 @@ import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.entity.StringEntity;
 import cz.msebera.android.httpclient.message.BasicHeader;
 import inzynierka.animalshelters.R;
+import inzynierka.animalshelters.UserService;
 import inzynierka.animalshelters.activities.administration.AdminActivity;
 import inzynierka.animalshelters.helpers.DateFormatHelper;
 import inzynierka.animalshelters.helpers.ImageHelper;
@@ -64,7 +65,7 @@ public class SettingsUser extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_settings_user, container, false);
 
         SettingsActivity settingsActivity = (SettingsActivity) getActivity();
-        int userId = settingsActivity.GetUserId();
+        int userId = UserService.getInstance().getmUserId();
         getUser(userId);
         initBtn();
         addListenerOnUploadPhoto();
@@ -188,7 +189,7 @@ public class SettingsUser extends Fragment {
         String id = idUser.getText().toString();
 
         TextView role = rootView.findViewById(R.id.userType);
-        user.setRole(role.getText().toString());
+        user.setRoleName(role.getText().toString());
 
         TextView shelterName = rootView.findViewById(R.id.user_shelter_name);
         user.setShelterName(shelterName.getText().toString());

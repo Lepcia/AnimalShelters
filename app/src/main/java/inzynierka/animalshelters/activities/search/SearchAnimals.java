@@ -36,6 +36,7 @@ import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.entity.StringEntity;
 import cz.msebera.android.httpclient.message.BasicHeader;
 import inzynierka.animalshelters.R;
+import inzynierka.animalshelters.UserService;
 import inzynierka.animalshelters.activities.animals.AnimalActivity;
 import inzynierka.animalshelters.activities.basic.BasicActivity;
 import inzynierka.animalshelters.adapters.AnimalListItemAdapter;
@@ -247,8 +248,9 @@ public class SearchAnimals extends Fragment {
     {
         List<Header> headers = new ArrayList<>();
         headers.add(new BasicHeader("Content-Type", "application/json"));
+        int userId = UserService.getInstance().getmUserId();
 
-        Client.getById(getContext(), Api.ANIMALS_BY_USER, 1, headers.toArray(new Header[headers.size()]),
+        Client.getById(getContext(), Api.ANIMALS_BY_USER, userId, headers.toArray(new Header[headers.size()]),
                 null, new JsonHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, JSONArray response) {

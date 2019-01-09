@@ -25,6 +25,7 @@ import java.util.List;
 import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.message.BasicHeader;
 import inzynierka.animalshelters.R;
+import inzynierka.animalshelters.UserService;
 import inzynierka.animalshelters.activities.animals.AnimalActivity;
 import inzynierka.animalshelters.helpers.AdministrationHelper;
 import inzynierka.animalshelters.helpers.ImageHelper;
@@ -142,7 +143,7 @@ public class AnimalListItemAdapter extends ArrayAdapter<AnimalDetailsModel> {
             params.put("animalId", animalId);
 
             AdministrationHelper administrationHelper = new AdministrationHelper();
-            int userId = administrationHelper.GetLogedUserId();
+            int userId = UserService.getInstance().getmUserId();
 
             if(!isFavorite) {
                 Client.update(_context, "users/" + userId + "/addFavoriteAnimal",

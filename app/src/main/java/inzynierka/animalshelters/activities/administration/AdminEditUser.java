@@ -31,11 +31,14 @@ import cz.msebera.android.httpclient.entity.StringEntity;
 import cz.msebera.android.httpclient.message.BasicHeader;
 import inzynierka.animalshelters.NewsBoardActivity;
 import inzynierka.animalshelters.R;
+import inzynierka.animalshelters.UserService;
 import inzynierka.animalshelters.activities.animalShelters.SheltersActivity;
 import inzynierka.animalshelters.activities.animals.AnimalsActivity;
 import inzynierka.animalshelters.activities.basic.BasicActivity;
 import inzynierka.animalshelters.activities.favorites.FavoriteAnimalsActivity;
+import inzynierka.animalshelters.activities.photos.PhotosActivity;
 import inzynierka.animalshelters.activities.search.SearchActivity;
+import inzynierka.animalshelters.activities.settings.SettingsActivity;
 import inzynierka.animalshelters.helpers.DateFormatHelper;
 import inzynierka.animalshelters.models.AnimalShelterSimpleModel;
 import inzynierka.animalshelters.models.UserModel;
@@ -48,6 +51,7 @@ public class AdminEditUser extends BasicActivity {
     private static final String ADMIN = "Admin";
     private static final String SHELTER_USER = "ShelterUser";
     private static final String COMMON_USER = "CommonUser";
+    private static final String SHELTER_ADMIN = "ShelterAdmin";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,12 +131,17 @@ public class AdminEditUser extends BasicActivity {
             }
 
             if(data.has("role")) {
-                switch (data.getString("role"))
+                JSONObject roleObject = data.getJSONObject("role");
+                String roleName = roleObject.getString("name");
+                switch (roleName)
                 {
                     case ADMIN:
                         RadioButton radioAdmin = findViewById(R.id.radioAdmin);
                         radioAdmin.setChecked(true);
                         break;
+                    case SHELTER_ADMIN:
+                        RadioButton radioShelterAdmin = findViewById(R.id.radioShelterAdmin);
+                        radioShelterAdmin.setChecked(true);
                     case SHELTER_USER:
                         RadioButton radioShelterUser = findViewById(R.id.radioShelterUser);
                         radioShelterUser.setChecked(true);
@@ -220,13 +229,16 @@ public class AdminEditUser extends BasicActivity {
         switch (userTypeRadioBtn.getText().toString())
         {
             case "Admin":
-                user.setRole(ADMIN);
+                user.setRoleName(ADMIN);
+                break;
+            case "Shelter admin":
+                user.setRoleName(SHELTER_ADMIN);
                 break;
             case "Shelter user":
-                user.setRole(SHELTER_USER);
+                user.setRoleName(SHELTER_USER);
                 break;
             case "Common user":
-                user.setRole(COMMON_USER);
+                user.setRoleName(COMMON_USER);
                 break;
         }
 
@@ -370,6 +382,27 @@ public class AdminEditUser extends BasicActivity {
     public void openAdminModule()
     {
         Intent intent = new Intent(AdminEditUser.this, AdminActivity.class);
+        startActivity(intent);
+    }
+
+
+    @Override
+    public void openSettingsModule()
+    {
+        Intent intent = new Intent(AdminEditUser.this, SettingsActivity.class);
+        int userId = UserService.getInstance().getmUserId();
+        int shelterId = UserService.getInstance().getmShelterId();
+        intent.putExtra("ShelterId", shelterId);
+        intent.putExtra("UserId", userId);
+        startActivity(intent);
+    }
+
+    @Override
+    public void openPhotosModule()
+    {
+        Intent intent = new Intent(AdminEditUser.this, PhotosActivity.class);
+        int shelterId = UserService.getInstance().getmShelterId();
+        intent.putExtra("ShelterId", shelterId);
         startActivity(intent);
     }
 }

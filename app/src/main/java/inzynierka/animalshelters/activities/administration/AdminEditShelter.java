@@ -27,11 +27,14 @@ import cz.msebera.android.httpclient.entity.StringEntity;
 import cz.msebera.android.httpclient.message.BasicHeader;
 import inzynierka.animalshelters.NewsBoardActivity;
 import inzynierka.animalshelters.R;
+import inzynierka.animalshelters.UserService;
 import inzynierka.animalshelters.activities.animalShelters.SheltersActivity;
 import inzynierka.animalshelters.activities.animals.AnimalsActivity;
 import inzynierka.animalshelters.activities.basic.BasicActivity;
 import inzynierka.animalshelters.activities.favorites.FavoriteAnimalsActivity;
+import inzynierka.animalshelters.activities.photos.PhotosActivity;
 import inzynierka.animalshelters.activities.search.SearchActivity;
+import inzynierka.animalshelters.activities.settings.SettingsActivity;
 import inzynierka.animalshelters.helpers.DateFormatHelper;
 import inzynierka.animalshelters.models.AnimalShelterModel;
 import inzynierka.animalshelters.rest.Api;
@@ -262,6 +265,27 @@ public class AdminEditShelter extends BasicActivity {
     public void openAdminModule()
     {
         Intent intent = new Intent(AdminEditShelter.this, AdminActivity.class);
+        startActivity(intent);
+    }
+
+
+    @Override
+    public void openSettingsModule()
+    {
+        Intent intent = new Intent(AdminEditShelter.this, SettingsActivity.class);
+        int userId = UserService.getInstance().getmUserId();
+        int shelterId = UserService.getInstance().getmShelterId();
+        intent.putExtra("ShelterId", shelterId);
+        intent.putExtra("UserId", userId);
+        startActivity(intent);
+    }
+
+    @Override
+    public void openPhotosModule()
+    {
+        Intent intent = new Intent(AdminEditShelter.this, PhotosActivity.class);
+        int shelterId = UserService.getInstance().getmShelterId();
+        intent.putExtra("ShelterId", shelterId);
         startActivity(intent);
     }
 }

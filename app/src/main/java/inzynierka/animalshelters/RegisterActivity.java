@@ -1,5 +1,6 @@
 package inzynierka.animalshelters;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -51,10 +52,12 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText mEmailView;
     private EditText mPasswordView;
     private View mLoginFormView;
+    private Context _context;
 @Override
     protected void onCreate(Bundle savedInstanceState) {
        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+        _context = this;
         // Set up the login form.
         mNameView = findViewById(R.id.signup_input_name);
         mLastNameView = findViewById(R.id.signup_input_lastname);
@@ -76,8 +79,6 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 registerUser();
-                Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-                startActivity(intent);
             }
         });
 
@@ -134,9 +135,10 @@ public class RegisterActivity extends AppCompatActivity {
             user.setPassword(password);
             user.setFirstName(firstName);
             user.setLastName(lastName);
-            user.setRole("CommonUser");
+            user.setRoleName("CommonUser");
 
-            Gson gson = new GsonBuilder().setPrettyPrinting().setExclusionStrategies(new RegisterActivity.CustomExclusionStrategy()).create();
+            //Gson gson = new GsonBuilder().setPrettyPrinting().setExclusionStrategies(new RegisterActivity.CustomExclusionStrategy()).create();
+            Gson gson = new Gson();
             String jsonString = gson.toJson(user);
             StringEntity stringEntity = new StringEntity(jsonString, "UTF-8");
 
@@ -146,7 +148,7 @@ public class RegisterActivity extends AppCompatActivity {
             Client.add(RegisterActivity.this, Api.USERS_REGISTER, stringEntity, headers.toArray(new Header[headers.size()]), new JsonHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                    Intent intent = new Intent(RegisterActivity.this, NewsBoardActivity.class);
+                    Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                     startActivity(intent);
                 }
             });
