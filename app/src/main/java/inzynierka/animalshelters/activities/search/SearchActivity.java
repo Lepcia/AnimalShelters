@@ -11,6 +11,7 @@ import android.os.Bundle;
 
 import inzynierka.animalshelters.NewsBoardActivity;
 import inzynierka.animalshelters.R;
+import inzynierka.animalshelters.UserService;
 import inzynierka.animalshelters.activities.administration.AdminActivity;
 import inzynierka.animalshelters.activities.animalShelters.SheltersActivity;
 import inzynierka.animalshelters.activities.animals.AnimalsActivity;
@@ -109,12 +110,15 @@ public class SearchActivity extends BasicActivity {
         startActivity(intent);
     }
 
+
     @Override
     public void openSettingsModule()
     {
         Intent intent = new Intent(SearchActivity.this, SettingsActivity.class);
-        intent.putExtra("ShelterId", 1);
-        intent.putExtra("UserId", 1);
+        int userId = UserService.getInstance().getmUserId();
+        int shelterId = UserService.getInstance().getmShelterId();
+        intent.putExtra("ShelterId", shelterId);
+        intent.putExtra("UserId", userId);
         startActivity(intent);
     }
 
@@ -122,7 +126,8 @@ public class SearchActivity extends BasicActivity {
     public void openPhotosModule()
     {
         Intent intent = new Intent(SearchActivity.this, PhotosActivity.class);
-        intent.putExtra("ShelterId", 1);
+        int shelterId = UserService.getInstance().getmShelterId();
+        intent.putExtra("ShelterId", shelterId);
         startActivity(intent);
     }
 }

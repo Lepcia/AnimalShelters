@@ -2,11 +2,13 @@ package inzynierka.animalshelters.rest;
 
 public final class Api {
 
-    private static final String BASE_URL = "http://192.168.1.14:49268/api/";
+    private static final String BASE_URL = "http://192.168.10.127:49268/api/";
     public static final String ADMINISTRATION_URL = "administration";
     public static final String ADMIN_USER_MODULE = ADMINISTRATION_URL + "/userModules/{id}";
     public static final String ADMIN_RIGHTS_TO_MODULE = ADMINISTRATION_URL + "/rightsToModule";
     public static final String USERS_URL = "users";
+    public static final String USERS_REGISTER = "users/register";
+    public static final String USERS_AUTHENTICATE = "users/authenticate";
     public static final String USER_ID_URL = "users/{id}";
     public static final String USERS_ALL_URT = "users/all";
     public static final String USER_ID_DETAILS = "users/{id}/details";
@@ -34,6 +36,8 @@ public final class Api {
     public static final String FAVORITE_ANIMALS_IDS_URL = USERS_URL + "/{id}" + "/favoriteIds";
     public static final String PHOTOS = "photos";
     public static final String PHOTOS_BY_ID = "photos/{id}";
+    public static final String ADMIN_USER_MODULES_BY_ROLE = ADMINISTRATION_URL + "/userRoleModules/{id}";
+    public static final String ADMIN_USER_RIGHTS_BY_ROLE = ADMINISTRATION_URL + "/userRightsByRole/{id}";
 
     public static String getBaseUrl()
     {

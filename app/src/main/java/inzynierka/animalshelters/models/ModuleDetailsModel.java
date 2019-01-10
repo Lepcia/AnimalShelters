@@ -1,5 +1,7 @@
 package inzynierka.animalshelters.models;
 
+import android.support.annotation.IdRes;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -13,6 +15,7 @@ public class ModuleDetailsModel {
     public String UserFirstName;
     public String UserLastName;
     public String UserEmail;
+    private int IdRole;
 
     public ModuleDetailsModel()
     {}
@@ -20,15 +23,12 @@ public class ModuleDetailsModel {
     public ModuleDetailsModel(JSONObject object)
     {
         try {
-            this.Id = object.getInt("id");
-            this.Symbol = object.getString("symbol");
-            this.Name = object.getString("name");
-            this.Icon = object.getString("icon");
-            this.Order = object.getInt("order");
-            this.IdUser = object.getInt("idUser");
-            this.UserFirstName = object.getString("userFirstName");
-            this.UserLastName = object.getString("userLastName");
-            this.UserEmail = object.getString("userEmail");
+            this.Id = object.getInt("idModule");
+            this.Symbol = object.getString("moduleSymbol");
+            this.Name = object.getString("moduleName");
+            this.Icon = object.getString("moduleIcon");
+            this.Order = object.getInt("moduleOrder");
+            this.IdRole = object.getInt("idRole");
         } catch (JSONException e){
             e.printStackTrace();
         }
@@ -121,4 +121,12 @@ public class ModuleDetailsModel {
     }
 
     public void setUserEmail(String UserEmail) { this.UserEmail = UserEmail; }
+
+    public int getIdRole() {
+        return IdRole;
+    }
+
+    public void setIdRole(int idRole) {
+        IdRole = idRole;
+    }
 }

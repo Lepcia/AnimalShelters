@@ -17,6 +17,7 @@ import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.message.BasicHeader;
 import inzynierka.animalshelters.NewsBoardActivity;
 import inzynierka.animalshelters.R;
+import inzynierka.animalshelters.UserService;
 import inzynierka.animalshelters.activities.administration.AdminActivity;
 import inzynierka.animalshelters.activities.animalShelters.SheltersActivity;
 import inzynierka.animalshelters.activities.animals.AnimalsActivity;
@@ -48,9 +49,9 @@ public class FavoriteAnimalsActivity extends BasicActivity {
     private void getFavoriteAnimals() {
         List<Header> headers = new ArrayList<>();
         headers.add(new BasicHeader("Content-Type", "application/json"));
-
+        int userId = UserService.getInstance().getmUserId();
         //TODO: zmienić id po zrobieniu autoryzacji
-        Client.getById(FavoriteAnimalsActivity.this, Api.FAVORITE_ANIMALS_URL, 1, headers.toArray(new Header[headers.size()]),
+        Client.getById(FavoriteAnimalsActivity.this, Api.FAVORITE_ANIMALS_URL, userId, headers.toArray(new Header[headers.size()]),
                 null, new JsonHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
@@ -114,6 +115,10 @@ public class FavoriteAnimalsActivity extends BasicActivity {
     public void openSettingsModule()
     {
         Intent intent = new Intent(FavoriteAnimalsActivity.this, SettingsActivity.class);
+        int userId = UserService.getInstance().getmUserId();
+        int shelterId = UserService.getInstance().getmUserId();
+        intent.putExtra("ShelterId", shelterId);
+        intent.putExtra("UserId", userId);
         startActivity(intent);
     }
 
@@ -121,7 +126,8 @@ public class FavoriteAnimalsActivity extends BasicActivity {
     public void openPhotosModule()
     {
         Intent intent = new Intent(FavoriteAnimalsActivity.this, PhotosActivity.class);
-        intent.putExtra("ShelterId", 1);
+        int shelterId = UserService.getInstance().getmShelterId();
+        intent.putExtra("ShelterId", shelterId);
         startActivity(intent);
     }
 }

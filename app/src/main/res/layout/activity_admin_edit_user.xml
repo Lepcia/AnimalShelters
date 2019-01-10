@@ -201,6 +201,12 @@
                             android:text="Admin"/>
 
                         <RadioButton
+                            android:id="@+id/radioShelterAdmin"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Shelter admin"/>
+
+                        <RadioButton
                             android:id="@+id/radioShelterUser"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"

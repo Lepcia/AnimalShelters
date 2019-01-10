@@ -16,7 +16,9 @@ public class UserModel {
     private String Email;
     private String Avatar;
     private int[] FavoriteAnimals;
-    private String Role;
+    private String RoleName;
+    private RoleModel Role;
+    private String Password;
     private String ShelterName;
 
     public UserModel()
@@ -31,15 +33,17 @@ public class UserModel {
             this.DateOfBirth = DateFormatHelper.dateFromString(object.getString("dateOfBirth"), DateFormatHelper.FORMAT_DATE);
             this.Email = object.getString("email");
             this.Avatar = object.getString("avatar");
-            this.Role = object.getString("role");
+            this.RoleName = object.getString("roleName");
+            this.Role = new RoleModel(object.getJSONObject("role"));
             this.FavoriteAnimals = DataHelper.JSONObjectToIntArray(object.getJSONArray("favoriteAnimals"));
+            this.Password = object.getString("password");
         } catch (JSONException e){
             e.printStackTrace();
         }
     }
 
     public UserModel(int Id, String FirstName, String LastName, Date DateOfBirth, String Email,
-                     String Avatar, int[] FavoriteAnimals, String Role)
+                     String Avatar, int[] FavoriteAnimals, String RoleName, RoleModel Role)
     {
         this.Id = Id;
         this.FirstName = FirstName;
@@ -48,6 +52,7 @@ public class UserModel {
         this.Email = Email;
         this.Avatar = Avatar;
         this.FavoriteAnimals = FavoriteAnimals;
+        this.RoleName = RoleName;
         this.Role = Role;
     }
 
@@ -121,12 +126,20 @@ public class UserModel {
         this.FavoriteAnimals = FavoriveAnimals;
     }
 
-    public String getRole() {
+    public RoleModel getRole() {
         return Role;
     }
 
-    public void setRole(String role) {
+    public void setRole(RoleModel role) {
         Role = role;
+    }
+
+    public String getRoleName() {
+        return RoleName;
+    }
+
+    public void setRoleName(String roleName) {
+        RoleName = roleName;
     }
 
     public String getShelterName() {
@@ -136,4 +149,5 @@ public class UserModel {
     public void setShelterName(String shelterName) {
         ShelterName = shelterName;
     }
+    public void setPassword(String password){this.Password = password;}
 }

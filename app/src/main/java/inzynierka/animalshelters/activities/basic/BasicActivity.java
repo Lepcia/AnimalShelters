@@ -26,6 +26,7 @@ import java.util.List;
 import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.message.BasicHeader;
 import inzynierka.animalshelters.R;
+import inzynierka.animalshelters.UserService;
 import inzynierka.animalshelters.helpers.Modules;
 import inzynierka.animalshelters.models.ModuleDetailsModel;
 import inzynierka.animalshelters.rest.Api;
@@ -34,6 +35,7 @@ import inzynierka.animalshelters.rest.Client;
 public class BasicActivity extends AppCompatActivity {
 
     public DrawerLayout drawerLayout;
+
 
     protected void onCreateDrawer() {
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -76,6 +78,9 @@ public class BasicActivity extends AppCompatActivity {
                                 case Modules.PHOTOS:
                                     openPhotosModule();
                                     break;
+                            case Modules.LOGOUT:
+                                logout();
+                                break;
                         }
                         return true;
                     }
@@ -133,8 +138,9 @@ public class BasicActivity extends AppCompatActivity {
         menu.clear();
         List<Header> headers = new ArrayList<>();
         headers.add(new BasicHeader("Content-Type", "application/json"));
-        //TODO: po zrobieniu logowania zmienić na zalogowanego usera
-        Client.getById(BasicActivity.this, Api.ADMIN_USER_MODULE, 1, headers.toArray(new Header[headers.size()]),
+        int userId = UserService.getInstance().getmUserId();
+        //TODO: po zrobieniu logowania zmienić na zalogowanego usera - done
+        Client.getById(BasicActivity.this, Api.ADMIN_USER_MODULES_BY_ROLE, userId, headers.toArray(new Header[headers.size()]),
                 null, new JsonHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
@@ -148,6 +154,7 @@ public class BasicActivity extends AppCompatActivity {
                                 e.printStackTrace();
                             }
                         }
+                        menu.add(1, 9, 9, "Logout").setIcon(getDrawable(R.drawable.logout));
                     }
 
                     @Override
@@ -155,6 +162,11 @@ public class BasicActivity extends AppCompatActivity {
                         Log.e("Error", res);
                     }
                 });
+
+    }
+
+    public void logout()
+    {
 
     }
 

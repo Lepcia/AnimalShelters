@@ -14,6 +14,7 @@ import java.util.Set;
 import inzynierka.animalshelters.NewsBoardActivity;
 import inzynierka.animalshelters.R;
 
+import inzynierka.animalshelters.UserService;
 import inzynierka.animalshelters.activities.administration.AdminActivity;
 import inzynierka.animalshelters.activities.administration.AdminShelters;
 import inzynierka.animalshelters.activities.administration.AdminUsers;
@@ -153,7 +154,8 @@ public class SettingsActivity extends BasicActivity {
     public void openPhotosModule()
     {
         Intent intent = new Intent(SettingsActivity.this, PhotosActivity.class);
-        intent.putExtra("ShelterId", 1);
+        int shelterId = UserService.getInstance().getmShelterId();
+        intent.putExtra("ShelterId", shelterId);
         startActivity(intent);
     }
 }

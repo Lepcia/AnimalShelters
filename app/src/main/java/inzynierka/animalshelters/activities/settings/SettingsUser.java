@@ -44,9 +44,11 @@ import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.entity.StringEntity;
 import cz.msebera.android.httpclient.message.BasicHeader;
 import inzynierka.animalshelters.R;
+import inzynierka.animalshelters.UserService;
 import inzynierka.animalshelters.activities.administration.AdminActivity;
 import inzynierka.animalshelters.helpers.DateFormatHelper;
 import inzynierka.animalshelters.helpers.ImageHelper;
+import inzynierka.animalshelters.models.RoleModel;
 import inzynierka.animalshelters.models.UserModel;
 import inzynierka.animalshelters.rest.Api;
 import inzynierka.animalshelters.rest.Client;
@@ -64,7 +66,7 @@ public class SettingsUser extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_settings_user, container, false);
 
         SettingsActivity settingsActivity = (SettingsActivity) getActivity();
-        int userId = settingsActivity.GetUserId();
+        int userId = UserService.getInstance().getmUserId();
         getUser(userId);
         initBtn();
         addListenerOnUploadPhoto();
@@ -139,8 +141,9 @@ public class SettingsUser extends Fragment {
 
             if(data.has("role"))
             {
+                RoleModel roleModel = new RoleModel(data.getJSONObject("role"));
                 TextView role = rootView.findViewById(R.id.userType);
-                role.setText(data.getString("role"));
+                role.setText(roleModel.getName());
             }
 
             if(data.has("avatar")) {
@@ -150,12 +153,16 @@ public class SettingsUser extends Fragment {
                 user_avatar.setImageBitmap(bitmap);
             }
 
+            TextView usersShelter = rootView.findViewById(R.id.user_shelter_name);
             JSONObject animalShelter = data.getJSONObject("userToAnimalShelter");
             if(animalShelter.getInt("id") > 0) {
                 String shelterName = animalShelter.getString("name");
-                TextView usersShelter = rootView.findViewById(R.id.user_shelter_name);
+
                 usersShelter.setText(shelterName);
+            } else {
+                usersShelter.setText("");
             }
+
         }
         catch(JSONException e)
         {
@@ -188,7 +195,7 @@ public class SettingsUser extends Fragment {
         String id = idUser.getText().toString();
 
         TextView role = rootView.findViewById(R.id.userType);
-        user.setRole(role.getText().toString());
+        user.setRoleName(role.getText().toString());
 
         TextView shelterName = rootView.findViewById(R.id.user_shelter_name);
         user.setShelterName(shelterName.getText().toString());
