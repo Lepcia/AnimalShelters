@@ -176,7 +176,7 @@ public class LoginActivity extends BasicActivity {
             List<Header> headers = new ArrayList<>();
             headers.add(new BasicHeader("Content-Type", "application/json"));
 
-            Client.add(LoginActivity.this, Api.USERS_AUTHENTICATE, stringEntity, headers.toArray(new Header[headers.size()]), new JsonHttpResponseHandler() {
+            Client.addNotLogged(LoginActivity.this, Api.USERS_AUTHENTICATE, stringEntity, headers.toArray(new Header[headers.size()]), new JsonHttpResponseHandler() {
 
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -184,6 +184,7 @@ public class LoginActivity extends BasicActivity {
                     int userId;
                     int shelterId;
                     RoleModel role;
+                    String token;
                     if (statusCode != 200) {
                         userId = 0;
                     } else {
@@ -194,6 +195,8 @@ public class LoginActivity extends BasicActivity {
                             UserService.getInstance().setmShelterId(shelterId);
                             role = new RoleModel(response.getJSONObject("role"));
                             UserService.getInstance().setmUserRole(role);
+                            token = response.getString("token");
+                            UserService.getInstance().setToken(token);
                             Intent intent = new Intent(LoginActivity.this, NewsBoardActivity.class);
                             startActivity(intent);
 

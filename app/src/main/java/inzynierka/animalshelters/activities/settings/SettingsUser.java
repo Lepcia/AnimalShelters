@@ -48,6 +48,7 @@ import inzynierka.animalshelters.UserService;
 import inzynierka.animalshelters.activities.administration.AdminActivity;
 import inzynierka.animalshelters.helpers.DateFormatHelper;
 import inzynierka.animalshelters.helpers.ImageHelper;
+import inzynierka.animalshelters.models.RoleModel;
 import inzynierka.animalshelters.models.UserModel;
 import inzynierka.animalshelters.rest.Api;
 import inzynierka.animalshelters.rest.Client;
@@ -140,8 +141,9 @@ public class SettingsUser extends Fragment {
 
             if(data.has("role"))
             {
+                RoleModel roleModel = new RoleModel(data.getJSONObject("role"));
                 TextView role = rootView.findViewById(R.id.userType);
-                role.setText(data.getString("role"));
+                role.setText(roleModel.getName());
             }
 
             if(data.has("avatar")) {
@@ -151,12 +153,16 @@ public class SettingsUser extends Fragment {
                 user_avatar.setImageBitmap(bitmap);
             }
 
+            TextView usersShelter = rootView.findViewById(R.id.user_shelter_name);
             JSONObject animalShelter = data.getJSONObject("userToAnimalShelter");
             if(animalShelter.getInt("id") > 0) {
                 String shelterName = animalShelter.getString("name");
-                TextView usersShelter = rootView.findViewById(R.id.user_shelter_name);
+
                 usersShelter.setText(shelterName);
+            } else {
+                usersShelter.setText("");
             }
+
         }
         catch(JSONException e)
         {

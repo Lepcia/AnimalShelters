@@ -78,6 +78,9 @@ public class BasicActivity extends AppCompatActivity {
                                 case Modules.PHOTOS:
                                     openPhotosModule();
                                     break;
+                            case Modules.LOGOUT:
+                                logout();
+                                break;
                         }
                         return true;
                     }
@@ -151,6 +154,7 @@ public class BasicActivity extends AppCompatActivity {
                                 e.printStackTrace();
                             }
                         }
+                        menu.add(1, 9, 9, "Logout").setIcon(getDrawable(R.drawable.logout));
                     }
 
                     @Override
@@ -158,6 +162,11 @@ public class BasicActivity extends AppCompatActivity {
                         Log.e("Error", res);
                     }
                 });
+
+    }
+
+    public void logout()
+    {
 
     }
 

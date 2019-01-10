@@ -12,6 +12,7 @@ public class UserService {
     private int mShelterId;
     private RoleModel mUserRole;
     private List<RightsModel> mUserRights;
+    private String token;
 
     private UserService() {
     }
@@ -25,6 +26,7 @@ public class UserService {
                     instance.mShelterId = 0;
                     instance.mUserRole = null;
                     instance.mUserRights = null;
+                    instance.token = "";
                 }
             }
         }
@@ -64,5 +66,13 @@ public class UserService {
 
     public void resetUser(){
         instance = null;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }
