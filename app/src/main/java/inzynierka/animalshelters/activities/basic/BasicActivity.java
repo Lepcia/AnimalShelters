@@ -1,5 +1,6 @@
 package inzynierka.animalshelters.activities.basic;
 
+import android.content.Intent;
 import android.content.res.Resources;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
@@ -25,6 +26,7 @@ import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.message.BasicHeader;
+import inzynierka.animalshelters.LoginActivity;
 import inzynierka.animalshelters.R;
 import inzynierka.animalshelters.UserService;
 import inzynierka.animalshelters.helpers.Modules;
@@ -167,7 +169,15 @@ public class BasicActivity extends AppCompatActivity {
 
     public void logout()
     {
+        UserService.getInstance().setUserId(0);
+        UserService.getInstance().setmShelterId(0);
+        UserService.getInstance().setToken("");
+        UserService.getInstance().setmUserRights(null);
+        UserService.getInstance().setmUserRole(null);
 
+        Intent intent = new Intent(BasicActivity.this, LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
     }
 
     private int getDrawable(String name)
