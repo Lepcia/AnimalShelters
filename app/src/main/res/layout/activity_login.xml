@@ -39,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:padding="@dimen/fab_margin"
                 android:contentDescription="@string/action_sign_in"
-                android:src="@drawable/cat_size_selected" />
+                android:src="@drawable/logo" />
 
 
 

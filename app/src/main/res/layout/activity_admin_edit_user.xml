@@ -185,9 +185,9 @@
                     <RadioGroup
                         android:id="@+id/user_type_radio_group"
                         android:layout_width="0dp"
-                        android:layout_height="75dp"
+                        android:layout_height="180dp"
                         android:gravity="center"
-                        android:orientation="horizontal"
+                        android:orientation="vertical"
                         app:layout_constraintTop_toBottomOf="@id/edit_password_layout"
                         app:layout_constraintStart_toEndOf="@id/userTypeIcon"
                         android:layout_marginLeft="5dp"
@@ -196,25 +196,25 @@
 
                         <RadioButton
                             android:id="@+id/radioAdmin"
-                            android:layout_width="wrap_content"
+                            android:layout_width="150dp"
                             android:layout_height="wrap_content"
                             android:text="Admin"/>
 
                         <RadioButton
                             android:id="@+id/radioShelterAdmin"
-                            android:layout_width="wrap_content"
+                            android:layout_width="150dp"
                             android:layout_height="wrap_content"
                             android:text="Shelter admin"/>
 
                         <RadioButton
                             android:id="@+id/radioShelterUser"
-                            android:layout_width="wrap_content"
+                            android:layout_width="150dp"
                             android:layout_height="wrap_content"
                             android:text="Shelter user"/>
 
                         <RadioButton
                             android:id="@+id/radioCommonUser"
-                            android:layout_width="wrap_content"
+                            android:layout_width="150dp"
                             android:layout_height="wrap_content"
                             android:text="Common user"/>
                     </RadioGroup>

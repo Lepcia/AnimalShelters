@@ -212,8 +212,8 @@ public class AdminEditUser extends BasicActivity {
         EditText userEmail = findViewById(R.id.edit_email);
         user.setEmail(userEmail.getText().toString());
 
-        //EditText userPassword = findViewById(R.id.edit_password);
-        //user.setPassword(userPassword.getText().toString());
+        EditText userPassword = findViewById(R.id.edit_password);
+        user.setPassword(userPassword.getText().toString());
 
         TextView selectedShelter = findViewById(R.id.selected_shelter);
         user.setShelterName(selectedShelter.getText().toString());
@@ -318,7 +318,7 @@ public class AdminEditUser extends BasicActivity {
                 RadioButton rb = findViewById(checkedId);
                 ImageView shelterIcon = findViewById(R.id.animalShelterIcon);
                 Spinner spinner = findViewById(R.id.edit_user_shelter);
-                if(rb.getText().equals("Shelter user"))
+                if(rb.getText().equals("Shelter user") || rb.getText().equals("Shelter admin"))
                 {
                     shelterIcon.setVisibility(View.VISIBLE);
                     spinner.setVisibility(View.VISIBLE);
