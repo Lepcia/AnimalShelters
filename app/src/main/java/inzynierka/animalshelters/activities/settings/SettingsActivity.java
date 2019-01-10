@@ -25,6 +25,7 @@ import inzynierka.animalshelters.activities.basic.BasicActivity;
 import inzynierka.animalshelters.activities.favorites.FavoriteAnimalsActivity;
 import inzynierka.animalshelters.activities.photos.PhotosActivity;
 import inzynierka.animalshelters.activities.search.SearchActivity;
+import inzynierka.animalshelters.models.RoleModel;
 
 public class SettingsActivity extends BasicActivity {
 
@@ -32,6 +33,11 @@ public class SettingsActivity extends BasicActivity {
     private ViewPager mViewPager;
     private int ShelterId = -1;
     private int UserId = -1;
+    private int _tabsCount = 0;
+    private static final String ADMIN = "ADMIN";
+    private static final String SHELTER_ADMIN = "SHELTER_ADMIN";
+    private static final String SHELTER_USER = "SHELTER_USER";
+    private static final String COMMON_USER = "COMMON_USER";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,15 +45,20 @@ public class SettingsActivity extends BasicActivity {
         setContentView(R.layout.activity_settings);
         onCreateDrawer();
         onCreateDrawerMenu();
+        UserId = UserService.getInstance().getmUserId();
+        ShelterId = UserService.getInstance().getmShelterId();
+        RoleModel userRole = UserService.getInstance().getmUserRole();
 
-        Bundle bundle = getIntent().getExtras();
-        if(bundle.getInt("ShelterId") > 0)
-        {
-            ShelterId = bundle.getInt("ShelterId");
-        }
-        if(bundle.getInt("UserId") > 0)
-        {
-            UserId = bundle.getInt("UserId");
+        switch(userRole.getSymbol()) {
+            case SHELTER_ADMIN:
+                setCount(4);
+                break;
+            case SHELTER_USER:
+                setCount(2);
+                break;
+            case COMMON_USER:
+                setCount(1);
+                break;
         }
 
         mSectionsPagerAdapter = new SettingsActivity.SectionsPagerAdapter(getSupportFragmentManager());
@@ -57,9 +68,13 @@ public class SettingsActivity extends BasicActivity {
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.addTab(tabLayout.newTab().setText("User"));
-        tabLayout.addTab(tabLayout.newTab().setText("Animal shelter"));
-        tabLayout.addTab(tabLayout.newTab().setText("Users"));
-        tabLayout.addTab(tabLayout.newTab().setText("Animals"));
+        if(userRole.getSymbol().equals(SHELTER_ADMIN) || userRole.getSymbol().equals(SHELTER_USER)) {
+            tabLayout.addTab(tabLayout.newTab().setText("Animals"));
+        }
+        if(userRole.getSymbol().equals(SHELTER_ADMIN)) {
+            tabLayout.addTab(tabLayout.newTab().setText("Animal shelter"));
+            tabLayout.addTab(tabLayout.newTab().setText("Users"));
+        }
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
@@ -90,23 +105,27 @@ public class SettingsActivity extends BasicActivity {
                     SettingsUser userTab = new SettingsUser();
                     return userTab;
                 case 1:
-                    SettingsShelter shelterTab = new SettingsShelter();
-                    return  shelterTab;
-                case 2:
-                    SettingsUsers usersTab = new SettingsUsers();
-                    return usersTab;
-                case 3:
                     SettingsAnimals animalsTab = new SettingsAnimals();
                     return animalsTab;
+                case 2:
+                    SettingsShelter shelterTab = new SettingsShelter();
+                    return  shelterTab;
+                case 3:
+                    SettingsUsers usersTab = new SettingsUsers();
+                    return usersTab;
+
             }
             return null;
         }
 
         @Override
         public int getCount() {
-            return 4;
+            return _tabsCount;
         }
+
     }
+
+    public void setCount(int tabs) { _tabsCount = tabs;}
 
     @Override
     public void openMainModule()
