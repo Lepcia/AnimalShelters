@@ -52,6 +52,7 @@ import inzynierka.animalshelters.activities.settings.SettingsActivity;
 import inzynierka.animalshelters.helpers.ImageHelper;
 import inzynierka.animalshelters.models.AnimalSimpleModel;
 import inzynierka.animalshelters.models.PhotoModel;
+import inzynierka.animalshelters.models.RoleModel;
 import inzynierka.animalshelters.rest.Api;
 import inzynierka.animalshelters.rest.Client;
 
@@ -74,10 +75,50 @@ public class AddPhotosActivity extends BasicActivity {
         addListenerOnUploadPhoto();
         requestStoragePermission();
 
-        Bundle bundle = getIntent().getExtras();
-        if(bundle.getInt("ShelterId") > 0) {
-            getSimpleAnimals(bundle.getInt("ShelterId"));
+        int ShelterId = UserService.getInstance().getmShelterId();
+        RoleModel userRole = UserService.getInstance().getmUserRole();
+
+        if(userRole.getSymbol().equals("ADMIN"))
+        {
+            getAllSimpleAnimals();
         }
+
+        else if(ShelterId > 0) {
+            getSimpleAnimals(ShelterId);
+        }
+    }
+
+    private void getAllSimpleAnimals()
+    {
+        List<Header> headers = new ArrayList<>();
+        headers.add(new BasicHeader("Content-Type", "application/json"));
+
+        Client.get(_context, Api.ANIMALS_SIMPLE_URL, headers.toArray(new Header[headers.size()]),
+                null, new JsonHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                        List<String> animalsNames = new ArrayList<String>();
+                        for (int i = 0; i < response.length(); i++) {
+                            try {
+                                AnimalSimpleModel animal = new AnimalSimpleModel(response.getJSONObject(i));
+                                animalsNames.add(animal.getName() + " - " + animal.getId());
+                            } catch (JSONException e){
+                                e.printStackTrace();
+                            }
+                        }
+                        Spinner spinner = findViewById(R.id.search_animals);
+                        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(_context,
+                                android.R.layout.simple_spinner_item, animalsNames);
+                        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        spinner.setAdapter(dataAdapter);
+                        addListenerOnSpinnerItemSelection();
+                    }
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, String res, Throwable t) {
+                        Log.e("Error", res);
+                    }
+                });
     }
 
     private void getSimpleAnimals(int idShelter)
