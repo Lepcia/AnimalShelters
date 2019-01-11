@@ -28,15 +28,24 @@ public class UserModel {
     {
         try {
             this.Id = object.getInt("id");
-            this.FirstName = object.getString("firstName");
-            this.LastName = object.getString("lastName");
-            this.DateOfBirth = DateFormatHelper.dateFromString(object.getString("dateOfBirth"), DateFormatHelper.FORMAT_DATE);
-            this.Email = object.getString("email");
-            this.Avatar = object.getString("avatar");
-            this.RoleName = object.getString("roleName");
-            this.Role = new RoleModel(object.getJSONObject("role"));
-            this.FavoriteAnimals = DataHelper.JSONObjectToIntArray(object.getJSONArray("favoriteAnimals"));
-            this.Password = object.getString("password");
+            if(object.has("firstName"))
+                this.FirstName = object.getString("firstName");
+            if(object.has("lastName"))
+                this.LastName = object.getString("lastName");
+            if(object.has("dateOfBirth"))
+                this.DateOfBirth = DateFormatHelper.dateFromString(object.getString("dateOfBirth"), DateFormatHelper.FORMAT_DATE);
+            if(object.has("email"))
+                this.Email = object.getString("email");
+            if(object.has("avatar"))
+                this.Avatar = object.getString("avatar");
+            if(object.has("roleName"))
+                this.RoleName = object.getString("roleName");
+            if(object.has("role"))
+                this.Role = new RoleModel(object.getJSONObject("role"));
+            if(object.has("favoriteAnimals"))
+                this.FavoriteAnimals = DataHelper.JSONObjectToIntArray(object.getJSONArray("favoriteAnimals"));
+            if(object.has("password"))
+                this.Password = object.getString("password");
         } catch (JSONException e){
             e.printStackTrace();
         }
